@@ -1,7 +1,7 @@
 // src/api/axiosInstance.js
 import axios from "axios";
 
-const Moujaas = axios.create({
+const al39for = axios.create({
   baseURL: "http://127.0.0.1:8000/api",
   headers: {
     "Accept":"application/json",
@@ -10,4 +10,4 @@ const Moujaas = axios.create({
   },
 });
 
-export default Moujaas;
+export default al39for;
