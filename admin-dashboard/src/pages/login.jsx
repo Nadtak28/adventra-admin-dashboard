@@ -1,17 +1,23 @@
 import {useSelector, useDispatch} from 'react-redux'
 import {updateFields} from "../features/auth/login/hook/loginSlice.js";
 import {LoginService} from "../features/auth/login/api/loginService.jsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import CircularProgress from '@mui/material/CircularProgress';
+import {tokenStore} from "../utils/dataStore.js";
+import {Navigate} from "react-router-dom";
 
 export default function login(){
-    const {email,password,isLoading,emailError,passwordError} = useSelector(state => state.login)
+    const {email,password,isLoading,emailError,passwordError,message,LoggedIn} = useSelector(state => state.login)
     const dispatch = useDispatch()
     const [showPassword,setShowPassword]=useState(false)
     const handleSubmit = async () => {
         dispatch(LoginService({email, password}));
-
     }
+
+    if(LoggedIn){
+        return (<Navigate to="/dashboard" replace />)
+    }
+
     return(
         <div className="relative flex size-full min-h-screen flex-col bg-gradient-to-br from-[#0a1b17] via-[#11221f] to-[#1a332d] overflow-x-hidden">
             {/* Background decorative elements */}
@@ -143,7 +149,14 @@ export default function login(){
                                                 </p>
                                             )}
                                         </div>
-
+                                        {message && (
+                                            <p className="text-red-400 text-sm font-medium flex items-center gap-1">
+                                                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                                                </svg>
+                                                {message}
+                                            </p>
+                                        )}
                                         {/* Forgot password */}
                                         <div className="flex justify-end">
                                             <button className="text-[#12e7c0] font-medium hover:text-[#519489] transition-colors duration-200 text-sm">
@@ -171,7 +184,6 @@ export default function login(){
                                                 </div>
                                             )}
                                         </button>
-
                                     </div>
                                 </div>
                             </div>

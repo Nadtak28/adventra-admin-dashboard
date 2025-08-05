@@ -17,12 +17,22 @@ const LoginSlice =createSlice({
     extraReducers:(builder) => {
         builder.addCase(LoginService.pending, (state, action) => {
             state.status='Loading'
+            state.emailError=""
+            state.passwordError=""
+            state.message=""
             state.isLoading=true;
         })
         .addCase(LoginService.fulfilled, (state, action) => {
-        state.status='Fulfilled'
+            state.status='Fulfilled'
+            if(action.payload.message&&!action.payload.token){
+                state.message=action.payload.message
+            }
+            else{
+                state.LoggedIn=true;
+                tokenStore.saveToken(action.payload.token)
+            }
             state.isLoading=false;
-            tokenStore.saveToken(action.payload.token)
+
         })
         .addCase(LoginService.rejected, (state, action) => {
             state.status='Rejected'

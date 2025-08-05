@@ -1,16 +1,18 @@
+
 import React, { useState } from 'react';
-import { Home, Calendar, Users, Bookmark, User, Settings, Search, ChevronDown } from 'lucide-react';
+import {
+    Search, ChevronDown, Plus, Calendar, DollarSign, Users, TrendingUp,
+    MapPin, Clock, Filter, Eye, Activity, MoreHorizontal, Edit3,
+    CheckCircle, XCircle, Star, BarChart3, PieChart,Tickets
+} from 'lucide-react';
+import StateCard from "../features/all/components/states_card.jsx";
+import Header from "../features/all/components/header.jsx";
 
-export default function EventGroupTrip () {
+export default function EventGroupTrip() {
     const [searchQuery, setSearchQuery] = useState('');
-
-    const sidebarItems = [
-        { icon: Home, label: "Dashboard", active: false },
-        { icon: Calendar, label: "Events", active: false },
-        { icon: Users, label: "Group Tours", active: true },
-        { icon: Bookmark, label: "Bookings", active: false },
-        { icon: User, label: "Customers", active: false }
-    ];
+    const [activeTab, setActiveTab] = useState('overview');
+    const [selectedFilter, setSelectedFilter] = useState('all');
+    const [isSearchFocused, setIsSearchFocused] = useState(false);
 
     const upcomingTours = [
         {
@@ -18,7 +20,12 @@ export default function EventGroupTrip () {
             name: "City Exploration Walk",
             date: "2024-08-15",
             bookings: "15/30",
+            bookedPercentage: 50,
             discount: "Apply 10% Discount",
+            price: "$75",
+            status: "active",
+            duration: "3 hours",
+            guide: "ابو الفدا جونسون",
             image: "https://lh3.googleusercontent.com/aida-public/AB6AXuC-ULsYaGHIedTV7y8ZJWGE5BmIfjesyvjShKWdL1tN-SlOPj1eCA8TfiyhdxF0qHF8gA6BeVXQZSZQOO3NXU0rlDcD8a6ZlylQPbr_S_Ipj1p52Mx0EpvebLT7b3OlD0n3OuT4BfpGCCvEmr50fbGcsO2Dc7Bz6I6hmUVJrVByXSuFisMZhGxISrBCuMwy_JNjBBU_SX3Zsl5EEA_bhZAaAJlmaPrcIOaIW-GBEtqdVXAb4_DedVu6KUJqbB7DL6WO6d1lj9jSX_4"
         },
         {
@@ -26,7 +33,12 @@ export default function EventGroupTrip () {
             name: "Historical Sites Visit",
             date: "2024-08-20",
             bookings: "8/25",
+            bookedPercentage: 32,
             discount: "Apply 15% Discount",
+            price: "$95",
+            status: "active",
+            duration: "5 hours",
+            guide: "افهد السامرائي",
             image: "https://lh3.googleusercontent.com/aida-public/AB6AXuBpjX3DAmirzfQZ2Dk7kyV1E4spOYTMTepPS9pE8nkd6dYJRB_SMaiczUbUVZG0kyN7rhfZS9FuMUGpmBucaR1yy_9KVLWexCCykosHeWP3cdCObSHXQvBMZHBsRnNHOYybLR-72Rs65l6r6Xb9ZyQ_53AKPf7racKtbb7hcQxBO4xBUV4rUpcniVgDNuJK3j59QQJWYPTRFPJ2hB5RvsmoMB54yQl1Ai4PT_4LiqXjN9YQ8gFv9RNFuD2f6nwlHNRfq_8SGzu5WZw"
         }
     ];
@@ -38,7 +50,10 @@ export default function EventGroupTrip () {
             companyCost: "$5,000",
             profitMargin: "20%",
             perPersonPrice: "$250",
-            endDate: "2024-07-20"
+            endDate: "2024-07-20",
+            participants: 24,
+            rating: 4.8,
+            revenue: "$6,000"
         },
         {
             id: 2,
@@ -46,7 +61,10 @@ export default function EventGroupTrip () {
             companyCost: "$3,000",
             profitMargin: "25%",
             perPersonPrice: "$150",
-            endDate: "2024-07-15"
+            endDate: "2024-07-15",
+            participants: 18,
+            rating: 4.6,
+            revenue: "$3,750"
         },
         {
             id: 3,
@@ -54,7 +72,10 @@ export default function EventGroupTrip () {
             companyCost: "$2,000",
             profitMargin: "30%",
             perPersonPrice: "$100",
-            endDate: "2024-07-10"
+            endDate: "2024-07-10",
+            participants: 16,
+            rating: 4.9,
+            revenue: "$2,600"
         },
         {
             id: 4,
@@ -62,7 +83,10 @@ export default function EventGroupTrip () {
             companyCost: "$1,500",
             profitMargin: "35%",
             perPersonPrice: "$75",
-            endDate: "2024-07-05"
+            endDate: "2024-07-05",
+            participants: 22,
+            rating: 4.7,
+            revenue: "$2,025"
         },
         {
             id: 5,
@@ -70,7 +94,10 @@ export default function EventGroupTrip () {
             companyCost: "$1,000",
             profitMargin: "40%",
             perPersonPrice: "$50",
-            endDate: "2024-07-01"
+            endDate: "2024-07-01",
+            participants: 20,
+            rating: 4.5,
+            revenue: "$1,400"
         }
     ];
 
@@ -81,7 +108,11 @@ export default function EventGroupTrip () {
             perPersonPrice: "$100",
             companyCost: "$50",
             profit: "$50",
-            status: "Enabled"
+            status: "Enabled",
+            capacity: 500,
+            registered: 342,
+            date: "2024-08-25",
+            category: "Music"
         },
         {
             id: 2,
@@ -89,7 +120,11 @@ export default function EventGroupTrip () {
             perPersonPrice: "$75",
             companyCost: "$40",
             profit: "$35",
-            status: "Enabled"
+            status: "Enabled",
+            capacity: 300,
+            registered: 156,
+            date: "2024-08-30",
+            category: "Food"
         },
         {
             id: 3,
@@ -97,7 +132,11 @@ export default function EventGroupTrip () {
             perPersonPrice: "$50",
             companyCost: "$25",
             profit: "$25",
-            status: "Disabled"
+            status: "Disabled",
+            capacity: 200,
+            registered: 45,
+            date: "2024-09-05",
+            category: "Culture"
         },
         {
             id: 4,
@@ -105,7 +144,11 @@ export default function EventGroupTrip () {
             perPersonPrice: "$200",
             companyCost: "$100",
             profit: "$100",
-            status: "Enabled"
+            status: "Enabled",
+            capacity: 150,
+            registered: 127,
+            date: "2024-09-10",
+            category: "Technology"
         },
         {
             id: 5,
@@ -113,276 +156,487 @@ export default function EventGroupTrip () {
             perPersonPrice: "$150",
             companyCost: "$75",
             profit: "$75",
-            status: "Disabled"
+            status: "Disabled",
+            capacity: 100,
+            registered: 23,
+            date: "2024-09-15",
+            category: "Sports"
         }
     ];
 
+    // Calculate stats
+    const totalTours = 43;
+    const totalEvents = events.length;
+    const totalRevenue = recentTours.reduce((sum, tour) => {
+        return sum + parseFloat(tour.revenue.replace('$', '').replace(',', ''));
+    }, 0);
+    const avgRating = recentTours.reduce((sum, tour) => sum + tour.rating, 0) / recentTours.length;
+    const totalParticipants = recentTours.reduce((sum, tour) => sum + tour.participants, 0);
+
     const filterButtons = [
-        { label: "City", active: false },
-        { label: "Type", active: false },
-        { label: "Price", active: false },
-        { label: "Date", active: false }
+        { label: "All", value: "all", active: selectedFilter === "all" },
+        { label: "Active", value: "active", active: selectedFilter === "active" },
+        { label: "Upcoming", value: "upcoming", active: selectedFilter === "upcoming" },
+        { label: "Past", value: "past", active: selectedFilter === "past" }
     ];
 
     return (
-        <div className="relative flex size-full min-h-screen flex-col bg-[#11221e] dark group/design-root overflow-x-hidden" style={{fontFamily: '"Spline Sans", "Noto Sans", sans-serif'}}>
-            <div className="layout-container flex h-full grow flex-col">
+        <div className="relative space-y-6 bg-[#151e1c] min-h-screen -m-6 p-6 -mx-6">
+            {/* Enhanced background effects */}
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-teal-900/30 via-slate-800/10 to-transparent"></div>
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-slate-800/40 via-transparent to-transparent"></div>
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-teal-900/5 to-transparent"></div>
+
+            <div className="layout-container flex h-full grow flex-col relative z-10">
                 <div className="gap-1 px-6 flex flex-1 justify-center py-5">
-                    {/* Sidebar */}
-                    <div className="layout-content-container flex flex-col w-80">
-                        <div className="flex h-full min-h-[700px] flex-col justify-between bg-[#11221e] p-4">
-                            <div className="flex flex-col gap-4">
-                                <h1 className="text-white text-base font-medium leading-normal">Tourify</h1>
-                                <div className="flex flex-col gap-2">
-                                    {sidebarItems.map((item, index) => {
-                                        const IconComponent = item.icon;
-                                        return (
-                                            <div
-                                                key={index}
-                                                className={`flex items-center gap-3 px-3 py-2 ${
-                                                    item.active ? 'rounded-full bg-[#23483f]' : ''
-                                                }`}
-                                            >
-                                                <IconComponent className="text-white w-6 h-6" />
-                                                <p className="text-white text-sm font-medium leading-normal">
-                                                    {item.label}
-                                                </p>
-                                            </div>
-                                        );
-                                    })}
-                                </div>
-                            </div>
-                            <div className="flex flex-col gap-1">
-                                <div className="flex items-center gap-3 px-3 py-2">
-                                    <Settings className="text-white w-6 h-6" />
-                                    <p className="text-white text-sm font-medium leading-normal">Settings</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <div className="layout-content-container flex flex-col max-w-[1400px] flex-1">
 
-                    {/* Main Content */}
-                    <div className="layout-content-container flex flex-col max-w-[960px] flex-1">
-                        {/* Header */}
-                        <div className="flex flex-wrap justify-between gap-3 p-4">
-                            <p className="text-white tracking-light text-[32px] font-bold leading-tight min-w-72">
-                                Group Tours & Events
-                            </p>
+                        {/* Enhanced Header */}
+                        <div className="flex flex-wrap justify-between items-center gap-3 p-4 mb-6">
+                            <Header title='Tours & Events Dashboard' description="Manage group tours and events efficiently" />
                         </div>
 
-                        {/* Search Bar */}
-                        <div className="px-4 py-3">
-                            <label className="flex flex-col min-w-40 h-12 w-full">
-                                <div className="flex w-full flex-1 items-stretch rounded-xl h-full">
-                                    <div className="text-[#91cabc] flex border-none bg-[#23483f] items-center justify-center pl-4 rounded-l-xl border-r-0">
-                                        <Search className="w-6 h-6" />
+                        {/* Enhanced Stats Cards */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8 px-4">
+                            <StateCard name='Total Tours' value={totalTours}>
+                                <Calendar size={20} className="text-teal-400" />
+                            </StateCard>
+
+                            <StateCard name='Total Events' value={totalEvents}>
+                                <Activity size={20} className="text-teal-400" />
+                            </StateCard>
+
+                            <StateCard name='Total Revenue' value={`$${totalRevenue.toLocaleString()}`}>
+                                <DollarSign size={20} className="text-teal-400" />
+                            </StateCard>
+
+                            <StateCard name='Participants' value={totalParticipants}>
+                                <Users size={20} className="text-teal-400" />
+                            </StateCard>
+
+                            <StateCard name='Avg Rating' value={avgRating.toFixed(1)}>
+                                <Star size={20} className="text-teal-400" />
+                            </StateCard>
+                        </div>
+
+                        {/* Enhanced Search and Filter Bar */}
+                        <div className="flex flex-wrap gap-6 mb-8 px-4">
+                            {/* Enhanced Search Bar */}
+                            <div className={`
+                                relative group flex-1 min-w-[300px] h-14 rounded-2xl overflow-hidden 
+                                shadow-xl transition-all duration-500 ease-out
+                                ${isSearchFocused ? 'shadow-teal-400/20 scale-105' : 'shadow-black/50'}
+                                before:absolute before:inset-0 before:bg-gradient-to-r 
+                                before:from-teal-400/10 before:via-transparent before:to-slate-700/20
+                                before:opacity-0 before:transition-opacity before:duration-300
+                                ${isSearchFocused ? 'before:opacity-100' : ''}
+                            `}>
+                                {/* Animated border gradient */}
+                                <div className={`
+                                    absolute inset-0 bg-gradient-to-r from-teal-400/30 via-slate-600/30 to-teal-400/30
+                                    transition-opacity duration-500 rounded-2xl
+                                    ${isSearchFocused ? 'opacity-100' : 'opacity-0'}
+                                `} style={{ padding: '1px' }}>
+                                    <div className="w-full h-full bg-slate-800/90 backdrop-blur-md rounded-2xl"></div>
+                                </div>
+
+                                <div className="relative flex w-full h-full">
+                                    {/* Search Icon Container */}
+                                    <div className={`
+                                        flex items-center justify-center px-4 
+                                        bg-slate-800/80 backdrop-blur-sm border-r border-slate-600/30
+                                        transition-all duration-300 group-hover:bg-slate-700/80
+                                        ${isSearchFocused ? 'text-teal-300 bg-slate-700/90' : 'text-teal-400'}
+                                    `}>
+                                        <div className={`
+                                            transition-transform duration-300 
+                                            ${isSearchFocused ? 'scale-110 rotate-12' : 'group-hover:scale-105'}
+                                        `}>
+                                            <Search size={20} strokeWidth={2.5} />
+                                        </div>
                                     </div>
-                                    <input
-                                        placeholder="Search tours and events"
-                                        className="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border-none bg-[#23483f] focus:border-none h-full placeholder:text-[#91cabc] px-4 rounded-l-none border-l-0 pl-2 text-base font-normal leading-normal"
-                                        value={searchQuery}
-                                        onChange={(e) => setSearchQuery(e.target.value)}
-                                    />
+
+                                    {/* Input Field */}
+                                    <div className="relative flex-1 flex items-center z-1">
+                                        <input
+                                            type="text"
+                                            placeholder="Search tours, events, or guides..."
+                                            value={searchQuery}
+                                            onChange={(e) => setSearchQuery(e.target.value)}
+                                            onFocus={() => setIsSearchFocused(true)}
+                                            onBlur={() => setIsSearchFocused(false)}
+                                            className={`
+                                                w-full h-full px-5 py-4 
+                                                bg-slate-800/60 backdrop-blur-sm
+                                                text-white text-base font-medium
+                                                placeholder-slate-400/70
+                                                focus:outline-none focus:bg-slate-800/80
+                                                transition-all duration-300
+                                                ${isSearchFocused ? 'placeholder-teal-300/50' : ''}
+                                            `}
+                                        />
+
+                                        {/* Floating Icons */}
+                                        <div className={`
+                                            absolute right-4 flex items-center space-x-2
+                                            transition-all duration-300
+                                            ${searchQuery ? 'opacity-100 translate-x-0' : 'opacity-40 translate-x-2'}
+                                        `}>
+                                            <div className="text-slate-500 hover:text-teal-400 transition-colors duration-200 cursor-pointer">
+                                                <MapPin size={16} />
+                                            </div>
+                                            <div className="text-slate-500 hover:text-teal-400 transition-colors duration-200 cursor-pointer">
+                                                <Calendar size={16} />
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </label>
-                        </div>
 
-                        {/* Filter Buttons */}
-                        <div className="flex gap-3 p-3 flex-wrap pr-4">
-                            {filterButtons.map((filter, index) => (
-                                <button key={index} className="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-full bg-[#23483f] pl-4 pr-2">
-                                    <p className="text-white text-sm font-medium leading-normal">{filter.label}</p>
-                                    <ChevronDown className="text-white w-5 h-5" />
-                                </button>
-                            ))}
-                        </div>
+                                {/* Subtle glow effect */}
+                                <div className={`
+                                    absolute -inset-1 bg-gradient-to-r from-teal-400/20 to-slate-600/20 
+                                    rounded-2xl blur-xl transition-opacity duration-500
+                                    ${isSearchFocused ? 'opacity-50' : 'opacity-0'}
+                                `}></div>
+                            </div>
 
-                        {/* Upcoming Group Tours */}
-                        <h2 className="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">
-                            Upcoming Group Tours
-                        </h2>
-                        <div className="px-4 py-3">
-                            <div className="flex overflow-hidden rounded-xl border border-[#32675a] bg-[#11221e]">
-                                <table className="flex-1">
-                                    <thead>
-                                    <tr className="bg-[#19342d]">
-                                        <th className="px-4 py-3 text-left text-white w-[400px] text-sm font-medium leading-normal">
-                                            Tour Name
-                                        </th>
-                                        <th className="px-4 py-3 text-left text-white w-[400px] text-sm font-medium leading-normal">
-                                            Date
-                                        </th>
-                                        <th className="px-4 py-3 text-left text-white w-[400px] text-sm font-medium leading-normal">
-                                            Bookings
-                                        </th>
-                                        <th className="px-4 py-3 text-left text-white w-60 text-[#91cabc] text-sm font-medium leading-normal">
-                                            Discount
-                                        </th>
-                                        <th className="px-4 py-3 text-left text-white w-14 text-sm font-medium leading-normal">
-                                            Image
-                                        </th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {upcomingTours.map((tour) => (
-                                        <tr key={tour.id} className="border-t border-t-[#32675a]">
-                                            <td className="h-[72px] px-4 py-2 w-[400px] text-white text-sm font-normal leading-normal">
-                                                {tour.name}
-                                            </td>
-                                            <td className="h-[72px] px-4 py-2 w-[400px] text-[#91cabc] text-sm font-normal leading-normal">
-                                                {tour.date}
-                                            </td>
-                                            <td className="h-[72px] px-4 py-2 w-[400px] text-[#91cabc] text-sm font-normal leading-normal">
-                                                {tour.bookings}
-                                            </td>
-                                            <td className="h-[72px] px-4 py-2 w-60 text-[#91cabc] text-sm font-bold leading-normal tracking-[0.015em]">
-                                                {tour.discount}
-                                            </td>
-                                            <td className="h-[72px] px-4 py-2 w-14 text-sm font-normal leading-normal">
-                                                <img
-                                                    src={tour.image}
-                                                    alt={tour.name}
-                                                    className="w-10 h-10 rounded-full object-cover"
-                                                />
-                                            </td>
-                                        </tr>
-                                    ))}
-                                    </tbody>
-                                </table>
+                            {/* Enhanced Filter Buttons */}
+                            <div className="flex gap-3">
+                                {filterButtons.map((filter, index) => (
+                                    <button
+                                        key={filter.value}
+                                        onClick={() => setSelectedFilter(filter.value)}
+                                        className={`
+                                            px-5 py-3 rounded-2xl font-semibold text-sm transition-all duration-300 
+                                            ${filter.active
+                                            ? 'bg-gradient-to-r from-teal-600 to-teal-700 text-white shadow-lg shadow-teal-500/25 scale-105'
+                                            : 'bg-slate-800/60 text-slate-300 hover:bg-slate-700/60 hover:text-teal-300 hover:scale-105'
+                                        }
+                                            backdrop-blur-sm border border-slate-700/50 hover:border-teal-500/30
+                                        `}
+                                        style={{
+                                            animationDelay: `${index * 100}ms`
+                                        }}
+                                    >
+                                        {filter.label}
+                                    </button>
+                                ))}
                             </div>
                         </div>
 
-                        {/* Recent Group Tours */}
-                        <h2 className="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">
-                            Recent Group Tours
-                        </h2>
-                        <div className="px-4 py-3">
-                            <div className="flex overflow-hidden rounded-xl border border-[#32675a] bg-[#11221e]">
-                                <table className="flex-1">
-                                    <thead>
-                                    <tr className="bg-[#19342d]">
-                                        <th className="px-4 py-3 text-left text-white w-[400px] text-sm font-medium leading-normal">
-                                            Tour Name
-                                        </th>
-                                        <th className="px-4 py-3 text-left text-white w-[400px] text-sm font-medium leading-normal">
-                                            Company Cost
-                                        </th>
-                                        <th className="px-4 py-3 text-left text-white w-[400px] text-sm font-medium leading-normal">
-                                            Profit Margin
-                                        </th>
-                                        <th className="px-4 py-3 text-left text-white w-[400px] text-sm font-medium leading-normal">
-                                            Per Person Price
-                                        </th>
-                                        <th className="px-4 py-3 text-left text-white w-[400px] text-sm font-medium leading-normal">
-                                            End Date
-                                        </th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {recentTours.map((tour) => (
-                                        <tr key={tour.id} className="border-t border-t-[#32675a]">
-                                            <td className="h-[72px] px-4 py-2 w-[400px] text-white text-sm font-normal leading-normal">
-                                                {tour.name}
-                                            </td>
-                                            <td className="h-[72px] px-4 py-2 w-[400px] text-[#91cabc] text-sm font-normal leading-normal">
-                                                {tour.companyCost}
-                                            </td>
-                                            <td className="h-[72px] px-4 py-2 w-[400px] text-[#91cabc] text-sm font-normal leading-normal">
-                                                {tour.profitMargin}
-                                            </td>
-                                            <td className="h-[72px] px-4 py-2 w-[400px] text-[#91cabc] text-sm font-normal leading-normal">
-                                                {tour.perPersonPrice}
-                                            </td>
-                                            <td className="h-[72px] px-4 py-2 w-[400px] text-[#91cabc] text-sm font-normal leading-normal">
-                                                {tour.endDate}
-                                            </td>
-                                        </tr>
-                                    ))}
-                                    </tbody>
-                                </table>
+                        {/* Enhanced Upcoming Group Tours */}
+                        <div className="mb-8">
+                            <div className="flex items-center justify-between mb-6 px-4">
+                                <div className="flex items-center gap-3">
+                                    <div className="p-3 rounded-xl bg-gradient-to-r from-teal-500/20 to-slate-600/20">
+                                        <Calendar size={20} className="text-teal-400" />
+                                    </div>
+                                    <h2 className="text-white text-2xl font-bold leading-tight">
+                                        Upcoming Group Tours
+                                    </h2>
+                                </div>
+                                <button className="text-teal-400 hover:text-teal-300 transition-colors text-sm font-semibold flex items-center gap-2 px-4 py-2 bg-slate-800/60 rounded-xl hover:bg-slate-700/60">
+                                    View All
+                                    <ChevronDown size={16} className="rotate-[-90deg]" />
+                                </button>
+                            </div>
+
+                            <div className="px-4">
+                                <div className="overflow-hidden rounded-2xl bg-gradient-to-br from-slate-800/60 to-slate-900/80 backdrop-blur-sm border border-slate-700/50 shadow-2xl">
+                                    <div className="overflow-x-auto">
+                                        <table className="w-full min-w-[900px]">
+                                            <thead>
+                                            <tr className="bg-gradient-to-r from-slate-800/80 to-slate-700/80 border-b border-slate-600/30">
+                                                <th className="px-6 py-4 text-left text-white text-sm font-semibold">Tour Details</th>
+                                                <th className="px-6 py-4 text-left text-white text-sm font-semibold">Date & Duration</th>
+                                                <th className="px-6 py-4 text-left text-white text-sm font-semibold">Bookings</th>
+                                                <th className="px-6 py-4 text-left text-white text-sm font-semibold">Guide</th>
+                                                <th className="px-6 py-4 text-left text-white text-sm font-semibold">Price</th>
+                                                <th className="px-6 py-4 text-left text-white text-sm font-semibold">Actions</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {upcomingTours.map((tour) => (
+                                                <tr key={tour.id} className="group border-t border-t-slate-700/30 hover:bg-gradient-to-r hover:from-slate-800/60 hover:to-slate-700/40 transition-all duration-300">
+                                                    <td className="px-6 py-5">
+                                                        <div className="flex items-center gap-4">
+                                                            <div className="relative">
+                                                                <img
+                                                                    src={tour.image}
+                                                                    alt={tour.name}
+                                                                    className="w-14 h-14 rounded-2xl object-cover border-2 border-teal-500/30 group-hover:border-teal-400/50 transition-all duration-300 group-hover:scale-110"
+                                                                />
+                                                                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                                            </div>
+                                                            <div>
+                                                                <p className="text-white font-semibold text-lg group-hover:text-teal-300 transition-colors duration-300">{tour.name}</p>
+                                                                <p className="text-teal-400 text-sm font-medium">{tour.discount}</p>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td className="px-6 py-5">
+                                                        <div className="space-y-2">
+                                                            <div className="flex items-center gap-2 text-slate-300">
+                                                                <Calendar size={14} className="text-teal-400" />
+                                                                <span className="text-sm font-medium">{tour.date}</span>
+                                                            </div>
+                                                            <div className="flex items-center gap-2 text-slate-300">
+                                                                <Clock size={14} className="text-teal-400" />
+                                                                <span className="text-sm font-medium">{tour.duration}</span>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td className="px-6 py-5">
+                                                        <div className="space-y-2">
+                                                            <div className="mb-2">
+                                                                <span className="text-white font-semibold text-lg">{tour.bookings}</span>
+                                                            </div>
+                                                            <div className="w-full bg-slate-700/50 rounded-full h-2">
+                                                                <div
+                                                                    className="bg-gradient-to-r from-teal-500 to-teal-400 h-2 rounded-full transition-all duration-500"
+                                                                    style={{ width: `${tour.bookedPercentage}%` }}
+                                                                ></div>
+                                                            </div>
+                                                            <span className="text-xs text-slate-400 font-medium">{tour.bookedPercentage}% full</span>
+                                                        </div>
+                                                    </td>
+                                                    <td className="px-6 py-5">
+                                                        <div className="flex items-center gap-3">
+                                                            <div className="w-10 h-10 bg-gradient-to-r from-slate-700/80 to-slate-800/80 rounded-full flex items-center justify-center">
+                                                                <Users size={16} className="text-teal-400" />
+                                                            </div>
+                                                            <span className="text-slate-300 text-sm font-medium">{tour.guide}</span>
+                                                        </div>
+                                                    </td>
+                                                    <td className="px-6 py-5">
+                                                        <span className="text-white font-bold text-xl">{tour.price}</span>
+                                                    </td>
+                                                    <td className="px-6 py-5">
+                                                        <div className="flex items-center gap-3">
+                                                            <button className="group/btn p-3 bg-slate-800/60 backdrop-blur-sm border border-slate-700/50 hover:border-teal-500/50 text-slate-400 hover:text-teal-300 rounded-xl hover:bg-slate-700/60 transition-all duration-300 hover:scale-110">
+                                                                <Eye size={16} className="group-hover/btn:scale-110 transition-transform duration-300" />
+                                                            </button>
+                                                            <button className="group/btn p-3 bg-slate-800/60 backdrop-blur-sm border border-slate-700/50 hover:border-teal-500/50 text-slate-400 hover:text-teal-300 rounded-xl hover:bg-slate-700/60 transition-all duration-300 hover:scale-110">
+                                                                <Edit3 size={16} className="group-hover/btn:rotate-12 transition-transform duration-300" />
+                                                            </button>
+                                                            <button className="group/btn p-3 bg-slate-800/60 backdrop-blur-sm border border-slate-700/50 hover:border-teal-500/50 text-slate-400 hover:text-teal-300 rounded-xl hover:bg-slate-700/60 transition-all duration-300 hover:scale-110">
+                                                                <MoreHorizontal size={16} />
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        {/* Action Buttons for Tours */}
-                        <div className="flex justify-stretch">
-                            <div className="flex flex-1 gap-3 flex-wrap px-4 py-3 justify-start">
-                                <button className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-[#23483f] text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-[#2d5349] transition-colors">
-                                    <span className="truncate">View All Tours</span>
+                        {/* Enhanced Recent Tours Performance */}
+                        <div className="mb-8">
+                            <div className="flex items-center justify-between mb-6 px-4">
+                                <div className="flex items-center gap-3">
+                                    <div className="p-3 rounded-xl bg-gradient-to-r from-green-500/20 to-emerald-600/20">
+                                        <BarChart3 size={20} className="text-green-400" />
+                                    </div>
+                                    <h2 className="text-white text-2xl font-bold leading-tight">
+                                        Recent Tours Performance
+                                    </h2>
+                                </div>
+                                <button className="text-teal-400 hover:text-teal-300 transition-colors text-sm font-semibold flex items-center gap-2 px-4 py-2 bg-slate-800/60 rounded-xl hover:bg-slate-700/60">
+                                    View Details
+                                    <ChevronDown size={16} className="rotate-[-90deg]" />
                                 </button>
-                                <button className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-[#0fdba8] text-[#11221e] text-sm font-bold leading-normal tracking-[0.015em] hover:bg-[#0bc596] transition-colors">
-                                    <span className="truncate">Add New Tour</span>
-                                </button>
+                            </div>
+
+                            <div className="px-4">
+                                <div className="overflow-hidden rounded-2xl bg-gradient-to-br from-slate-800/60 to-slate-900/80 backdrop-blur-sm border border-slate-700/50 shadow-2xl">
+                                    <div className="overflow-x-auto">
+                                        <table className="w-full min-w-[1000px]">
+                                            <thead>
+                                            <tr className="bg-gradient-to-r from-slate-800/80 to-slate-700/80 border-b border-slate-600/30">
+                                                <th className="px-6 py-4 text-left text-white text-sm font-semibold">Tour Name</th>
+                                                <th className="px-6 py-4 text-left text-white text-sm font-semibold">Participants</th>
+                                                <th className="px-6 py-4 text-left text-white text-sm font-semibold">Company Cost</th>
+                                                <th className="px-6 py-4 text-left text-white text-sm font-semibold">Revenue</th>
+                                                <th className="px-6 py-4 text-left text-white text-sm font-semibold">Profit Margin</th>
+                                                <th className="px-6 py-4 text-left text-white text-sm font-semibold">Rating</th>
+                                                <th className="px-6 py-4 text-left text-white text-sm font-semibold">End Date</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {recentTours.map((tour, index) => (
+                                                <tr key={tour.id} className="group border-t border-t-slate-700/30 hover:bg-gradient-to-r hover:from-slate-800/60 hover:to-slate-700/40 transition-all duration-300">
+                                                    <td className="px-6 py-5 text-white font-semibold text-lg group-hover:text-teal-300 transition-colors duration-300">{tour.name}</td>
+                                                    <td className="px-6 py-5">
+                                                        <div className="flex items-center gap-3">
+                                                            <div className="p-2 bg-slate-700/50 rounded-lg">
+                                                                <Users size={16} className="text-teal-400" />
+                                                            </div>
+                                                            <span className="text-slate-300 font-medium">{tour.participants}</span>
+                                                        </div>
+                                                    </td>
+                                                    <td className="px-6 py-5 text-slate-300 font-medium">{tour.companyCost}</td>
+                                                    <td className="px-6 py-5 text-white font-semibold text-lg">{tour.revenue}</td>
+                                                    <td className="px-6 py-5">
+                                                        <div className="flex items-center gap-2">
+                                                            <TrendingUp size={16} className="text-green-400" />
+                                                            <span className="text-green-400 font-semibold">{tour.profitMargin}</span>
+                                                        </div>
+                                                    </td>
+                                                    <td className="px-6 py-5">
+                                                        <div className="flex items-center gap-2">
+                                                            <Star size={16} className="text-yellow-400 fill-current" />
+                                                            <span className="text-white font-semibold">{tour.rating}</span>
+                                                        </div>
+                                                    </td>
+                                                    <td className="px-6 py-5 text-slate-300 font-medium">{tour.endDate}</td>
+                                                </tr>
+                                            ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        {/* Events */}
-                        <h2 className="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">
-                            Events
-                        </h2>
-                        <div className="px-4 py-3">
-                            <div className="flex overflow-hidden rounded-xl border border-[#32675a] bg-[#11221e]">
-                                <table className="flex-1">
-                                    <thead>
-                                    <tr className="bg-[#19342d]">
-                                        <th className="px-4 py-3 text-left text-white w-[400px] text-sm font-medium leading-normal">
-                                            Event Name
-                                        </th>
-                                        <th className="px-4 py-3 text-left text-white w-[400px] text-sm font-medium leading-normal">
-                                            Per Person Price
-                                        </th>
-                                        <th className="px-4 py-3 text-left text-white w-[400px] text-sm font-medium leading-normal">
-                                            Company Cost
-                                        </th>
-                                        <th className="px-4 py-3 text-left text-white w-[400px] text-sm font-medium leading-normal">
-                                            Profit
-                                        </th>
-                                        <th className="px-4 py-3 text-left text-white w-60 text-sm font-medium leading-normal">
-                                            Status
-                                        </th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {events.map((event) => (
-                                        <tr key={event.id} className="border-t border-t-[#32675a]">
-                                            <td className="h-[72px] px-4 py-2 w-[400px] text-white text-sm font-normal leading-normal">
-                                                {event.name}
-                                            </td>
-                                            <td className="h-[72px] px-4 py-2 w-[400px] text-[#91cabc] text-sm font-normal leading-normal">
-                                                {event.perPersonPrice}
-                                            </td>
-                                            <td className="h-[72px] px-4 py-2 w-[400px] text-[#91cabc] text-sm font-normal leading-normal">
-                                                {event.companyCost}
-                                            </td>
-                                            <td className="h-[72px] px-4 py-2 w-[400px] text-[#91cabc] text-sm font-normal leading-normal">
-                                                {event.profit}
-                                            </td>
-                                            <td className="h-[72px] px-4 py-2 w-60 text-sm font-normal leading-normal">
-                                                <button
-                                                    className={`flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-8 px-4 text-sm font-medium leading-normal w-full transition-colors ${
-                                                        event.status === 'Enabled'
-                                                            ? 'bg-[#23483f] text-white hover:bg-[#2d5349]'
-                                                            : 'bg-[#1a1a1a] text-[#91cabc] hover:bg-[#23483f]'
-                                                    }`}
-                                                >
-                                                    <span className="truncate">{event.status}</span>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                    </tbody>
-                                </table>
+                        {/* Enhanced Events */}
+                        <div className="mb-8">
+                            <div className="flex items-center justify-between mb-6 px-4">
+                                <div className="flex items-center gap-3">
+                                    <div className="p-3 rounded-xl bg-gradient-to-r from-purple-500/20 to-indigo-600/20">
+                                        <Activity size={20} className="text-purple-400" />
+                                    </div>
+                                    <h2 className="text-white text-2xl font-bold leading-tight">
+                                        Events Management
+                                    </h2>
+                                </div>
+                                <button className="text-teal-400 hover:text-teal-300 transition-colors text-sm font-semibold flex items-center gap-2 px-4 py-2 bg-slate-800/60 rounded-xl hover:bg-slate-700/60">
+                                    Manage All
+                                    <ChevronDown size={16} className="rotate-[-90deg]" />
+                                </button>
+                            </div>
+
+                            <div className="px-4">
+                                <div className="overflow-hidden rounded-2xl bg-gradient-to-br from-slate-800/60 to-slate-900/80 backdrop-blur-sm border border-slate-700/50 shadow-2xl">
+                                    <div className="overflow-x-auto">
+                                        <table className="w-full min-w-[1000px]">
+                                            <thead>
+                                            <tr className="bg-gradient-to-r from-slate-800/80 to-slate-700/80 border-b border-slate-600/30">
+                                                <th className="px-6 py-4 text-left text-white text-sm font-semibold">Event Details</th>
+                                                <th className="px-6 py-4 text-left text-white text-sm font-semibold">Registration</th>
+                                                <th className="px-6 py-4 text-left text-white text-sm font-semibold">Pricing</th>
+                                                <th className="px-6 py-4 text-left text-white text-sm font-semibold">Profit</th>
+                                                <th className="px-6 py-4 text-left text-white text-sm font-semibold">Date</th>
+                                                <th className="px-6 py-4 text-left text-white text-sm font-semibold">Status</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {events.map((event) => (
+                                                <tr key={event.id} className="group border-t border-t-slate-700/30 hover:bg-gradient-to-r hover:from-slate-800/60 hover:to-slate-700/40 transition-all duration-300">
+                                                    <td className="px-6 py-5">
+                                                        <div>
+                                                            <p className="text-white font-semibold text-lg group-hover:text-teal-300 transition-colors duration-300">{event.name}</p>
+                                                            <span className="inline-block px-3 py-1 bg-gradient-to-r from-teal-600/20 to-teal-700/20 text-teal-300 text-xs rounded-full mt-2 border border-teal-500/20">
+                                                                {event.category}
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                    <td className="px-6 py-5">
+                                                        <div className="space-y-2">
+                                                            <div className="mb-2">
+                                                                <span className="text-white font-semibold text-lg">{event.registered}/{event.capacity}</span>
+                                                            </div>
+                                                            <div className="w-full bg-slate-700/50 rounded-full h-2">
+                                                                <div
+                                                                    className="bg-gradient-to-r from-teal-500 to-teal-400 h-2 rounded-full transition-all duration-500"
+                                                                    style={{ width: `${(event.registered / event.capacity) * 100}%` }}
+                                                                ></div>
+                                                            </div>
+                                                            <span className="text-xs text-slate-400 font-medium">
+                                                                {Math.round((event.registered / event.capacity) * 100)}% filled
+                                                            </span>
+                                                        </div>
+                                                    </td>
+                                                    <td className="px-6 py-5">
+                                                        <div>
+                                                            <p className="text-white font-semibold text-lg">{event.perPersonPrice}</p>
+                                                            <p className="text-slate-400 text-sm">Cost: {event.companyCost}</p>
+                                                        </div>
+                                                    </td>
+                                                    <td className="px-6 py-5">
+                                                        <span className="text-green-400 font-semibold text-lg">{event.profit}</span>
+                                                    </td>
+                                                    <td className="px-6 py-5 text-slate-300 font-medium">{event.date}</td>
+                                                    <td className="px-6 py-5">
+                                                        <button className={`flex items-center gap-2 px-4 py-2 rounded-2xl text-sm font-semibold transition-all duration-300 shadow-lg ${
+                                                            event.status === 'Enabled'
+                                                                ? 'bg-gradient-to-r from-green-600/20 to-emerald-600/20 text-green-400 border border-green-500/30 hover:from-green-500/30 hover:to-emerald-500/30 hover:scale-105'
+                                                                : 'bg-gradient-to-r from-red-600/20 to-pink-600/20 text-red-400 border border-red-500/30 hover:from-red-500/30 hover:to-pink-500/30 hover:scale-105'
+                                                        }`}>
+                                                            {event.status === 'Enabled' ? (
+                                                                <CheckCircle size={14} />
+                                                            ) : (
+                                                                <XCircle size={14} />
+                                                            )}
+                                                            {event.status}
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        {/* Action Buttons for Events */}
-                        <div className="flex justify-stretch">
-                            <div className="flex flex-1 gap-3 flex-wrap px-4 py-3 justify-start">
-                                <button className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-[#23483f] text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-[#2d5349] transition-colors">
-                                    <span className="truncate">View All Events</span>
-                                </button>
-                                <button className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-[#0fdba8] text-[#11221e] text-sm font-bold leading-normal tracking-[0.015em] hover:bg-[#0bc596] transition-colors">
-                                    <span className="truncate">Add New Event</span>
-                                </button>
+                        {/* Enhanced Action Buttons */}
+                        <div className="flex justify-center gap-6 px-4 py-8">
+                            <button className="group flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-500 hover:to-teal-600 text-white rounded-2xl font-bold text-lg shadow-xl shadow-teal-500/25 hover:shadow-teal-500/40 transition-all duration-300 hover:scale-105">
+                                <Plus size={20} className="group-hover:rotate-90 transition-transform duration-300" />
+                                Create New Tour
+                            </button>
+                            <button className="group flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-purple-600 to-indigo-700 hover:from-purple-500 hover:to-indigo-600 text-white rounded-2xl font-bold text-lg shadow-xl shadow-purple-500/25 hover:shadow-purple-500/40 transition-all duration-300 hover:scale-105">
+                                <Plus size={20} className="group-hover:rotate-90 transition-transform duration-300" />
+                                Create New Event
+                            </button>
+                        </div>
+
+                        {/* Enhanced Quick Stats Footer */}
+                        <div className="rounded-2xl p-8 mx-4 bg-gradient-to-br from-slate-800/60 to-slate-900/80 backdrop-blur-sm border border-slate-700/50 shadow-2xl">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                <div className="group text-center p-6 rounded-2xl bg-gradient-to-br from-slate-800/40 to-slate-900/60 border border-slate-700/30 hover:border-teal-500/30 transition-all duration-300 hover:scale-105">
+                                    <div className="flex items-center justify-center gap-3 mb-4">
+                                        <div className="p-3 rounded-xl bg-gradient-to-r from-green-500/20 to-emerald-600/20">
+                                            <TrendingUp size={24} className="text-green-400" />
+                                        </div>
+                                        <h3 className="text-white font-bold text-lg">This Month</h3>
+                                    </div>
+                                    <p className="text-slate-400 text-sm mb-2 font-medium">Revenue Growth</p>
+                                    <p className="text-green-400 text-3xl font-bold">+15.2%</p>
+                                </div>
+                                <div className="group text-center p-6 rounded-2xl bg-gradient-to-br from-slate-800/40 to-slate-900/60 border border-slate-700/30 hover:border-teal-500/30 transition-all duration-300 hover:scale-105">
+                                    <div className="flex items-center justify-center gap-3 mb-4">
+                                        <div className="p-3 rounded-xl bg-gradient-to-r from-teal-500/20 to-cyan-600/20">
+                                            <Users size={24} className="text-teal-400" />
+                                        </div>
+                                        <h3 className="text-white font-bold text-lg">Active Bookings</h3>
+                                    </div>
+                                    <p className="text-slate-400 text-sm mb-2 font-medium">Current Week</p>
+                                    <p className="text-white text-3xl font-bold">23/55</p>
+                                </div>
+                                <div className="group text-center p-6 rounded-2xl bg-gradient-to-br from-slate-800/40 to-slate-900/60 border border-slate-700/30 hover:border-teal-500/30 transition-all duration-300 hover:scale-105">
+                                    <div className="flex items-center justify-center gap-3 mb-4">
+                                        <div className="p-3 rounded-xl bg-gradient-to-r from-yellow-500/20 to-orange-600/20">
+                                            <Star size={24} className="text-yellow-400" />
+                                        </div>
+                                        <h3 className="text-white font-bold text-lg">Customer Satisfaction</h3>
+                                    </div>
+                                    <p className="text-slate-400 text-sm mb-2 font-medium">Average Rating</p>
+                                    <p className="text-yellow-400 text-3xl font-bold">{avgRating.toFixed(1)} ⭐</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -390,5 +644,4 @@ export default function EventGroupTrip () {
             </div>
         </div>
     );
-};
-
+}
