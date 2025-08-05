@@ -5,15 +5,15 @@ import {
     MapPin, Clock, Filter, Eye, Activity, MoreHorizontal, Edit3,
     CheckCircle, XCircle, Star, BarChart3, PieChart,Tickets
 } from 'lucide-react';
-import StateCard from "../features/all/components/states_card.jsx";
-import Header from "../features/all/components/header.jsx";
+import StateCard from "../../features/all/components/states_card.jsx";
+import Header from "../../features/all/components/header.jsx";
+import {useNavigate} from "react-router-dom";
 
 export default function EventGroupTrip() {
     const [searchQuery, setSearchQuery] = useState('');
-    const [activeTab, setActiveTab] = useState('overview');
     const [selectedFilter, setSelectedFilter] = useState('all');
     const [isSearchFocused, setIsSearchFocused] = useState(false);
-
+    const navigate = useNavigate();
     const upcomingTours = [
         {
             id: 1,
@@ -181,7 +181,7 @@ export default function EventGroupTrip() {
     ];
 
     return (
-        <div className="relative space-y-6 bg-[#151e1c] min-h-screen -m-6 p-6 -mx-6">
+        <div className="relative space-y-6 bg-[#0b1520] min-h-screen -m-6 p-6 -mx-6">
             {/* Enhanced background effects */}
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-teal-900/30 via-slate-800/10 to-transparent"></div>
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-slate-800/40 via-transparent to-transparent"></div>
@@ -594,11 +594,13 @@ export default function EventGroupTrip() {
 
                         {/* Enhanced Action Buttons */}
                         <div className="flex justify-center gap-6 px-4 py-8">
-                            <button className="group flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-500 hover:to-teal-600 text-white rounded-2xl font-bold text-lg shadow-xl shadow-teal-500/25 hover:shadow-teal-500/40 transition-all duration-300 hover:scale-105">
+                            <button className="group flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-500 hover:to-teal-600 text-white rounded-2xl font-bold text-lg shadow-xl shadow-teal-500/25 hover:shadow-teal-500/40 transition-all duration-300 hover:scale-105"
+                                    onClick={()=>navigate("/dashboard/event_grouptrip/add_group_trip")}>
                                 <Plus size={20} className="group-hover:rotate-90 transition-transform duration-300" />
                                 Create New Tour
                             </button>
-                            <button className="group flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-purple-600 to-indigo-700 hover:from-purple-500 hover:to-indigo-600 text-white rounded-2xl font-bold text-lg shadow-xl shadow-purple-500/25 hover:shadow-purple-500/40 transition-all duration-300 hover:scale-105">
+                            <button className="group flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-purple-600 to-indigo-700 hover:from-purple-500 hover:to-indigo-600 text-white rounded-2xl font-bold text-lg shadow-xl shadow-purple-500/25 hover:shadow-purple-500/40 transition-all duration-300 hover:scale-105"
+                                    onClick={()=>navigate("/dashboard/event_grouptrip/add_event")}>
                                 <Plus size={20} className="group-hover:rotate-90 transition-transform duration-300" />
                                 Create New Event
                             </button>

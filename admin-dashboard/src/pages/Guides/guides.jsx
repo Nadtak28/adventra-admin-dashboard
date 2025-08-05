@@ -13,8 +13,10 @@ import {
     Globe,
     Filter
 } from 'lucide-react';
+import {useNavigate} from "react-router-dom";
 
 export default function Guides() {
+    const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCity, setSelectedCity] = useState('');
     const [isSearchFocused, setIsSearchFocused] = useState(false);
@@ -206,7 +208,7 @@ export default function Guides() {
 
     return (
         <div
-            className="relative flex size-full min-h-screen w-auto flex-col space-y-6 bg-[#151e1c] -m-6 p-6 -mx-6 overflow-x-hidden"
+            className="relative flex size-full min-h-screen w-auto flex-col space-y-6 bg-[#0b1520] -m-6 p-6 -mx-6 overflow-x-hidden"
             style={{ fontFamily: '"Spline Sans", "Noto Sans", sans-serif' }}
         >
             {/* Enhanced background effects */}
@@ -228,7 +230,8 @@ export default function Guides() {
                                     Manage your tour guides and performance metrics
                                 </p>
                             </div>
-                            <button className="group flex min-w-[140px] cursor-pointer items-center justify-center overflow-hidden rounded-2xl h-12 px-6 bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-500 hover:to-teal-600 text-white text-sm font-semibold leading-normal shadow-xl shadow-teal-500/25 hover:shadow-teal-500/40 transition-all duration-300 hover:scale-105">
+                            <button className="group flex min-w-[140px] cursor-pointer items-center justify-center overflow-hidden rounded-2xl h-12 px-6 bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-500 hover:to-teal-600 text-white text-sm font-semibold leading-normal shadow-xl shadow-teal-500/25 hover:shadow-teal-500/40 transition-all duration-300 hover:scale-105"
+                                    onClick={()=>navigate("/dashboard/guides/add")}>
                                 <Plus size={18} className="mr-2 group-hover:rotate-90 transition-transform duration-300" />
                                 <span className="truncate">Add Guide</span>
                             </button>

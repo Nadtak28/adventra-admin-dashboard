@@ -34,7 +34,7 @@ export default function Dashboard() {
         { name: "Isabella Reed", email: "isabella.reed@email.com", bookings: 7, status: "Regular" }
     ]
     return (
-        <div className="space-y-6 bg-[#151e1c] min-h-screen -m-6 p-6 -mx-6">
+        <div className="space-y-6 bg-[#0b1520] min-h-screen -m-6 p-6 -mx-6">
             <Header title='Dashboard' description="Welcome back! Here's what's happening with your business." />
             <StatsCards/>
             <Chart/>

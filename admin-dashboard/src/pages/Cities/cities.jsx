@@ -113,7 +113,7 @@ export default function CitiesDashboard() {
     };
 
     return (
-        <div className="relative space-y-6 bg-[#151e1c] min-h-screen -m-6 p-6">
+        <div className="relative space-y-6 bg-[#0b1520] min-h-screen -m-6 p-6">
             {/* Enhanced background effects */}
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-teal-900/30 via-slate-800/10 to-transparent"></div>
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-slate-800/40 via-transparent to-transparent"></div>
