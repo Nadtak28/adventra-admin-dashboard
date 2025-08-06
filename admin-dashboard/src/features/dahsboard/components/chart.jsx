@@ -3,18 +3,18 @@ import { TrendingUp } from "lucide-react";
 
 export default function Chart() {
     const monthsData = [
-        { month: 'Jan', value: 65000 },
-        { month: 'Feb', value: 85000 },
-        { month: 'Mar', value: 72000 },
-        { month: 'Apr', value: 21000 },
-        { month: 'May', value: 92000 },
-        { month: 'Jun', value: 58000 },
-        { month: 'Jul', value: 78000 },
-        { month: 'Aug', value: 89000 },
-        { month: 'Sep', value: 35000 },
-        { month: 'Oct', value: 25000 },
-        { month: 'Nov', value: 98000 },
-        { month: 'Dec', value: 68000 }
+        { month: '2022/Jan', value: 65000 },
+        { month: '2022/Feb', value: 85000 },
+        { month: '2022/Mar', value: 72000 },
+        { month: '2022/Apr', value: 21000 },
+        { month: '2022/May', value: 92000 },
+        { month: '2022/Jun', value: 58000 },
+        { month: '2022/Jul', value: 78000 },
+        { month: '2022/Aug', value: 89000 },
+        { month: '2022/Sep', value: 35000 },
+        { month: '2022/Oct', value: 25000 },
+        { month: '2022/Nov', value: 98000 },
+        { month: '2022/Dec', value: 68000 }
     ];
 
     const [scrollOffset, setScrollOffset] = useState(0);
@@ -58,7 +58,7 @@ export default function Chart() {
 
     const handleShiftWheel = (e) => {
         if (e.shiftKey) {
-            e.preventDefault();
+
             e.stopPropagation();
 
             if (isScrollingRef.current) return;
@@ -87,7 +87,9 @@ export default function Chart() {
     };
 
     const visibleData = getVisibleData();
-    const averageValue = '40,000';
+    const averageVisableValue = Math.round(visibleData.reduce((total, month) => total+month.value, 0)/visibleData.length/100 )*100;
+    const averageValue = Math.round(allValues.reduce((total, value) => total+value, 0))/allValues.length
+    const avgValChaPer=Math.round(((averageVisableValue - averageValue) / averageValue) * 100);
 
     const createPath = (data) => {
         if (data.length === 0) return "";
@@ -128,11 +130,18 @@ export default function Chart() {
                 <div>
                     <p className="text-white text-lg font-semibold">Net Profit Trend</p>
                     <p className="text-3xl font-bold text-white mt-2">
-                        ${averageValue.toLocaleString()}
+                        ${averageVisableValue.toLocaleString()}
                     </p>
                     <p className="text-sm text-gray-400 mt-1">
                         Average for {visibleData.length} months
+                        <span className={` text-sm font-medium px-3 py-1 ml-2 rounded-full ${
+                            avgValChaPer>=0
+                            ? 'text-teal-300 bg-teal-900/30'
+                            : 'text-rose-400 bg-rose-900/20'}`}>
+                        {avgValChaPer}%
+                        </span>
                     </p>
+
                 </div>
                 <TrendingUp size={40} className="text-teal-400"/>
             </div>
@@ -142,9 +151,7 @@ export default function Chart() {
                     <span className="text-gray-400 text-sm">
                         Showing {Math.floor(scrollOffset) + 1}-{Math.floor(scrollOffset) + visibleData.length} of {monthsData.length} months
                     </span>
-                    <span className="text-teal-300 text-sm font-medium bg-teal-900/30 px-3 py-1 rounded-full">
-                        +15%
-                    </span>
+
                 </div>
 
                 <div className="text-gray-400 text-sm">
