@@ -15,23 +15,22 @@ function App() {
      // tokenStore.clearToken()
 
   return (
-   <Routes>
-     <Route path="*" element={<Navigate to="/dashboard" replace />} />
-     <Route path="/login" element={tokenStore.getToken()?<Navigate to="/dashboard" replace />:<Login/>} />
-     <Route path="/dashboard" element={
-         <ProtectedRoute>
-             <DashboardLayout/>
-         </ProtectedRoute>}>
-       <Route index element={<Dashboard/>}/>
-       <Route path="event_grouptrip" element={<EventGroupTrip/>}/>
-       <Route path="cities" element={<Cities/>}/>
-       <Route path="guides" element={<Guides/>}/>
-       <Route path="guides/add" element={<AddGuides/>}/>
-       <Route path="cities/add" element={<AddCity />} />
-       <Route path="event_grouptrip/add_event" element={<AddEvent />} />
-       <Route path="event_grouptrip/add_group_trip" element={<AddGroupTrip />} />
-     </Route>
-   </Routes>
+
+    <Routes>
+        <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        <Route path="/login" element={tokenStore.getToken()?<Navigate to="/dashboard" replace />:<Login/>} />
+        <Route path="/dashboard" element={<ProtectedRoute><DashboardLayout/></ProtectedRoute>}>
+               <Route index element={<Dashboard/>}/>
+               <Route path="event_grouptrip" element={<EventGroupTrip/>}/>
+               <Route path="cities" element={<Cities/>}/>
+               <Route path="guides" element={<Guides/>}/>
+               <Route path="guides/add" element={<AddGuides/>}/>
+               <Route path="cities/add" element={<AddCity />} />
+               <Route path="event_grouptrip/add_event" element={<AddEvent />} />
+               <Route path="event_grouptrip/add_group_trip" element={<AddGroupTrip />} />
+        </Route>
+    </Routes>
+
   )
 }
 

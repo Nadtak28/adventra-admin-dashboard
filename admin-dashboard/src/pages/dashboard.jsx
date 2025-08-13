@@ -4,7 +4,9 @@ import Chart from "../features/dahsboard/components/chart.jsx";
 import Header from "../features/all/components/header.jsx";
 import PopularItems from "../features/dahsboard/components/popular_items.jsx";
 import FrequentBookers from "../features/dahsboard/components/frequent_bookers.jsx";
+import {useSelector} from "react-redux";
 export default function Dashboard() {
+    const {months} =useSelector(state => state.DashBoard);
     const [activeTab, setActiveTab] = useState('events');
     const items=[
         {

@@ -1,7 +1,8 @@
 import {Image, Upload, Video, X} from "lucide-react";
 import React from "react";
 import {useState} from "react";
-export default function AddMedia({formData,setFormData}){
+
+export default function AddMedia({formData,addMedia,Files,setFiles}){
     const [uploadType, setUploadType] = useState('images');
     const [dragOver, setDragOver] = useState(false);
 
@@ -14,14 +15,15 @@ export default function AddMedia({formData,setFormData}){
             type: file.type
         }));
 
-        setFormData(prev => ({
+        setFiles(prev => ({
             ...prev,
             [type]: [...prev[type], ...newFiles]
         }));
+        addMedia('add')
     };
 
     const removeFile = (fileId, type) => {
-        setFormData(prev => ({
+        setFiles(prev => ({
             ...prev,
             [type]: prev[type].filter(file => file.id !== fileId)
         }));
@@ -122,17 +124,17 @@ export default function AddMedia({formData,setFormData}){
         </div>
 
         {/* Uploaded Files Display */}
-        {(formData.images.length > 0 || formData.videos.length > 0) && (
+        {(Files.images.length > 0 || Files.videos.length > 0) && (
             <div className="mt-8 space-y-6">
                 {/* Images */}
-                {formData.images.length > 0 && (
+                {Files.images.length > 0 && (
                     <div>
                         <h3 className="text-white font-semibold text-lg mb-4 flex items-center gap-2">
                             <Image size={20} className="text-teal-400" />
-                            Photos ({formData.images.length})
+                            Photos ({Files.images.length})
                         </h3>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            {formData.images.map(image => (
+                            {Files.images.map(image => (
                                 <div key={image.id} className="relative group">
                                     <img
                                         src={image.url}
@@ -156,14 +158,14 @@ export default function AddMedia({formData,setFormData}){
                 )}
 
                 {/* Videos */}
-                {formData.videos.length > 0 && (
+                {Files.videos.length > 0 && (
                     <div>
                         <h3 className="text-white font-semibold text-lg mb-4 flex items-center gap-2">
                             <Video size={20} className="text-teal-400" />
-                            Videos ({formData.videos.length})
+                            Videos ({Files.videos.length})
                         </h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {formData.videos.map(video => (
+                            {Files.videos.map(video => (
                                 <div key={video.id} className="relative group">
                                     <video
                                         src={video.url}
@@ -187,6 +189,7 @@ export default function AddMedia({formData,setFormData}){
                 )}
             </div>
         )}
+        {formData.errors.media&& <p className="text-red-500 text-sm ml-3 ">Should add one Image at least</p>}
     </div>
     )
 }

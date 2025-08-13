@@ -277,6 +277,7 @@ export default function TourGuideForm() {
                                                     value={formData.salary}
                                                     onChange={handleInputChange}
                                                     placeholder="5000"
+                                                    min={0}
                                                     className={`w-full pl-12 pr-4 py-4 bg-slate-800/80 backdrop-blur-sm border rounded-2xl text-white focus:outline-none transition-all duration-300 ${
                                                         errors.salary
                                                             ? 'border-red-500 focus:border-red-400'

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Upload, X, Plus, Calendar, Clock, DollarSign, FileText, Image, Video, Save, Eye, Users, MapPin, Star, Check, Search, User } from 'lucide-react';
-import AddMedia from "../../features/all/components/add_media.jsx";
+import AddMedia from "../../features/all/components/Add/add_media.jsx";
 import {useNavigate} from "react-router-dom";
 
 export default function AddGroupTrip() {

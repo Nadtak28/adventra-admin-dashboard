@@ -2,8 +2,8 @@
 import React, { useState } from 'react';
 import {
     Search, ChevronDown, Plus, Calendar, DollarSign, Users, TrendingUp,
-    MapPin, Clock, Filter, Eye, Activity, MoreHorizontal, Edit3,
-    CheckCircle, XCircle, Star, BarChart3, PieChart,Tickets
+    MapPin, Clock, Eye, Activity, TicketPercent , Edit3,
+    CheckCircle, XCircle, Star, BarChart3,Award,RefreshCw
 } from 'lucide-react';
 import StateCard from "../../features/all/components/states_card.jsx";
 import Header from "../../features/all/components/header.jsx";
@@ -27,7 +27,7 @@ export default function EventGroupTrip() {
             status: "active",
             duration: "3 hours",
             guide: "ابو الفدا جونسون",
-            image: "https://lh3.googleusercontent.com/aida-public/AB6AXuC-ULsYaGHIedTV7y8ZJWGE5BmIfjesyvjShKWdL1tN-SlOPj1eCA8TfiyhdxF0qHF8gA6BeVXQZSZQOO3NXU0rlDcD8a6ZlylQPbr_S_Ipj1p52Mx0EpvebLT7b3OlD0n3OuT4BfpGCCvEmr50fbGcsO2Dc7Bz6I6hmUVJrVByXSuFisMZhGxISrBCuMwy_JNjBBU_SX3Zsl5EEA_bhZAaAJlmaPrcIOaIW-GBEtqdVXAb4_DedVu6KUJqbB7DL6WO6d1lj9jSX_4"
+            image: "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=400&h=300&fit=crop&crop=center"
         },
         {
             id: 2,
@@ -54,7 +54,8 @@ export default function EventGroupTrip() {
             endDate: "2024-07-20",
             participants: 24,
             rating: 4.8,
-            revenue: "$6,000"
+            revenue: "$6,000",
+            image: "https://images.unsplash.com/photo-1508739773434-c26b3d09e071" // صورة جبال ومغامرة
         },
         {
             id: 2,
@@ -65,7 +66,8 @@ export default function EventGroupTrip() {
             endDate: "2024-07-15",
             participants: 18,
             rating: 4.6,
-            revenue: "$3,750"
+            revenue: "$3,750",
+            image: "https://images.unsplash.com/photo-1508739773434-c26b3d09e071" // صورة دراجات على الساحل
         },
         {
             id: 3,
@@ -76,7 +78,8 @@ export default function EventGroupTrip() {
             endDate: "2024-07-10",
             participants: 16,
             rating: 4.9,
-            revenue: "$2,600"
+            revenue: "$2,600",
+            image: "https://images.unsplash.com/photo-1510626176961-4b57d4fbad03" // صورة تذوق نبيذ
         },
         {
             id: 4,
@@ -87,7 +90,8 @@ export default function EventGroupTrip() {
             endDate: "2024-07-05",
             participants: 22,
             rating: 4.7,
-            revenue: "$2,025"
+            revenue: "$2,025",
+            image: "https://images.unsplash.com/photo-1467269204594-9661b134dd2b" // صورة جولة في المدينة
         },
         {
             id: 5,
@@ -98,7 +102,8 @@ export default function EventGroupTrip() {
             endDate: "2024-07-01",
             participants: 20,
             rating: 4.5,
-            revenue: "$1,400"
+            revenue: "$1,400",
+            image: "https://images.unsplash.com/photo-1506354666786-959d6d497f1a" // صورة مواقع تاريخية
         }
     ];
 
@@ -113,7 +118,8 @@ export default function EventGroupTrip() {
             capacity: 500,
             registered: 342,
             date: "2024-08-25",
-            category: "Music"
+            category: "Music",
+            image: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=400&h=300&fit=crop&crop=center"
         },
         {
             id: 2,
@@ -125,7 +131,8 @@ export default function EventGroupTrip() {
             capacity: 300,
             registered: 156,
             date: "2024-08-30",
-            category: "Food"
+            category: "Food",
+            image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&h=300&fit=crop&crop=center"
         },
         {
             id: 3,
@@ -137,7 +144,8 @@ export default function EventGroupTrip() {
             capacity: 200,
             registered: 45,
             date: "2024-09-05",
-            category: "Culture"
+            category: "Culture",
+            image: "https://images.unsplash.com/photo-1578321272176-b7bbc0679853?w=400&h=300&fit=crop&crop=center"
         },
         {
             id: 4,
@@ -149,7 +157,8 @@ export default function EventGroupTrip() {
             capacity: 150,
             registered: 127,
             date: "2024-09-10",
-            category: "Technology"
+            category: "Technology",
+            image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&h=300&fit=crop&crop=center"
         },
         {
             id: 5,
@@ -161,10 +170,66 @@ export default function EventGroupTrip() {
             capacity: 100,
             registered: 23,
             date: "2024-09-15",
-            category: "Sports"
+            category: "Sports",
+            image: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=400&h=300&fit=crop&crop=center"
         }
     ];
 
+    // Top Rated Tours for republishing
+    const topRatedTours = [
+        {
+            id: 1,
+            name: "Desert Safari Adventure",
+            rating: 4.9,
+            totalBookings: 156,
+            revenue: "$15,600",
+            image: "https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=400&h=300&fit=crop&crop=center",
+            originalPrice: "$120",
+            category: "Adventure",
+            completedTours: 12,
+            avgGroupSize: 13,
+            lastActive: "2024-07-28"
+        },
+        {
+            id: 2,
+            name: "Cultural Heritage Walk",
+            rating: 4.8,
+            totalBookings: 142,
+            revenue: "$12,780",
+            image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop&crop=center",
+            originalPrice: "$90",
+            category: "Culture",
+            completedTours: 9,
+            avgGroupSize: 16,
+            lastActive: "2024-07-25"
+        },
+        {
+            id: 3,
+            name: "Mountain Peak Expedition",
+            rating: 4.8,
+            totalBookings: 124,
+            revenue: "$18,600",
+            image: "https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=400&h=300&fit=crop&crop=center",
+            originalPrice: "$150",
+            category: "Adventure",
+            completedTours: 8,
+            avgGroupSize: 15,
+            lastActive: "2024-07-22"
+        },
+        {
+            id: 4,
+            name: "Sunset Photography Tour",
+            rating: 4.7,
+            totalBookings: 98,
+            revenue: "$9,800",
+            image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop&crop=center",
+            originalPrice: "$100",
+            category: "Photography",
+            completedTours: 7,
+            avgGroupSize: 14,
+            lastActive: "2024-07-20"
+        }
+    ];
     // Calculate stats
     const totalTours = 43;
     const totalEvents = events.length;
@@ -198,7 +263,7 @@ export default function EventGroupTrip() {
                         </div>
 
                         {/* Enhanced Stats Cards */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8 px-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 px-4">
                             <StateCard name='Total Tours' value={totalTours}>
                                 <Calendar size={20} className="text-teal-400" />
                             </StateCard>
@@ -209,10 +274,6 @@ export default function EventGroupTrip() {
 
                             <StateCard name='Total Revenue' value={`$${totalRevenue.toLocaleString()}`}>
                                 <DollarSign size={20} className="text-teal-400" />
-                            </StateCard>
-
-                            <StateCard name='Participants' value={totalParticipants}>
-                                <Users size={20} className="text-teal-400" />
                             </StateCard>
 
                             <StateCard name='Avg Rating' value={avgRating.toFixed(1)}>
@@ -325,7 +386,101 @@ export default function EventGroupTrip() {
                             </div>
                         </div>
 
-                        {/* Enhanced Upcoming Group Tours */}
+                        {/* NEW: Top Rated Tours for Republishing - Cards Layout */}
+                        <div className="mb-8">
+                            <div className="flex items-center justify-between mb-6 px-4">
+                                <div className="flex items-center gap-3">
+                                    <div className="p-3 rounded-xl bg-gradient-to-r from-amber-500/20 to-orange-600/20">
+                                        <Award size={20} className="text-amber-400" />
+                                    </div>
+                                    <h2 className="text-white text-2xl font-bold leading-tight">
+                                        Top Rated Tours - Ready for Republishing
+                                    </h2>
+                                </div>
+                                <button className="text-teal-400 hover:text-teal-300 transition-colors text-sm font-semibold flex items-center gap-2 px-4 py-2 bg-slate-800/60 rounded-xl hover:bg-slate-700/60">
+                                    View All
+                                    <ChevronDown size={16} className="rotate-[-90deg]" />
+                                </button>
+                            </div>
+
+                            <div className="px-4">
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                                    {topRatedTours.map((tour) => (
+                                        <div key={tour.id} className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-800/60 to-slate-900/80 backdrop-blur-sm border border-slate-700/50 shadow-2xl transition-all duration-300 hover:shadow-amber-500/20 hover:scale-105">
+                                            {/* Card Image */}
+                                            <div className="relative h-48 overflow-hidden">
+                                                <img
+                                                    src={tour.image}
+                                                    alt={tour.name}
+                                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                                />
+                                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+
+                                                {/* Rating Badge */}
+                                                <div className="absolute top-4 left-4 flex items-center gap-1 bg-black/50 backdrop-blur-sm px-3 py-1 rounded-full">
+                                                    <Star size={14} className="text-amber-400 fill-current" />
+                                                    <span className="text-white text-sm font-semibold">{tour.rating}</span>
+                                                </div>
+
+                                                {/* Category Badge */}
+                                                <div className="absolute top-4 right-4 bg-teal-600/80 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-semibold">
+                                                    {tour.category}
+                                                </div>
+                                            </div>
+
+                                            {/* Card Content */}
+                                            <div className="p-6 space-y-4">
+                                                <div>
+                                                    <h3 className="text-white text-lg font-bold mb-2 group-hover:text-teal-300 transition-colors duration-300">
+                                                        {tour.name}
+                                                    </h3>
+                                                    <div className="flex items-center justify-between text-sm text-slate-400">
+                                                        <span>Last Active: {tour.lastActive}</span>
+                                                        <span>{tour.completedTours} Tours</span>
+                                                    </div>
+                                                </div>
+
+                                                {/* Stats */}
+                                                <div className="grid grid-cols-2 gap-4">
+                                                    <div className="text-center">
+                                                        <div className="text-white text-xl font-bold">{tour.totalBookings}</div>
+                                                        <div className="text-slate-400 text-xs">Total Bookings</div>
+                                                    </div>
+                                                    <div className="text-center">
+                                                        <div className="text-green-400 text-xl font-bold">{tour.revenue}</div>
+                                                        <div className="text-slate-400 text-xs">Total Revenue</div>
+                                                    </div>
+                                                </div>
+
+                                                {/* Price and Group Size */}
+                                                <div className="flex items-center justify-between py-2 border-t border-slate-700/50">
+                                                    <div className="text-center">
+                                                        <div className="text-white text-lg font-semibold">{tour.originalPrice}</div>
+                                                        <div className="text-slate-400 text-xs">Price per Person</div>
+                                                    </div>
+                                                    <div className="text-center">
+                                                        <div className="text-teal-400 text-lg font-semibold">{tour.avgGroupSize}</div>
+                                                        <div className="text-slate-400 text-xs">Avg Group Size</div>
+                                                    </div>
+                                                </div>
+
+                                                {/* Action Button */}
+                                                <button className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-amber-600 to-orange-700 hover:from-amber-500 hover:to-orange-600 text-white py-3 px-4 rounded-xl font-semibold transition-all duration-300 hover:scale-125 shadow-lg hover:shadow-amber-500/25">
+                                                    <RefreshCw size={16} className="group-hover:rotate-180 transition-transform duration-500" />
+                                                    Republish Tour
+                                                </button>
+                                            </div>
+
+                                            {/* Hover Glow Effect */}
+                                            <div className="absolute -inset-1 bg-gradient-to-r from-amber-400/20 to-orange-600/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-50 transition-opacity duration-500"></div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+
+
+                        {/* Enhanced Upcoming Group Tours - WITH IMAGES */}
                         <div className="mb-8">
                             <div className="flex items-center justify-between mb-6 px-4">
                                 <div className="flex items-center gap-3">
@@ -371,7 +526,7 @@ export default function EventGroupTrip() {
                                                             </div>
                                                             <div>
                                                                 <p className="text-white font-semibold text-lg group-hover:text-teal-300 transition-colors duration-300">{tour.name}</p>
-                                                                <p className="text-teal-400 text-sm font-medium">{tour.discount}</p>
+                                                                {tour.discount && <p className="text-teal-400 text-sm font-medium">{tour.discount}</p>}
                                                             </div>
                                                         </div>
                                                     </td>
@@ -421,7 +576,7 @@ export default function EventGroupTrip() {
                                                                 <Edit3 size={16} className="group-hover/btn:rotate-12 transition-transform duration-300" />
                                                             </button>
                                                             <button className="group/btn p-3 bg-slate-800/60 backdrop-blur-sm border border-slate-700/50 hover:border-teal-500/50 text-slate-400 hover:text-teal-300 rounded-xl hover:bg-slate-700/60 transition-all duration-300 hover:scale-110">
-                                                                <MoreHorizontal size={16} />
+                                                                <TicketPercent  size={16} />
                                                             </button>
                                                         </div>
                                                     </td>
@@ -469,7 +624,21 @@ export default function EventGroupTrip() {
                                             <tbody>
                                             {recentTours.map((tour, index) => (
                                                 <tr key={tour.id} className="group border-t border-t-slate-700/30 hover:bg-gradient-to-r hover:from-slate-800/60 hover:to-slate-700/40 transition-all duration-300">
-                                                    <td className="px-6 py-5 text-white font-semibold text-lg group-hover:text-teal-300 transition-colors duration-300">{tour.name}</td>
+                                                    <td className="px-6 py-5">
+                                                        <div className="flex items-center gap-4">
+                                                            <div className="relative">
+                                                                <img
+                                                                    src={tour.image}
+                                                                    alt={tour.name}
+                                                                    className="w-14 h-14 rounded-2xl object-cover border-2 border-green-500/10 group-hover:border-green-400/20 transition-all duration-300 group-hover:scale-110"
+                                                                />
+                                                                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                                            </div>
+                                                            <div>
+                                                                <p className="text-white font-semibold text-lg group-hover:text-teal-300 transition-colors duration-300">{tour.name}</p>
+                                                            </div>
+                                                        </div>
+                                                    </td>
                                                     <td className="px-6 py-5">
                                                         <div className="flex items-center gap-3">
                                                             <div className="p-2 bg-slate-700/50 rounded-lg">
@@ -502,7 +671,8 @@ export default function EventGroupTrip() {
                             </div>
                         </div>
 
-                        {/* Enhanced Events */}
+
+                        {/* Enhanced Events - WITH IMAGES */}
                         <div className="mb-8">
                             <div className="flex items-center justify-between mb-6 px-4">
                                 <div className="flex items-center gap-3">
@@ -537,11 +707,21 @@ export default function EventGroupTrip() {
                                             {events.map((event) => (
                                                 <tr key={event.id} className="group border-t border-t-slate-700/30 hover:bg-gradient-to-r hover:from-slate-800/60 hover:to-slate-700/40 transition-all duration-300">
                                                     <td className="px-6 py-5">
-                                                        <div>
-                                                            <p className="text-white font-semibold text-lg group-hover:text-teal-300 transition-colors duration-300">{event.name}</p>
-                                                            <span className="inline-block px-3 py-1 bg-gradient-to-r from-teal-600/20 to-teal-700/20 text-teal-300 text-xs rounded-full mt-2 border border-teal-500/20">
-                                                                {event.category}
-                                                            </span>
+                                                        <div className="flex items-center gap-4">
+                                                            <div className="relative">
+                                                                <img
+                                                                    src={event.image}
+                                                                    alt={event.name}
+                                                                    className="w-14 h-14 rounded-2xl object-cover border-2 border-purple-500/30 group-hover:border-purple-400/50 transition-all duration-300 group-hover:scale-110"
+                                                                />
+                                                                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                                            </div>
+                                                            <div>
+                                                                <p className="text-white font-semibold text-lg group-hover:text-teal-300 transition-colors duration-300">{event.name}</p>
+                                                                <span className="inline-block px-3 py-1 bg-gradient-to-r from-teal-600/20 to-teal-700/20 text-teal-300 text-xs rounded-full mt-2 border border-teal-500/20">
+                                                                    {event.category}
+                                                                </span>
+                                                            </div>
                                                         </div>
                                                     </td>
                                                     <td className="px-6 py-5">

@@ -48,33 +48,6 @@ export default function Guides() {
         }
     ];
 
-    const mostBookedGuides = [
-        {
-            name: 'Lucas Hayes',
-            image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face',
-            salary: '$4,800',
-            nextBooking: 'July 10, 2024',
-            rating: 4.6,
-            tours: 67
-        },
-        {
-            name: 'Grace Turner',
-            image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&h=400&fit=crop&crop=face',
-            salary: '$4,600',
-            nextBooking: 'July 12, 2024',
-            rating: 4.5,
-            tours: 58
-        },
-        {
-            name: 'Henry Reed',
-            image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=400&fit=crop&crop=face',
-            salary: '$4,400',
-            nextBooking: 'July 18, 2024',
-            rating: 4.4,
-            tours: 52
-        }
-    ];
-
     const lowestRatedGuides = [
         {
             name: 'Caleb Scott',
@@ -378,20 +351,7 @@ export default function Guides() {
                             </div>
                         </div>
 
-                        {/* Most Booked Guides */}
-                        <SectionHeader
-                            title="Most Booked Guides This Month"
-                            icon={TrendingUp}
-                            gradient="from-green-500 to-emerald-500"
-                        />
-                        <div className="flex overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-                            <div className="flex items-stretch p-8 gap-6 min-w-max">
-                                {mostBookedGuides.map((guide, index) => (
-                                    <GuideCard key={index} guide={guide} type="booked" />
-                                ))}
-                            </div>
-                        </div>
-
+                        
                         {/* Lowest Rated Guides */}
                         <SectionHeader
                             title="Guides Needing Support"
