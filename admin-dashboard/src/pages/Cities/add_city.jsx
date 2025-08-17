@@ -14,17 +14,22 @@ export default function AddCity() {
     const formData=useSelector(state=>state.AddCity);
     const [Files,setFiles] = useState({images:[],videos:[]});
     const dispatch=useDispatch();
-    const countries = [
-        'Saudi Arabia', 'United Arab Emirates', 'Egypt', 'Jordan', 'Lebanon',
-        'Syria', 'Iraq', 'Kuwait', 'Qatar', 'Bahrain', 'Oman', 'Yemen', 'Morocco',
-        'Algeria', 'Tunisia', 'Libya', 'Sudan', 'Palestine', 'France', 'Italy',
-        'Spain', 'Germany', 'United Kingdom', 'United States', 'Japan'
-    ];
+    const countries = {
+        'tuvalu': 1,
+        'uruguay': 2,
+        'qatar': 3,
+        'serbia': 4,
+        'albania': 5
+    };
 
-    const availableLanguages = [
-        'Arabic', 'English', 'French', 'German', 'Spanish', 'Italian',
-        'Russian', 'Chinese', 'Japanese', 'Korean', 'Turkish', 'Persian'
-    ];
+    const availableLanguages = {
+        'Bengali':1,
+        'Luxembourgish':2,
+        'French':3,
+        'Nigerian Pidgin':4,
+        'Algerian Arabic':5
+
+    }
 
 
     const handleInputChange = (field, value) => {
@@ -38,12 +43,15 @@ export default function AddCity() {
           dispatch(add_emptyMedia({type:'add'}))
         }
     }
-    const handleSubmit = async (e) => {
+    const handleSubmit = async () => {
         handleFilesChange('check')
-        e.preventDefault();
         dispatch(Submit())
-        dispatch(AddCityService(Files))
-        // هنا يمكنك إضافة منطق إرسال البيانات
+        const result=await dispatch(AddCityService(Files))
+        if(result.type==='AddCityService/fulfilled')
+        {
+            setFiles({images:[],videos:[]})
+            //هون بضيف الnavigate فيما بعد
+        }
     };
     return (
         <div className="relative min-h-screen bg-[#0b1520] -m-6 p-6">

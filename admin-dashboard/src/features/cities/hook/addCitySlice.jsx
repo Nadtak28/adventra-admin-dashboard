@@ -1,5 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {AddCityService} from "../api/addCityService.jsx"
+import {tokenStore} from "../../../utils/dataStore.js";
 const initialState = {
     form:{
     nameAr: '',
@@ -38,23 +39,63 @@ const AddCitySlice =createSlice({
             }
         },
         Submit(state) {
-            console.log(state);
-            for (const field in state) {
+            for (const field in state.form) {
+                if(field==='language'||field==="country"){
+                    if(!state.form[field])
+                    state.errors[field]=true
+                    continue
+                }
                 state.errors[field]=!state.form[field].trim()
+            }
+        },
+        reset(state) {
+            state.form={
+                nameAr: '',
+                nameEn: '',
+                country: '',
+                descriptionAr: '',
+                descriptionEn: '',
+                language:'',
+            }
+            state.isLoading = false;
+            state.errors={
+                nameAr: false,
+                nameEn: false,
+                country: false,
+                descriptionAr: false,
+                descriptionEn: false,
+                language:false,
+                media:false
             }
         }
     },
     extraReducers:(builder) => {
         builder.addCase(AddCityService.pending, (state) => {
             state.isLoading = true;
+            state.validData=false;
+
         })
             .addCase(AddCityService.fulfilled, (state, action) => {
                 console.log("AddCityService.fulfilled", action.payload)
+                state.form={
+                        nameAr: '',
+                        nameEn: '',
+                        country: '',
+                        descriptionAr: '',
+                        descriptionEn: '',
+                        language:'',
+                    }
                 state.isLoading = false;
-
+                Object.keys(state.errors).forEach(key => {
+                    state.errors[key] = false;
+                });
             })
             .addCase(AddCityService.rejected, (state, action) => {
                console.log("AddCityService.rejected", action.payload)
+                if((!!action.payload?.unauthorized)){
+                     tokenStore.clearToken()
+                     window.location.href = '/login'
+                }
                 state.isLoading = false;
             })
 

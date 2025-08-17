@@ -12,7 +12,6 @@ const LoginSlice =createSlice({
     reducers: {
     updateFields(state, action) {
         state[action.payload.field] = action.payload.value;
-        console.log(action.payload);
     }
     },
     extraReducers:(builder) => {

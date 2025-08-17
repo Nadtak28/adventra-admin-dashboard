@@ -25,8 +25,10 @@ export default function Info({handleInputChange,countries,formData}) {
                         required
                     >
                         <option value="">Select the county</option>
-                        {countries.map(country => (
-                            <option key={country} value={country}>{country}</option>
+                        {Object.entries(countries).map(([country, id]) => (
+                            <option key={id} value={id}>
+                                {country}
+                            </option>
                         ))}
                     </select>
                     {formData.errors.country&& <p className="text-red-500 text-sm ml-3 ">Field is required</p>}

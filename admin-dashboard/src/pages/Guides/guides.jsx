@@ -316,7 +316,7 @@ export default function Guides() {
                                     flex gap-2 transition-all duration-500 transform
                                     ${isSearchFocused ? 'opacity-100 translate-y-0' : 'opacity-70 translate-y-1'}
                                 `}>
-                                    {['Top Rated', 'Available', 'Busy'].map((filter, index) => (
+                                    {['Top Rated', 'Available', 'Out of order'].map((filter, index) => (
                                         <button
                                             key={filter}
                                             className={`

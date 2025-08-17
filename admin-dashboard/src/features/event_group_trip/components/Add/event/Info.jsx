@@ -17,27 +17,31 @@ export default function Info({formData,handleInputChange,eventTypes,cities}){
                     <label className="text-white font-semibold">اسم الفعالية</label>
                     <input
                         type="text"
-                        value={formData.nameAr}
+                        value={formData.form.nameAr}
                         onChange={(e) => handleInputChange('nameAr', e.target.value)}
                         placeholder="مثال: مهرجان الرياض للطعام"
                         className="w-full p-4 bg-slate-800/80 backdrop-blur-sm border border-slate-600/50 hover:border-slate-500/70 rounded-2xl text-white placeholder-slate-400/70 focus:outline-none focus:border-teal-500 shadow-lg transition-all duration-300"
                         required
                         dir="rtl"
                     />
+                {formData.errors.nameAr&& <p className="text-red-500 text-sm ml-3 ">Field is required</p>}
                 </div>
+
 
                 {/* English Name */}
                 <div className="space-y-3">
                     <label className="text-white font-semibold">Event name</label>
                     <input
                         type="text"
-                        value={formData.nameEn}
+                        value={formData.form.nameEn}
                         onChange={(e) => handleInputChange('nameEn', e.target.value)}
                         placeholder="Example: Riyadh Food Festival"
                         className="w-full p-4 bg-slate-800/80 backdrop-blur-sm border border-slate-600/50 hover:border-slate-500/70 rounded-2xl text-white placeholder-slate-400/70 focus:outline-none focus:border-teal-500 shadow-lg transition-all duration-300"
                         required
                     />
+                {formData.errors.nameEn&& <p className="text-red-500 text-sm ml-3 ">Field is required</p>}
                 </div>
+
 
                 {/* Event Type */}
                 <div className="space-y-3">
@@ -46,16 +50,20 @@ export default function Info({formData,handleInputChange,eventTypes,cities}){
                         Category
                     </label>
                     <select
-                        value={formData.eventType}
+                        value={formData.form.eventType}
                         onChange={(e) => handleInputChange('eventType', e.target.value)}
                         className="w-full p-4 bg-slate-800/80 backdrop-blur-sm border border-slate-600/50 hover:border-slate-500/70 rounded-2xl text-white focus:outline-none focus:border-teal-500 shadow-lg transition-all duration-300"
                         required
                     >
                         <option value="">Select Event category</option>
-                        {eventTypes.map(type => (
-                            <option key={type} value={type}>{type}</option>
+                        {Object.entries(eventTypes).map(([event, id]) => (
+                            <option key={id} value={id}>
+                                {event}
+                            </option>
                         ))}
                     </select>
+                    {formData.errors.eventType&& <p className="text-red-500 text-sm ml-3 ">Field is required</p>}
+
                 </div>
 
                 {/* City Selection */}
@@ -65,16 +73,20 @@ export default function Info({formData,handleInputChange,eventTypes,cities}){
                         City
                     </label>
                     <select
-                        value={formData.city}
+                        value={formData.form.city}
                         onChange={(e) => handleInputChange('city', e.target.value)}
                         className="w-full p-4 bg-slate-800/80 backdrop-blur-sm border border-slate-600/50 hover:border-slate-500/70 rounded-2xl text-white focus:outline-none focus:border-teal-500 shadow-lg transition-all duration-300"
                         required
                     >
                         <option value="">Select city</option>
-                        {cities.map(city => (
-                            <option key={city} value={city}>{city}</option>
+                        {Object.entries(cities).map(([city, id]) => (
+                            <option key={id} value={id}>
+                                {city}
+                            </option>
                         ))}
                     </select>
+                    {formData.errors.city&& <p className="text-red-500 text-sm ml-3 ">Field is required</p>}
+
                 </div>
             </div>
         </div>

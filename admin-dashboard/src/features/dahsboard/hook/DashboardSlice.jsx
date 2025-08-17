@@ -1,7 +1,7 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {DashboardService} from "../api/DashboardService.jsx";
 import {tokenStore} from "../../../utils/dataStore.js"
-
+import {useNavigate} from "react-router-dom";
 const initialState = {
     months:[],
     topEvents:[],
@@ -31,7 +31,10 @@ const DashBoardSlice =createSlice({
 
             })
             .addCase(DashboardService.rejected, (state, action) => {
-                state.status='Rejected'
+                if(action.payload.unauthorized){
+                    tokenStore.clearToken()
+                    window.location.href = '/login'
+                }
 
             })
 

@@ -9,7 +9,7 @@ export default function AddMedia({formData,addMedia,Files,setFiles}){
     const handleFileUpload = (files, type) => {
         const newFiles = Array.from(files).map(file => ({
             id: Date.now() + Math.random(),
-            file,
+            File:file,
             name: file.name,
             url: URL.createObjectURL(file),
             type: file.type

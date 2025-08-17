@@ -12,18 +12,18 @@ export default function Language({availableLanguages,handleInputChange,formData}
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {availableLanguages.map(language => (
+                {Object.entries(availableLanguages).map(([language, id]) => (
                     <button
-                        key={language}
+                        key={id}
                         type="button"
-                        onClick={() => handleInputChange('language',language)}
+                        onClick={() => handleInputChange('language', id)}
                         className={`
-                                        p-4 rounded-2xl border-2 transition-all duration-300 font-semibold text-sm
-                                        ${language===formData.form.language
+                        p-4 rounded-2xl border-2 transition-all duration-300 font-semibold text-sm
+                        ${id === formData.form.language
                             ? 'bg-gradient-to-r from-teal-600/80 to-teal-700/80 border-teal-500 text-white shadow-lg shadow-teal-500/20 scale-105'
                             : 'bg-slate-800/60 border-slate-600/50 text-slate-300 hover:border-teal-500/50 hover:text-white hover:scale-105'
                         }
-                                    `}
+                    `}
                     >
                         {language}
                     </button>
@@ -33,7 +33,7 @@ export default function Language({availableLanguages,handleInputChange,formData}
             {formData.form.language && (
                 <div className="mt-4 p-4 bg-teal-900/20 border border-teal-500/30 rounded-xl">
                     <p className="text-teal-300 text-sm">
-                        Language: {formData.form.language}
+                        Language: {Object.keys(availableLanguages)[formData.form.language-1]}
                     </p>
                 </div>
             )}

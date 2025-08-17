@@ -13,7 +13,6 @@ export const LoginService=createAsyncThunk(
         catch (error) {
             const response = error.response;
             if (response?.status === 422) {
-
                 return thunkAPI.rejectWithValue(response.data.errors);
             }
             return thunkAPI.rejectWithValue(

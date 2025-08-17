@@ -19,7 +19,7 @@ const Sidebar = ({ isCollapsed, toggleSidebar }) => {
                 active: item.path === currentLocation
             }));
         setItems(updatedItems);
-    }, []);
+    }, [location]);
 
     const [showLabel, setShowLabel] = useState(false);
     const [isHovered, setIsHovered] = useState(false);

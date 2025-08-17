@@ -1,52 +1,62 @@
 import React, { useState } from 'react';
 import AddMedia from '../../features/all/components/Add/add_media.jsx';
 import AddHeader from "../../features/all/components/Add/add_header.jsx";
-import Info from "../../features/event_group_trip/components/Add/Info.jsx"
-import Description from "../../features/event_group_trip/components/Add/description.jsx"
-import Prices from "../../features/event_group_trip/components/Add/prices.jsx";
+import Info from "../../features/event_group_trip/components/Add/event/Info.jsx"
+import Description from "../../features/event_group_trip/components/Add/event/description.jsx"
+import Prices from "../../features/event_group_trip/components/Add/event/prices.jsx";
 import {useNavigate} from "react-router-dom";
 import SubmitButton from "../../features/all/components/Add/submit_button.jsx";
+import {useDispatch, useSelector} from "react-redux";
+import {add_emptyMedia, updateFields,Submit} from "../../features/event_group_trip/hook/addEventSlice.jsx";
+import {AddEventService} from "../../features/event_group_trip/api/addEventService.jsx";
 export default function AddEvent() {
     const navigate = useNavigate();
-    const [formData, setFormData] = useState({
-        nameEn: '',
-        nameAr: '',
-        descriptionEn: '',
-        descriptionAr: '',
-        ticketPrice: '',
-        userPrice: '',
-        eventType: '',
-        city: '',
-        maxTickets: '',
-        images: [],
-        videos: []
-    });
+    const formData=useSelector(state=>state.AddEvent);
+    const [Files,setFiles] = useState({images:[],videos:[]});
+    const dispatch=useDispatch();
 
-    const eventTypes = [
-        'Cultural', 'Sports', 'Entertainment', 'Educational', 'Artistic', 'Musical',
-        'Theatrical', 'Commercial', 'Technological', 'Food & Drink', 'Health & Fitness',
-        'Kids & Family', 'Business & Careers', 'Touristic', 'Religious', 'Charitable'
-    ];
-
-
-    const cities = [
-        'Riyadh', 'Jeddah', 'Makkah', 'Madinah', 'Dammam',
-        'Khobar', 'Tabuk', 'Buraidah', 'Khamis Mushait', 'Hail', 'Majmaah',
-        'Taif', 'Jubail', 'Najran', 'Al Baha', 'Yanbu', 'Qatif',
-        'Al Ahsa', 'Arar', 'Sakaka', 'Abha', 'Jazan'
-    ];
-
-
-    const handleInputChange = (field, value) => {
-        setFormData(prev => ({
-            ...prev,
-            [field]: value
-        }));
+    const eventTypes = {
+        'Eco-tourism': 1,
+        'Cultural': 2,
+        'Adventure': 3,
+        'Nature': 4,
+        'Food': 5
+    }
+    const cities = {
+        'Port Llewellyn': 1,
+        'Ryleeport': 2,
+        'Port Eastontown': 3,
+        'New Ethyl': 4,
+        'New Sadie': 5,
+        'Port Nelsfurt': 6,
+        'Adriannafurt': 7,
+        'Yundtport': 8,
+        'Franeckimouth': 9,
+        'Beckerberg': 10
     };
 
-    const handleSubmit = () => {
-        console.log('Event submitted:', formData);
-        // هنا يمكنك إضافة منطق إرسال البيانات
+    const handleInputChange = (field, value) => {
+        dispatch(updateFields({field,value}));
+    };
+    const handleFilesChange=(type) => {
+        if(Files.images.length===0&&type!=='add') {
+            dispatch(add_emptyMedia({type:'empty'}))
+        }
+        else{
+            dispatch(add_emptyMedia({type:'add'}))
+        }
+    }
+
+    const handleSubmit = async () => {
+        handleFilesChange('check')
+        dispatch(Submit())
+        const result=await dispatch(AddEventService(Files))
+        if(result.type==='AddEventService/fulfilled')
+        {
+            setFiles({images:[],videos:[]})
+            //هون بضيف الnavigate فيما بعد
+        }
+
     };
 
     return (
@@ -67,10 +77,10 @@ export default function AddEvent() {
 
                     <Prices formData={formData} handleInputChange={handleInputChange}/>
 
-                    <AddMedia formData={formData} setFormData={setFormData} />
+                    <AddMedia formData={formData} addMedia={handleFilesChange} Files={Files} setFiles={setFiles} />
                     {/* Submit Button */}
                     <div className="flex justify-center">
-                        <SubmitButton handleSubmit={handleSubmit} text={'Add the event'} big={true}/>
+                        <SubmitButton formData={formData} handleSubmit={handleSubmit} text={'Add the event'} big={true}/>
                     </div>
                 </div>
             </div>
