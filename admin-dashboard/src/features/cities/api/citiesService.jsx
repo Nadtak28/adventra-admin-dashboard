@@ -1,14 +1,18 @@
 import API from "../../../api/apiRoutes.jsx"
 import albolbol from "../../../api/albolbol.jsx"
 import {createAsyncThunk} from '@reduxjs/toolkit';
-import {tokenStore} from "../../../utils/dataStore.js";
 
-export const DashBoardService=createAsyncThunk(
+export const CitiesService=createAsyncThunk(
     "Dashboard",
-    async (_, {rejectWithValue}) => {
+    async (_, {rejectWithValue,getState}) => {
         try{
-            albolbol.defaults.headers['Authorization'] = `Bearer ${tokenStore.getToken()}`;
-            const response=await albolbol.get(API.DashBoard)
+            const state=getState().Cities;
+            const form={
+                q:state.search,
+                orderBy:state.sortBy,
+                page:state.currentPage,
+            }
+            const response=await albolbol.post(API.cities,form)
             return response.data;
         }
         catch (error) {

@@ -4,12 +4,16 @@ import DashBoardSlice from "../features/dahsboard/hook/DashboardSlice.jsx";
 import AddCitySlice from "../features/cities/hook/addCitySlice.jsx";
 import AddEventSlice from "../features/event_group_trip/hook/addEventSlice.jsx";
 import AddGTSlice from "../features/event_group_trip/hook/addGTSlice.jsx";
+import addGuideSlice from "../features/guide/hook/addGuideSlice.jsx";
+import CitiesSlice from "../features/cities/hook/citiesSlice.jsx";
 export const store = configureStore({
   reducer: {
     login: loginSlice,
     DashBoard:DashBoardSlice,
     AddCity: AddCitySlice,
     AddEvent: AddEventSlice,
-    AddGT:AddGTSlice
+    AddGT:AddGTSlice,
+    addGuide: addGuideSlice,
+    Cities:CitiesSlice
   },
 });

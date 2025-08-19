@@ -12,11 +12,11 @@ export default function StateCard({title,children,value,trend}) {
         <div className="flex items-end justify-between">
             <p className="text-white text-3xl font-bold">{value}</p>
             <span className={`text-sm font-medium px-2 py-1 rounded-lg ${
-                trend.startsWith('+')
+                trend>=0
                     ? 'text-teal-300 bg-teal-900/30'
                     : 'text-rose-400 bg-rose-900/20'
             }`}>
-                {trend}
+                {trend}%
             </span>
         </div>
     </div>

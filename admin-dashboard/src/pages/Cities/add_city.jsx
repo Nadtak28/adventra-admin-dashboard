@@ -15,12 +15,33 @@ export default function AddCity() {
     const [Files,setFiles] = useState({images:[],videos:[]});
     const dispatch=useDispatch();
     const countries = {
-        'tuvalu': 1,
-        'uruguay': 2,
-        'qatar': 3,
-        'serbia': 4,
-        'albania': 5
+        'afghanistan': 1,
+        'albania': 2,
+        'algeria': 3,
+        'america-samoa': 4,
+        'andorra': 5,
+        'angola': 6,
+        'anguilla': 7,
+        'antarctica': 8,
+        'antigua-and-barbuda': 9,
+        'argentina': 10,
+        'armenia': 11,
+        'aruba': 12,
+        'australia': 13,
+        'austria': 14,
+        'azerbaijan': 15,
+        'bahamas': 16,
+        'bahrain': 17,
+        'bangladesh': 18,
+        'barbados': 19,
+        'belarus': 20,
+        'belgium': 21,
+        'belize': 22,
+        'benin': 23,
+        'bermuda': 24,
+        'bhutan': 25
     };
+
 
     const availableLanguages = {
         'Bengali':1,

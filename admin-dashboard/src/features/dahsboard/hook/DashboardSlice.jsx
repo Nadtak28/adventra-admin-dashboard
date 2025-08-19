@@ -1,41 +1,54 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {DashboardService} from "../api/DashboardService.jsx";
+import {DashBoardService} from "../api/DashboardService.jsx";
 import {tokenStore} from "../../../utils/dataStore.js"
-import {useNavigate} from "react-router-dom";
 const initialState = {
-    months:[],
-    topEvents:[],
-    topGroupTrip:[]
+    businessInfo:[],
+    topRatedEvents:[],
+    topRatedGroupTrips:[],
+    mostEventsBooker:[],
+    mostGroupTripsBooker:[],
+    month:{},
+    isLoading:false,
 }
 const DashBoardSlice =createSlice({
     name: "DashBoardSlice",
     initialState,
     reducers: {
-        updateFields(state, action) {
-            state[action.payload.field] = action.payload.value;
+        changeMonth(state, action) {
+
         }
     },
     extraReducers:(builder) => {
-        builder.addCase(DashboardService.pending, (state, action) => {
-            state.status='Loading'
-
+        builder.addCase(DashBoardService.pending, (state, action) => {
+            state.isLoading=true
         })
-            .addCase(DashboardService.fulfilled, (state, action) => {
-                state.status='Fulfilled'
-                if(action.payload.unauthorized){
-                    tokenStore.clearToken()
-                }
-                else{
-                    state=action.payload;
-                }
+            .addCase(DashBoardService.fulfilled, (state, action) => {
+            state.businessInfo=action.payload.businessInfo;
+            state.topRatedEvents=action.payload.topRatedEvents;
+            state.topRatedGroupTrips=action.payload.topRatedGroupTrips;
+            state.mostEventsBooker=action.payload.mostEventsBooker;
+            state.mostGroupTripsBooker=action.payload.mostGroupTripsBooker;
 
+            const date=new Date();
+            const month=date.toLocaleString('default', { month: 'short' })
+            const year=date.getFullYear();
+            date.setMonth(0-1)
+            const prevMonth = date.toLocaleString('default', { month: 'short' });
+            const months=action.payload.businessInfo
+            if(prevMonth==='Dec'){
+                state.month= {...months[`${year}/${month}`],prev:months[`${year}/${prevMonth}`]}
+            }
+            date.setFullYear(date.getFullYear()-1)
+            const pervYear=date.getFullYear()
+            state.isLoading=false
             })
-            .addCase(DashboardService.rejected, (state, action) => {
-                if(action.payload.unauthorized){
-                    tokenStore.clearToken()
-                    window.location.href = '/login'
+            .addCase(DashBoardService.rejected, (state, action) => {
+                console.log("addGuideService.rejected", action.payload)
+                if((!!action.payload?.unauthorized)){
+                     tokenStore.clearToken()
+                     window.location.href = '/login'
                 }
-
+                state.isLoading=false
             })
 
     }
