@@ -8,7 +8,7 @@ const initialState = {
     country: '',
     descriptionAr: '',
     descriptionEn: '',
-    language:'',
+    language:{},
     },
     isLoading:false,
     errors:{
@@ -40,8 +40,12 @@ const AddCitySlice =createSlice({
         },
         Submit(state) {
             for (const field in state.form) {
-                if(field==='language'||field==="country"){
+                if(field==="country"){
                     if(!state.form[field])
+                    state.errors[field]=true
+                    continue
+                }else if(field==='language'){
+                    if(!state.form[field].id)
                     state.errors[field]=true
                     continue
                 }

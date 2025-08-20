@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {updateFields,Submit} from "../../features/guide/hook/addGuideSlice.jsx";
@@ -9,40 +9,16 @@ import Languages from "../../features/guide/components/add/language.jsx";
 import Categories from "../../features/guide/components/add/categories.jsx";
 import SubmitButton from "../../features/all/components/Add/submit_button.jsx";
 import {addGuideService} from "../../features/guide/api/addGuideService.jsx";
+import {getIdsService} from "../../features/all/api/getIdsService.jsx";
 
 export default function TourGuideForm() {
     const navigate = useNavigate();
     const formData=useSelector(state=>state.addGuide);
     const dispatch=useDispatch();
-
-    const availableLanguages = {
-        'Bengali':1,
-        'Luxembourgish':2,
-        'French':3,
-        'Nigerian Pidgin':4,
-        'Algerian Arabic':5
-
-    }
-
-    const tourismCategories = {
-        'Eco-tourism': 1,
-        'Cultural': 2,
-        'Adventure': 3,
-        'Nature': 4,
-        'Food': 5
-    }
-    const cities = {
-        'Port Llewellyn': 1,
-        'Ryleeport': 2,
-        'Port Eastontown': 3,
-        'New Ethyl': 4,
-        'New Sadie': 5,
-        'Port Nelsfurt': 6,
-        'Adriannafurt': 7,
-        'Yundtport': 8,
-        'Franeckimouth': 9,
-        'Beckerberg': 10
-    };
+    const {cities,categories,languages}=useSelector(state=>state.getIds)
+    useEffect(() => {
+        dispatch(getIdsService())
+    }, []);
 
 
     const handleInputChange = (field,value) => {
@@ -76,9 +52,9 @@ export default function TourGuideForm() {
 
                                 <City formData={formData} handleInputChange={handleInputChange} cities={cities} />
 
-                                <Languages formData={formData} handleInputChange={handleInputChange} Languages={availableLanguages} />
+                                <Languages formData={formData} handleInputChange={handleInputChange} languages={languages} />
 
-                                <Categories formData={formData} handleInputChange={handleInputChange} Categories={tourismCategories} />
+                                <Categories formData={formData} handleInputChange={handleInputChange} Categories={categories} />
 
                                 <div className="flex justify-center">
                                     <SubmitButton formData={formData} handleSubmit={handleSubmit} text={'Add the guide'} big={true}/>

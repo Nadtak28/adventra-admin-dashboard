@@ -1,30 +1,42 @@
 import React, { useState, useRef, useEffect } from "react";
-import { TrendingUp } from "lucide-react";
+import { TrendingUp, ChevronLeft, ChevronRight } from "lucide-react";
 
-export default function Chart() {
+export default function Chart({dashBoard,updateFields}) {
     const monthsData = [
-        { month: '2022/Jan', value: 65000 },
-        { month: '2022/Feb', value: 85000 },
-        { month: '2022/Mar', value: 72000 },
-        { month: '2022/Apr', value: 21000 },
-        { month: '2022/May', value: 92000 },
-        { month: '2022/Jun', value: 58000 },
-        { month: '2022/Jul', value: 78000 },
-        { month: '2022/Aug', value: 89000 },
-        { month: '2022/Sep', value: 35000 },
-        { month: '2022/Oct', value: 25000 },
-        { month: '2022/Nov', value: 98000 },
-        { month: '2022/Dec', value: 68000 }
     ];
+    for (let i = dashBoard.businessInfo.length-2; i >= 0; i--) {
+        monthsData.push({month:dashBoard.businessInfo[i].month_name, value:dashBoard.businessInfo[i].total_profit });
+    }
 
-    const [scrollOffset, setScrollOffset] = useState(0);
     const containerRef = useRef(null);
-    const maxScroll = Math.max(0, monthsData.length - 6);
+    const visibleMonths = 6; // عدد الأشهر المرئية
+    const maxScroll = Math.max(0, monthsData.length - visibleMonths);
+    useEffect(() => {
+        setScrollOffset(maxScroll)
+    },[dashBoard.businessInfo]);
+    const [scrollOffset, setScrollOffset] = useState(maxScroll); // البدء من الشهر الأول
     const isScrollingRef = useRef(false);
 
+    // دالة طباعة اسم الشهر
+    const handleMonthClick = (monthData, index) => {
+        updateFields('currentMonth', -index+monthsData.length-1);
+    };
+
+    // دوال التنقل
+    const goToPrevious = () => {
+        setScrollOffset(prev => Math.max(0, prev - 1));
+    };
+
+    const goToNext = () => {
+        setScrollOffset(prev => Math.min(maxScroll, prev + 1));
+    };
+
+    const canGoPrevious = scrollOffset > 0;
+    const canGoNext = scrollOffset < maxScroll;
+
     const allValues = monthsData.map(item => item.value);
-    const minValue = Math.min(...allValues);
-    const maxValue = Math.max(...allValues);
+    const minValue = Math.min(...allValues,0);
+    const maxValue = Math.max(...allValues,0);
     const valueRange = maxValue - minValue;
 
     const valueToPosition = (value) => {
@@ -43,7 +55,8 @@ export default function Chart() {
             if (isScrollingRef.current) return;
             isScrollingRef.current = true;
 
-            const delta = e.deltaX > 0 ? 0.3 : -0.3;
+            // تغيير القيمة من 0.3 إلى 1 للانتقال شهر بشهر
+            const delta = e.deltaX > 0 ? 1 : -1;
 
             setScrollOffset(prev => {
                 const newOffset = prev + delta;
@@ -52,19 +65,19 @@ export default function Chart() {
 
             setTimeout(() => {
                 isScrollingRef.current = false;
-            }, 50);
+            }, 100);
         }
     };
 
     const handleShiftWheel = (e) => {
         if (e.shiftKey) {
-
             e.stopPropagation();
 
             if (isScrollingRef.current) return;
             isScrollingRef.current = true;
 
-            const delta = e.deltaY > 0 ? 0.3 : -0.3;
+            // تغيير القيمة من 0.3 إلى 1 للانتقال شهر بشهر
+            const delta = e.deltaY > 0 ? 1 : -1;
 
             setScrollOffset(prev => {
                 const newOffset = prev + delta;
@@ -73,13 +86,13 @@ export default function Chart() {
 
             setTimeout(() => {
                 isScrollingRef.current = false;
-            }, 50);
+            }, 100);
         }
     };
 
     const getVisibleData = () => {
         const startIndex = Math.floor(scrollOffset);
-        const endIndex = Math.min(startIndex + 6, monthsData.length);
+        const endIndex = Math.min(startIndex + visibleMonths, monthsData.length);
         return monthsData.slice(startIndex, endIndex).map(item => ({
             ...item,
             position: valueToPosition(item.value)
@@ -87,9 +100,14 @@ export default function Chart() {
     };
 
     const visibleData = getVisibleData();
-    const averageVisableValue = Math.round(visibleData.reduce((total, month) => total+month.value, 0)/visibleData.length/100 )*100;
-    const averageValue = Math.round(allValues.reduce((total, value) => total+value, 0))/allValues.length
-    const avgValChaPer=Math.round(((averageVisableValue - averageValue) / averageValue) * 100);
+    const averageVisableValue = visibleData.length > 0
+        ? Math.round(visibleData.reduce((total, month) => total + Number(month.value), 0) / visibleData.length / 100) * 100 : 0;
+
+    const averageValue = allValues.length > 0
+        ? Math.round(allValues.reduce((total, value) => total + Number(value), 0)) / allValues.length : 0;
+
+    const avgValChaPer = averageValue !== 0
+        ? Math.round(((averageVisableValue - averageValue) / averageValue) * 100) : 0;
 
     const createPath = (data) => {
         if (data.length === 0) return "";
@@ -136,8 +154,8 @@ export default function Chart() {
                         Average for {visibleData.length} months
                         <span className={` text-sm font-medium px-3 py-1 ml-2 rounded-full ${
                             avgValChaPer>=0
-                            ? 'text-teal-300 bg-teal-900/30'
-                            : 'text-rose-400 bg-rose-900/20'}`}>
+                                ? 'text-teal-300 bg-teal-900/30'
+                                : 'text-rose-400 bg-rose-900/20'}`}>
                         {avgValChaPer}%
                         </span>
                     </p>
@@ -151,11 +169,43 @@ export default function Chart() {
                     <span className="text-gray-400 text-sm">
                         Showing {Math.floor(scrollOffset) + 1}-{Math.floor(scrollOffset) + visibleData.length} of {monthsData.length} months
                     </span>
-
                 </div>
 
-                <div className="text-gray-400 text-sm">
-                    Scroll to navigate →
+                <div className="flex items-center gap-3">
+                    {/* أزرار التنقل */}
+                    <button
+                        onClick={goToPrevious}
+                        disabled={!canGoPrevious}
+                        className={`p-2 rounded-lg transition-all duration-200 ${
+                            canGoPrevious
+                                ? 'bg-teal-500/20 hover:bg-teal-500/30 text-teal-400 hover:text-teal-300'
+                                : 'bg-gray-700/30 text-gray-600 cursor-not-allowed'
+                        }`}
+                        title="Previous month"
+                    >
+                        <ChevronLeft size={16} />
+                    </button>
+
+                    <span className="text-gray-400 text-sm px-2">
+                        {scrollOffset + 1} / {maxScroll + 1}
+                    </span>
+
+                    <button
+                        onClick={goToNext}
+                        disabled={!canGoNext}
+                        className={`p-2 rounded-lg transition-all duration-200 ${
+                            canGoNext
+                                ? 'bg-teal-500/20 hover:bg-teal-500/30 text-teal-400 hover:text-teal-300'
+                                : 'bg-gray-700/30 text-gray-600 cursor-not-allowed'
+                        }`}
+                        title="Next month"
+                    >
+                        <ChevronRight size={16} />
+                    </button>
+
+                    <div className="text-gray-400 text-sm ml-2">
+                        Scroll to navigate →
+                    </div>
                 </div>
             </div>
 
@@ -170,7 +220,7 @@ export default function Chart() {
                 }}
             >
                 <div
-                    className="transition-all duration-300 ease-out"
+                    className="transition-all duration-500 ease-out"
                     style={{
                         transform: `translateX(${scrollOffset * -10}px)`,
                         willChange: 'transform'
@@ -219,6 +269,8 @@ export default function Chart() {
                                         fillOpacity="0.2"
                                         className="animate-pulse"
                                     />
+
+                                    {/* زر قابل للنقر */}
                                     <circle
                                         cx={x}
                                         cy={item.position}
@@ -226,8 +278,22 @@ export default function Chart() {
                                         fill="#2dd4bf"
                                         stroke="#1f2937"
                                         strokeWidth="2"
-                                        className="drop-shadow-lg"
+                                        className="drop-shadow-lg cursor-pointer hover:fill-teal-300 hover:r-6 transition-all duration-200"
+                                        onClick={() => handleMonthClick(item, Math.floor(scrollOffset) + index)}
+                                        style={{ cursor: 'pointer' }}
                                     />
+
+                                    {/* منطقة نقر أكبر غير مرئية */}
+                                    <circle
+                                        cx={x}
+                                        cy={item.position}
+                                        r="15"
+                                        fill="transparent"
+                                        className="cursor-pointer"
+                                        onClick={() => handleMonthClick(item, Math.floor(scrollOffset) + index)}
+                                        style={{ cursor: 'pointer' }}
+                                    />
+
                                     <g>
                                         <rect
                                             x={x - 25}
@@ -277,29 +343,55 @@ export default function Chart() {
                 </div>
             </div>
 
-            <div className="mt-4">
-                <div className="w-full h-2 bg-gray-700/30 rounded-full overflow-hidden">
+            {/* Scroll bar محسن ومصغر */}
+            <div className="mt-6">
+                <div className="w-full h-1.5 bg-gray-700/40 rounded-full overflow-hidden shadow-inner">
                     <div
-                        className="h-full bg-gradient-to-r from-teal-400 to-teal-500 rounded-full transition-all duration-300 ease-out"
+                        className="h-full bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full transition-all duration-500 ease-out shadow-lg"
                         style={{
-                            width: `${((6 / monthsData.length) * 100)}%`,
-                            marginLeft: `${(scrollOffset / maxScroll) * (100 - (6 / monthsData.length) * 100)}%`
+                            width: `${((visibleMonths / monthsData.length) * 100)}%`,
+                            marginLeft: `${(scrollOffset / maxScroll) * (100 - (visibleMonths / monthsData.length) * 100)}%`
                         }}
                     />
                 </div>
-                <div className="flex justify-between mt-2 text-xs text-gray-500">
-                    <span>Jan</span>
-                    <span className="text-center opacity-60">
-                        {Math.floor(scrollOffset) + 1}-{Math.min(Math.floor(scrollOffset) + 6, monthsData.length)} of {monthsData.length}
+
+                {/* مؤشرات الأشهر */}
+                <div className="flex justify-between mt-2 px-1">
+                    {monthsData.map((month, index) => (
+                        <div
+                            key={index}
+                            className={`flex flex-col items-center transition-all duration-300 ${
+                                index >= scrollOffset && index < scrollOffset + visibleMonths
+                                    ? 'text-teal-400'
+                                    : 'text-gray-500'
+                            }`}
+                        >
+                            <div className={`w-0.5 h-2 mb-1 rounded-full transition-all duration-300 ${
+                                index >= scrollOffset && index < scrollOffset + visibleMonths
+                                    ? 'bg-teal-400'
+                                    : 'bg-gray-600'
+                            }`} />
+                            <span className="text-xs font-medium">
+                                {month.month.split('/')[1]}
+                            </span>
+                        </div>
+                    ))}
+                </div>
+
+                {/* معلومات التنقل */}
+                <div className="flex justify-center mt-3 text-xs text-gray-500">
+                    <span className="bg-gray-800/50 px-3 py-1 rounded-full border border-gray-700/30">
+                        {Math.floor(scrollOffset) + 1}-{Math.min(Math.floor(scrollOffset) + visibleMonths, monthsData.length)} of {monthsData.length} months
                     </span>
-                    <span>Dec</span>
                 </div>
             </div>
 
             <div className="mt-4 text-center">
                 <p className="text-xs text-gray-500">
                     <span className="inline-flex items-center gap-2">
-                        ↔️ Scroll horizontally to navigate
+                        🖱️ Click on data points to log month info
+                        <span className="opacity-60">•</span>
+                        ↔️ Scroll horizontally or use navigation buttons
                         <span className="opacity-60">•</span>
                         ⇧ Hold Shift + scroll vertically
                     </span>

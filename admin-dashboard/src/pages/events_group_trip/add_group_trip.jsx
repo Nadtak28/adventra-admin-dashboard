@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import AddMedia from "../../features/all/components/Add/add_media.jsx";
 import {useNavigate} from "react-router-dom";
 import {useSelector,useDispatch} from "react-redux";
@@ -11,12 +11,17 @@ import Events from "../../features/event_group_trip/components/Add/GT/events.jsx
 import {add_emptyMedia, updateFields,Submit} from "../../features/event_group_trip/hook/addGTSlice.jsx";
 import {addGTService} from "../../features/event_group_trip/api/addGTService.jsx";
 import SubmitButton from "../../features/all/components/Add/submit_button.jsx";
+import {getIdsService} from "../../features/all/api/getIdsService.jsx";
 export default function AddGroupTrip() {
 
     const navigate = useNavigate();
     const formData=useSelector(state=>state.AddGT)
     const [Files, setFiles] = useState({images:[],videos:[]});
     const dispatch = useDispatch();
+    const {cities}=useSelector(state=>state.getIds)
+    useEffect(() => {
+        dispatch(getIdsService())
+    }, []);
     const handleInputChange = (field, value) => {
         dispatch(updateFields({field,value}));
     };

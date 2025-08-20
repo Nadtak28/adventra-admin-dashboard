@@ -8,7 +8,7 @@ const initialState = {
         email: '',
         phone: '',
         salary: '',
-        city: '',
+        city: {},
         languages: [],
         categories: []
     },
@@ -32,7 +32,7 @@ const AddGuideSlice =createSlice({
                 return
             }
             else if(action.payload.field==='languages'||action.payload.field==='categories'){
-                const Exist=state.form[action.payload.field].find(e => e === action.payload.value)
+                const Exist=state.form[action.payload.field].find(e => e.id === action.payload.value.id)
                 if(!Exist){
                     state.form[action.payload.field] = [
                         ...state.form[action.payload.field],
@@ -90,10 +90,10 @@ const AddGuideSlice =createSlice({
                 if((!!action.payload?.unauthorized)){
                     tokenStore.clearToken()
                     window.location.href = '/login'
-                }else if(action.payload.errors.phone){
+                }else if(action.payload?.errors?.phone){
                     state.errors.phone = true;
                 }
-                if(action.payload.errors.email){
+                if(action.payload?.errors?.email){
                     state.errors.email = true;
                 }
                 state.isLoading = false;

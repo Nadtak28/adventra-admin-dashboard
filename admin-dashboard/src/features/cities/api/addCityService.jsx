@@ -31,7 +31,7 @@ export const AddCityService=createAsyncThunk(
             name_ar:state.form.nameAr,
             description:state.form.descriptionEn,
             description_ar:state.form.descriptionAr,
-            language_id:state.form.language,
+            language_id:state.form.language.id,
             media:media}
         try{
             const response=await albolbolFiles.post(API.addCity,form)

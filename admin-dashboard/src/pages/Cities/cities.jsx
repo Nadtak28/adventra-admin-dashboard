@@ -2,9 +2,9 @@ import React, {useEffect, useState} from 'react';
 import {Plus } from 'lucide-react';
 import Header from "../../features/all/components/header.jsx";
 import {useNavigate} from "react-router-dom";
-import FilterBar from '../../features/cities/components/filterBar.jsx'
-import CityTable from '../../features/cities/components/cityTable.jsx'
-import Pagination from '../../features/cities/components/pagination.jsx'
+import FilterBar from '../../features/cities/components/cities/filterBar.jsx'
+import CityTable from '../../features/cities/components/cities/cityTable.jsx'
+import Pagination from '../../features/cities/components/cities/pagination.jsx'
 import {updateFields} from '../../features/cities/hook/citiesSlice.jsx'
 import {CitiesService} from '../../features/cities/api/citiesService.jsx'
 import {useDispatch, useSelector} from "react-redux";

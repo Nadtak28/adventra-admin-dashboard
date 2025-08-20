@@ -1,18 +1,18 @@
 import API from "../../../api/apiRoutes.jsx"
 import albolbol from "../../../api/albolbol.jsx"
 import {createAsyncThunk} from '@reduxjs/toolkit';
+import {tokenStore} from "../../../utils/dataStore.js";
 
-export const CitiesService=createAsyncThunk(
-    "citiesService",
-    async (_, {rejectWithValue,getState}) => {
+export const sendGiftService=createAsyncThunk(
+    "sendGift",
+    async ({id,points}, {rejectWithValue}) => {
         try{
-            const state=getState().Cities;
             const form={
-                q:state.search,
-                orderBy:state.sortBy,
-                page:state.currentPage,
+                user_id:id,
+                points:points,
             }
-            const response=await albolbol.post(API.cities,form)
+            albolbol.defaults.headers['Authorization'] = `Bearer ${tokenStore.getToken()}`;
+            const response=await albolbol.post(API.sendGift,form)
             return response.data;
         }
         catch (error) {

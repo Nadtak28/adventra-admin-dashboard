@@ -56,9 +56,9 @@ export default function Info({formData,handleInputChange,eventTypes,cities}){
                         required
                     >
                         <option value="">Select Event category</option>
-                        {Object.entries(eventTypes).map(([event, id]) => (
-                            <option key={id} value={id}>
-                                {event}
+                        {eventTypes.map(category => (
+                            <option key={category.id} value={category.id}>
+                                {category.name}
                             </option>
                         ))}
                     </select>
@@ -78,10 +78,10 @@ export default function Info({formData,handleInputChange,eventTypes,cities}){
                         className="w-full p-4 bg-slate-800/80 backdrop-blur-sm border border-slate-600/50 hover:border-slate-500/70 rounded-2xl text-white focus:outline-none focus:border-teal-500 shadow-lg transition-all duration-300"
                         required
                     >
-                        <option value="">Select city</option>
-                        {Object.entries(cities).map(([city, id]) => (
-                            <option key={id} value={id}>
-                                {city}
+                        <option>Select city</option>
+                        {cities.map(city => (
+                            <option key={city.id} value={city.id}>
+                                {city.name}
                             </option>
                         ))}
                     </select>

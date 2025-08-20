@@ -21,9 +21,9 @@ export default function City({formData,handleInputChange,cities}) {
                         className={`w-full pl-12 pr-4 py-4 bg-slate-800/80 backdrop-blur-sm border rounded-2xl text-white focus:outline-none transition-all duration-300 'border-slate-600/50 hover:border-slate-500/70 focus:border-teal-500'`}
                     >
                         <option value="">Select city</option>
-                        {Object.entries(cities).map(([city, id]) => (
-                            <option key={id} value={id}>
-                                {city}
+                        {cities.map(city => (
+                            <option key={city.id} value={city.id}>
+                                {city.name}
                             </option>
                         ))}
                     </select>

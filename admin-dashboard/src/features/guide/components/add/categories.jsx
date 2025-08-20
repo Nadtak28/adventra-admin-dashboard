@@ -11,18 +11,18 @@ export default function Categories({formData, handleInputChange,Categories}) {
 
             <div className="space-y-2">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {Object.entries(Categories).map(([category, id]) => (
+                    {Categories.map(category => (
                         <button
-                            key={id}
+                            key={category.id}
                             type="button"
-                            onClick={()=>{handleInputChange('categories',id)}}
+                            onClick={() => handleInputChange('categories', category)}
                             className={`p-4 rounded-xl border text-sm font-medium transition-all duration-300 flex items-center justify-center gap-2 ${
-                            formData.form.categories.includes(id)
-                                ? 'bg-gradient-to-r from-teal-600 to-teal-700 border-teal-500 text-white shadow-lg shadow-teal-500/25'
-                                : 'bg-slate-800/60 border-slate-600/50 text-slate-300 hover:border-teal-500/50 hover:bg-slate-700/60'
-                        }`}>
+                                formData.form.categories.includes(category)
+                                    ? 'bg-gradient-to-r from-teal-600 to-teal-700 border-teal-500 text-white shadow-lg shadow-teal-500/25'
+                                    : 'bg-slate-800/60 border-slate-600/50 text-slate-300 hover:border-teal-500/50 hover:bg-slate-700/60'
+                            }`}>
                             {formData.form.categories.includes(category) && <Check size={16} />}
-                            {category}
+                            {category.name}
                         </button>
                     ))}
                 </div>

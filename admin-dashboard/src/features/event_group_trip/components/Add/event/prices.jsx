@@ -94,8 +94,8 @@ export default function Prices({formData, handleInputChange}){
                                 Start Date & Time
                             </label>
                             <input
-                                type="date"
-                                value={formData.form.startDate || 'today'}
+                                type="datetime-local"
+                                value={formData.form.startDate || ''}
                                 onChange={(e) => handleInputChange('startDate', e.target.value)}
                                 className="w-full p-4 bg-slate-800/80 backdrop-blur-sm border border-slate-600/50 hover:border-slate-500/70 rounded-2xl text-white focus:outline-none focus:border-teal-500 focus:shadow-lg focus:shadow-teal-500/20 shadow-lg transition-all duration-300"
                                 required={formData.form.isTimeBased}
@@ -111,7 +111,7 @@ export default function Prices({formData, handleInputChange}){
                                 End Date & Time
                             </label>
                             <input
-                                type="date"
+                                type="datetime-local"
                                 value={formData.form.endDate || ''}
                                 onChange={(e) => handleInputChange('endDate', e.target.value)}
                                 className="w-full p-4 bg-slate-800/80 backdrop-blur-sm border border-slate-600/50 hover:border-slate-500/70 rounded-2xl text-white focus:outline-none focus:border-teal-500 focus:shadow-lg focus:shadow-teal-500/20 shadow-lg transition-all duration-300"
@@ -274,7 +274,7 @@ export default function Prices({formData, handleInputChange}){
                         <div className="space-y-3  transform transition-all duration-500 mb-8">
                             <label className="flex items-center gap-2 text-white font-semibold">
                                 <Users size={18} className="text-emerald-400" />
-                                Tickets Count
+                                Minimum Expected Tickets
                             </label>
                             <input
                                 type="number"
@@ -289,7 +289,7 @@ export default function Prices({formData, handleInputChange}){
 
                             {formData.form.ticketCount && (
                                 <p className="text-emerald-400 text-sm font-medium">
-                                    count: {formData.form.ticketCount} tickets
+                                    min: {formData.form.ticketCount} tickets
                                 </p>
                             )}
                         </div>

@@ -1,13 +1,17 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {AddEventService} from "../api/addEventService.jsx"
 import {tokenStore} from "../../../utils/dataStore.js";
-const today=() => {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = (today.getMonth() + 1).toString().padStart(2, '0'); // الشهر يبدأ من 0
-    const day = today.getDate().toString().padStart(2, '0');
+const today = () => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = (now.getMonth() + 1).toString().padStart(2, '0');
+    const day = now.getDate().toString().padStart(2, '0');
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const seconds = now.getSeconds().toString().padStart(2, '0');
 
-    return `${year}-${month}-${day}`;
+    // ترجع سترنغ مرتب: YYYY-MM-DD HH:MM:SS
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 const initialState = {
     form:{
@@ -71,7 +75,7 @@ const AddEventSlice =createSlice({
                 if(field==='isTimeBased'){
                     continue;
                 }
-                if(field==='eventType'||field==='city'){
+                if(field==='eventType'||field==='city'||field==='userPrice'){
                     if(!state.form[field])
                         state.errors[field]=true
                     continue

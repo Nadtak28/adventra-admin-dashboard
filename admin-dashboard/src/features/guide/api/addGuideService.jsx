@@ -15,14 +15,16 @@ export const addGuideService=createAsyncThunk(
             window.scrollTo({ top: 0, behavior: 'smooth' });
             return rejectWithValue('invalid Data');
         }
+        const categoriesIds =state.form.categories.map(category => category.id) ;
+        const languagesIds = state.form.languages.map(language => language.id);
         let form={
             name:state.form.name,
             email:state.form.email,
             phone:state.form.phone,
             const_salary:state.form.salary,
             city_id:state.form.city,
-            categories:state.form.categories,
-            languages:state.form.languages,
+            categories:categoriesIds,
+            languages:languagesIds,
         }
         try{
             const response=await albolbolFiles.post(API.addGuide,form)

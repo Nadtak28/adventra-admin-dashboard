@@ -24,7 +24,6 @@ const CitiesSlice =createSlice({
 
         })
             .addCase(CitiesService.fulfilled, (state, action) => {
-                console.log("AddCityService.fulfilled", action.payload)
                 state.cities=action.payload.data;
                 state.lastPage = action.payload.last_page;
                 state.totalCities = action.payload.total;

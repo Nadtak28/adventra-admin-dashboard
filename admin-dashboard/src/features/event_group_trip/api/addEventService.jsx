@@ -46,10 +46,10 @@ export const AddEventService=createAsyncThunk(
         {
            form={
                ...form,
-               tickets_count:state.form.ticketCount,
-               tickets_limit:state.form.maxTickets,
-               start_date:state.form.startDate,
-               end_date:state.form.endDate,
+               tickets_count:state.form.maxTickets,
+               tickets_limit:state.form.ticketCount,
+               start_date:state.form.startDate.replace('T', ' '),
+               end_date:state.form.endDate.replace('T', ' '),
            };
         }
 
@@ -63,7 +63,7 @@ export const AddEventService=createAsyncThunk(
                 return rejectWithValue({unauthorized: true});
             }
             return rejectWithValue(
-                error.response.data.message || "Something went wrong"
+                error.response.data || "Something went wrong"
             );
         }
     })

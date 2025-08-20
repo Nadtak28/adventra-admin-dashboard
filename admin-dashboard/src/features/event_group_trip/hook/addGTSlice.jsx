@@ -101,6 +101,11 @@ const AddGTSlice =createSlice({
                 else if(field==='selectedEvents'){
                     state.errors[field]=state.form.selectedEvents.length===0
                     continue
+                }else if(field==='userPrice'){
+                    if(!state.form[field]){
+                        state.errors.userPrice=true;}
+                        continue
+
                 }
 
                 state.errors[field]=!state.form[field].trim()

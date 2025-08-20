@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import AddMedia from "../../features/all/components/Add/add_media.jsx";
 import AddHeader from "../../features/all/components/Add/add_header.jsx";
@@ -9,11 +9,16 @@ import SubmitButton from "../../features/all/components/Add/submit_button.jsx";
 import {useSelector,useDispatch} from "react-redux";
 import {updateFields,add_emptyMedia,Submit} from '../../features/cities/hook/addCitySlice.jsx'
 import {AddCityService} from '../../features/cities/api/addCityService.jsx'
+import {getIdsService} from "../../features/all/api/getIdsService.jsx";
 export default function AddCity() {
     const navigate = useNavigate();
     const formData=useSelector(state=>state.AddCity);
     const [Files,setFiles] = useState({images:[],videos:[]});
     const dispatch=useDispatch();
+    const {languages}=useSelector(state=>state.getIds);
+    useEffect(() => {
+        dispatch(getIdsService())
+    }, []);
     const countries = {
         'afghanistan': 1,
         'albania': 2,
@@ -41,17 +46,6 @@ export default function AddCity() {
         'bermuda': 24,
         'bhutan': 25
     };
-
-
-    const availableLanguages = {
-        'Bengali':1,
-        'Luxembourgish':2,
-        'French':3,
-        'Nigerian Pidgin':4,
-        'Algerian Arabic':5
-
-    }
-
 
     const handleInputChange = (field, value) => {
         dispatch(updateFields({field,value}));
@@ -87,7 +81,7 @@ export default function AddCity() {
 
                     <Description handleInputChange={handleInputChange} formData={formData}/>
 
-                    <Language availableLanguages={availableLanguages} handleInputChange={handleInputChange} formData={formData}/>
+                    <Language languages={languages} handleInputChange={handleInputChange} formData={formData}/>
 
                     <AddMedia formData={formData} addMedia={handleFilesChange} Files={Files} setFiles={setFiles} />
 

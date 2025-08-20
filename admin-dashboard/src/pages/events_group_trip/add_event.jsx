@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import AddMedia from '../../features/all/components/Add/add_media.jsx';
 import AddHeader from "../../features/all/components/Add/add_header.jsx";
 import Info from "../../features/event_group_trip/components/Add/event/Info.jsx"
@@ -9,31 +9,16 @@ import SubmitButton from "../../features/all/components/Add/submit_button.jsx";
 import {useDispatch, useSelector} from "react-redux";
 import {add_emptyMedia, updateFields,Submit} from "../../features/event_group_trip/hook/addEventSlice.jsx";
 import {AddEventService} from "../../features/event_group_trip/api/addEventService.jsx";
+import {getIdsService} from "../../features/all/api/getIdsService.jsx";
 export default function AddEvent() {
     const navigate = useNavigate();
     const formData=useSelector(state=>state.AddEvent);
+    const {categories,cities}=useSelector(state=>state.getIds);
     const [Files,setFiles] = useState({images:[],videos:[]});
     const dispatch=useDispatch();
-
-    const eventTypes = {
-        'Eco-tourism': 1,
-        'Cultural': 2,
-        'Adventure': 3,
-        'Nature': 4,
-        'Food': 5
-    }
-    const cities = {
-        'Port Llewellyn': 1,
-        'Ryleeport': 2,
-        'Port Eastontown': 3,
-        'New Ethyl': 4,
-        'New Sadie': 5,
-        'Port Nelsfurt': 6,
-        'Adriannafurt': 7,
-        'Yundtport': 8,
-        'Franeckimouth': 9,
-        'Beckerberg': 10
-    };
+    useEffect(() => {
+        dispatch(getIdsService())
+    }, []);
 
     const handleInputChange = (field, value) => {
         dispatch(updateFields({field,value}));
@@ -71,7 +56,7 @@ export default function AddEvent() {
                 <AddHeader path={'/dashboard/event_grouptrip'} title={'Add New Event'} description={'Add event info and media'} handleSubmit={handleSubmit} buttonText={'Add the event'} />
 
                 <div className="space-y-8">
-                    <Info formData={formData} handleInputChange={handleInputChange} eventTypes={eventTypes} cities={cities} />
+                    <Info formData={formData} handleInputChange={handleInputChange} eventTypes={categories} cities={cities} />
 
                     <Description formData={formData} handleInputChange={handleInputChange}/>
 
