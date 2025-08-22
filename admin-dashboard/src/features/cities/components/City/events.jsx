@@ -1,21 +1,14 @@
-import EventCard from "./EventCard";
+import EventCard from "../City/eventCard.jsx";
 import { useSelector, useDispatch } from "react-redux";
-import { CityEventsService } from "../../../../api/cityEventService";
 import { useEffect } from "react";
 import { Calendar } from "lucide-react";
-import SkeletonCard from "../skeletonCard";
 
-const Events = ({ cityId }) => {
+const Events = ( info ) => {
     const dispatch = useDispatch();
-    const { events, loadingEvents: loading } = useSelector(
-        (state) => state.cities
-    );
+    const events=info.events
 
     useEffect(() => {
-        if (cityId) {
-            dispatch(CityEventsService(cityId));
-        }
-    }, [dispatch, cityId]);
+    }, []);
 
     return (
         <section className="opacity-0 animate-fade-in-up animation-delay-800">
@@ -30,11 +23,7 @@ const Events = ({ cityId }) => {
 
             <div className="overflow-x-auto scroll-smooth snap-x snap-mandatory [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                 <div className="flex items-stretch gap-4 px-4 py-2 md:px-6">
-                    {loading ? (
-                        [...Array(3)].map((_, i) => (
-                            <SkeletonCard key={i} className="min-w-[200px] h-48 rounded-xl" />
-                        ))
-                    ) : !events || events.length === 0 ? (
+                    {!events || events.length === 0 ? (
                         <div className="flex-1 flex items-center justify-center py-12">
                             <div className="text-center opacity-0 animate-fade-in">
                                 <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[#519489]/10 flex items-center justify-center">

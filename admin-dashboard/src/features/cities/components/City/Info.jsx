@@ -1,42 +1,24 @@
-import { useSelector } from "react-redux";
 import { MapPin, Globe, Languages } from "lucide-react";
-import SkeletonCard from "@mui/material";
-const Info = ({ cityId }) => {
-    const { detail: city, loadingDetail: loading } = useSelector(
-        (state) => state.cities
-    );
+const Info = ( info ) => {
 
-    if (loading) {
-        return (
-            <div className="space-y-6">
-                {[1, 2, 3].map((i) => (
-                    <div key={i} className="px-4">
-                        <SkeletonCard className="h-4 w-24 mb-2" />
-                        <SkeletonCard className="h-16 w-full" />
-                    </div>
-                ))}
-            </div>
-        );
-    }
-
-    if (!city) return null;
+    if (!info) return null;
 
     const infoCards = [
         {
             title: "About",
-            content: city.description,
+            content: info.description,
             icon: Globe,
             delay: "animation-delay-200",
         },
         {
             title: "Country",
-            content: city.country?.name,
+            content: info.country?.name,
             icon: MapPin,
             delay: "animation-delay-400",
         },
         {
             title: "Language",
-            content: city.language?.name,
+            content: info.language?.name,
             icon: Languages,
             delay: "animation-delay-600",
         },

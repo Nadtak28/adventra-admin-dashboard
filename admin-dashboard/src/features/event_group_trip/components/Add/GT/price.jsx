@@ -140,7 +140,6 @@ export default function Price({formData, handleInputChange}) {
                                 min="0"
                                 step="0.01"
                             />
-                            {formData.errors.userPrice&& <p className="text-red-500 text-sm ml-3 ">Field is required</p>}
                             {formData.errors.ticketPrice&& <p className="text-red-500 text-sm ml-3 ">Field is required</p>}
                             <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
                                 <span className="text-slate-400 font-medium">$</span>
@@ -165,6 +164,8 @@ export default function Price({formData, handleInputChange}) {
                                 min="0"
                                 step="0.01"
                             />
+                            {formData.errors.userPrice&& <p className="text-red-500 text-sm ml-3 ">Field is required</p>}
+
                             <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
                                 <span className="text-slate-400 font-medium">$</span>
                             </div>

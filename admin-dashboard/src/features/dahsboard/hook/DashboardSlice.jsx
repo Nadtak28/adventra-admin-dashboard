@@ -39,13 +39,13 @@ const DashBoardSlice =createSlice({
             })
             .addCase(DashBoardService.rejected, (state, action) => {
                 if((!!action.payload?.unauthorized)){
-                     tokenStore.clearToken()
-                     window.location.href = '/login'
+                    tokenStore.clearToken()
+                    window.location.href = '/login'
                 }
                 state.isLoading=false
             })
-        .addCase(sendGiftService.pending, (state, action) => {
-        })
+            .addCase(sendGiftService.pending, (state, action) => {
+            })
             .addCase(sendGiftService.fulfilled, (state, action) => {
                 state.rewardPoints=0
                 state.rewardBooker={}
@@ -57,8 +57,8 @@ const DashBoardSlice =createSlice({
             .addCase(sendGiftService.rejected, (state, action) => {
                 console.log("addGuideService.rejected", action.payload)
                 if((!!action.payload?.unauthorized)){
-                     tokenStore.clearToken()
-                     window.location.href = '/login'
+                    tokenStore.clearToken()
+                    window.location.href = '/login'
                 }
                 state.isLoading=false
                 state.isLoadingGift=false

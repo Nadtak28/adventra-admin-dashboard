@@ -1,57 +1,20 @@
 import React, {useState} from "react";
 import {Calendar, Check, Plus, Search, X} from "lucide-react";
 
-export default function Events({formData,handleInputChange}){
+export default function Events({formData,handleInputChange}) {
+    const Events=formData.form.Events
     const [showEventModal, setShowEventModal] = useState(false);
     const [eventSearch, setEventSearch] = useState('');
-    const availableEvents = [
-        {
-            id: 1,
-            nameAr: 'جولة في المتحف الوطني',
-            nameEn: 'National Museum Tour',
-            type: 'ثقافية',
-            image: 'https://images.unsplash.com/photo-1566127444979-b3d2b654e715?w=300&h=200&fit=crop',
-            duration: '2 ساعة',
-            price: 50
-        },
-        {
-            id: 2,
-            nameAr: 'رحلة في الحديقة المائية',
-            nameEn: 'Water Park Adventure',
-            type: 'ترفيهية',
-            image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=300&h=200&fit=crop',
-            duration: '4 ساعات',
-            price: 120
-        },
-        {
-            id: 3,
-            nameAr: 'جولة الطعام التراثي',
-            nameEn: 'Traditional Food Tour',
-            type: 'طعام وشراب',
-            image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=300&h=200&fit=crop',
-            duration: '3 ساعات',
-            price: 80
-        },
-        {
-            id: 4,
-            nameAr: 'مهرجان الموسيقى',
-            nameEn: 'Music Festival',
-            type: 'موسيقية',
-            image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=200&fit=crop',
-            duration: '5 ساعات',
-            price: 200
-        }
-    ];
 
-
-    const filteredEvents = availableEvents.filter(event =>
-        event.nameAr.toLowerCase().includes(eventSearch.toLowerCase()) ||
-        event.nameEn.toLowerCase().includes(eventSearch.toLowerCase()) ||
-        event.type.toLowerCase().includes(eventSearch.toLowerCase())
+    const filteredEvents = Events.filter(event =>
+            event.name?.toLowerCase().includes(eventSearch.toLowerCase())
+        // || event.type.toLowerCase().includes(eventSearch.toLowerCase())
     );
+
+    const isCitySelected = formData.form.city_id !== '';
+
     return (
         <div>
-
             {/* Events Selection */}
             <div className="bg-gradient-to-br from-slate-800/60 to-slate-900/80 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-8 shadow-2xl">
                 <div className="flex items-center justify-between mb-6">
@@ -62,22 +25,32 @@ export default function Events({formData,handleInputChange}){
                         <h2 className="text-2xl font-bold text-white">Events</h2>
                     </div>
                     <button
-                        onClick={() => setShowEventModal(true)}
-                        className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-500 hover:to-teal-600 text-white font-semibold transition-all duration-300 hover:scale-105"
+                        onClick={() => isCitySelected && setShowEventModal(true)}
+                        disabled={!isCitySelected}
+                        className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-semibold transition-all duration-300 ${
+                            isCitySelected
+                                ? 'bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-500 hover:to-teal-600 text-white hover:scale-105 cursor-pointer'
+                                : 'bg-slate-600/50 text-slate-400 cursor-not-allowed'
+                        }`}
                     >
                         <Plus size={18} />
                         Add Events
                     </button>
                 </div>
 
-                {formData.form.selectedEvents.length > 0 ? (
+                {!isCitySelected ? (
+                    <div className="text-center py-12">
+                        <Calendar size={48} className="text-slate-600 mx-auto mb-4" />
+                        <p className="text-slate-400 text-lg font-medium">Please select a city first to view available events</p>
+                    </div>
+                ) : formData.form.selectedEvents.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {formData.form.selectedEvents.map(event => (
                             <div key={event.id} className="bg-slate-800/40 rounded-2xl overflow-hidden border border-slate-600/30 group hover:border-teal-500/50 transition-all duration-300">
                                 <div className="relative">
                                     <img
-                                        src={event.image}
-                                        alt={event.nameAr}
+                                        src={event.images?.[0]?.url}
+                                        alt={event.name}
                                         className="w-full h-32 object-cover group-hover:scale-105 transition-transform duration-300"
                                     />
                                     <button
@@ -89,14 +62,13 @@ export default function Events({formData,handleInputChange}){
                                         <X size={16} />
                                     </button>
                                     <div className="absolute bottom-2 left-2 px-2 py-1 bg-teal-600/80 text-white text-xs rounded-lg font-semibold">
-                                        {event.type}
+                                        {event?.description}
                                     </div>
                                 </div>
                                 <div className="p-4">
-                                    <h3 className="text-white font-bold text-sm mb-1">{event.nameAr}</h3>
-                                    <p className="text-slate-300 text-xs mb-2">{event.nameEn}</p>
+                                    <h3 className="text-white font-bold text-sm mb-1">{event.name}</h3>
+                                    <p className="text-slate-300 text-xs mb-2">{event.name_ar}</p>
                                     <div className="flex items-center justify-between">
-                                        <span className="text-slate-400 text-xs">{event.duration}</span>
                                         <span className="text-teal-300 font-semibold text-sm">{event.price} $</span>
                                     </div>
                                 </div>
@@ -114,7 +86,7 @@ export default function Events({formData,handleInputChange}){
 
             </div>
             {/* Events Selection Modal */}
-            {showEventModal && (
+            {showEventModal && isCitySelected && (
                 <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
                     <div className="bg-gradient-to-br from-slate-800/90 to-slate-900/90 backdrop-blur-lg border border-slate-700/50 rounded-2xl p-8 max-w-6xl w-full max-h-[80vh] overflow-y-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ">
 
@@ -170,12 +142,12 @@ export default function Events({formData,handleInputChange}){
                                     >
                                         <div className="relative">
                                             <img
-                                                src={event.image}
-                                                alt={event.nameAr}
+                                                src={event?.images?.[0]?.url}
+                                                alt={event.name_ar}
                                                 className="w-full h-32 object-cover"
                                             />
                                             <div className="absolute top-2 left-2 px-2 py-1 bg-teal-600/80 text-white text-xs rounded-lg font-semibold">
-                                                {event.type}
+                                                {event?.type}
                                             </div>
                                             {isSelected && (
                                                 <div className="absolute top-2 right-2 p-1 bg-teal-600 text-white rounded-full">
@@ -184,10 +156,9 @@ export default function Events({formData,handleInputChange}){
                                             )}
                                         </div>
                                         <div className="p-4">
-                                            <h4 className="text-white font-bold text-lg mb-1">{event.nameAr}</h4>
-                                            <p className="text-slate-300 text-sm mb-3">{event.nameEn}</p>
+                                            <h4 className="text-white font-bold text-lg mb-1">{event.name}</h4>
+                                            <p className="text-slate-300 text-sm mb-3">{event.name_ar}</p>
                                             <div className="flex items-center justify-between">
-                                                <span className="text-slate-400 text-sm">{event.duration}</span>
                                                 <span className="text-teal-300 font-bold">{event.price} $</span>
                                             </div>
                                         </div>

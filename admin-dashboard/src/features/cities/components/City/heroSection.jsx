@@ -1,39 +1,25 @@
 import { useEffect, useState } from "react";
 import { MapPin, Globe, ChevronLeft, ChevronRight, Play, Pause } from "lucide-react";
-import SkeletonCard from "@mui/material";
-import { useSelector,useDispatch } from "react-redux";
 
-const HeroSection = ({ cityId }) => {
-    const dispatch = useDispatch();
+const HeroSection = (info) => {
 
-    const {
-        detail: city,
-        loadingDetail: loading,
-        errorDetail: error,
-    } = useSelector((state) => state.cities);
 
-    if (loading) {
-        return (
-            <div className="px-4 py-3">
-                <SkeletonCard className="min-h-[218px] rounded-xl" />
-            </div>
-        );
-    }
 
-    if (error || !city) {
+
+    if (!info) {
         return (
             <div className="px-4 py-3">
                 <div className="bg-red-50 border border-red-200 rounded-xl min-h-[218px] flex items-center justify-center">
                     <p className="text-red-600">
-                        {error || "Failed to load city details"}
+                        {"Failed to load info details"}
                     </p>
                 </div>
             </div>
         );
     }
 
-    const images = city.images || [];
-    const videos = city.videos || [];
+    const images = info.images || [];
+    const videos = info.videos || [];
     const hasMedia = images.length > 0 || videos.length > 0;
 
     return (
@@ -46,11 +32,11 @@ const HeroSection = ({ cityId }) => {
                         <div className="flex items-center gap-2 mb-2">
                             <MapPin className="w-5 h-5 text-white/80" />
                             <span className="text-white/80 text-sm font-medium">
-                {city.country?.name}
+                {info.country?.name}
               </span>
                         </div>
                         <h1 className="text-white text-3xl sm:text-4xl font-bold drop-shadow-lg">
-                            {city.name}
+                            {info.name}
                         </h1>
                     </div>
                     <div className="bg-white/20 backdrop-blur-sm rounded-full p-3">

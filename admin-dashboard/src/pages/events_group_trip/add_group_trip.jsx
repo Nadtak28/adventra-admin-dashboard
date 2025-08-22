@@ -10,18 +10,26 @@ import Guide from "../../features/event_group_trip/components/Add/GT/guide.jsx";
 import Events from "../../features/event_group_trip/components/Add/GT/events.jsx";
 import {add_emptyMedia, updateFields,Submit} from "../../features/event_group_trip/hook/addGTSlice.jsx";
 import {addGTService} from "../../features/event_group_trip/api/addGTService.jsx";
-import SubmitButton from "../../features/all/components/Add/submit_button.jsx";
+import {getGEByIDService} from "../../features/event_group_trip/api/getGuides&EventsByIDService.jsx";
 import {getIdsService} from "../../features/all/api/getIdsService.jsx";
+import SubmitButton from "../../features/all/components/Add/submit_button.jsx";
+import CitySelection from "../../features/event_group_trip/components/Add/GT/city.jsx";
 export default function AddGroupTrip() {
 
     const navigate = useNavigate();
     const formData=useSelector(state=>state.AddGT)
     const [Files, setFiles] = useState({images:[],videos:[]});
+    const [isOpen, setIsOpen] = useState(false);
     const dispatch = useDispatch();
     const {cities}=useSelector(state=>state.getIds)
     useEffect(() => {
         dispatch(getIdsService())
     }, []);
+    useEffect(() => {
+        if(!!formData.form.city_id) {
+            dispatch(getGEByIDService(formData.form.city_id))
+        }
+    }, [formData.form.city_id]);
     const handleInputChange = (field, value) => {
         dispatch(updateFields({field,value}));
     };
@@ -61,6 +69,8 @@ export default function AddGroupTrip() {
                     <Description formData={formData} handleInputChange={handleInputChange}/>
 
                     <Price formData={formData} handleInputChange={handleInputChange}/>
+
+                    <CitySelection formData={formData} handleInputChange={handleInputChange} cities={cities} isOpen={isOpen} setIsOpen={setIsOpen}/>
 
                     <Events formData={formData} handleInputChange={handleInputChange}/>
 

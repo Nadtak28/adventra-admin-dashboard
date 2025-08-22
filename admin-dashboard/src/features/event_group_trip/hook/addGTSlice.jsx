@@ -1,6 +1,7 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {addGTService} from "../api/addGTService.jsx"
 import {tokenStore} from "../../../utils/dataStore.js";
+import {getGEByIDService} from "../api/getGuides&EventsByIDService.jsx";
 const today = () => {
     const now = new Date();
     const year = now.getFullYear();
@@ -28,14 +29,16 @@ const initialState = {
         selectedGuide:{
             id: '',
             name: '',
-            nameEn: '',
-            image: '',
+            images: [],
             languages: [],
-            rating: '',
-            experience: '',
-            specialties: []
+            rate: '',
+            price: '',
+            categories: []
         },
        selectedEvents: [],
+       city_id:'',
+        Events : [],
+        Guides : []
     },
     isLoading:false,
     errors:{
@@ -64,7 +67,7 @@ const AddGTSlice =createSlice({
             }
             else if(action.payload.field==='minTickets'&&Number(state.form.maxTickets)<Number(action.payload.value)){
                 state.form.maxTickets=Number(action.payload.value)+1
-                state.errors.userPrice = false;
+                state.errors.maxTickets = false;
             }
             else if(action.payload.field==='selectedEvents'){
                 const eventExist=state.form.selectedEvents.find(e => e.id === action.payload.value.id)
@@ -79,6 +82,9 @@ const AddGTSlice =createSlice({
                     state.form.selectedEvents=state.form.selectedEvents.filter(e=>e.id !== eventExist.id)
                 }
                 return
+            }
+            else if(action.payload.field==='selectedGuide'){
+
             }
             state.form[action.payload.field] = action.payload.value;
             state.errors[action.payload.field] = false;
@@ -101,11 +107,12 @@ const AddGTSlice =createSlice({
                 else if(field==='selectedEvents'){
                     state.errors[field]=state.form.selectedEvents.length===0
                     continue
-                }else if(field==='userPrice'){
-                    if(!state.form[field]){
-                        state.errors.userPrice=true;}
-                        continue
+                }else if(field==='userPrice'||field==='maxTickets'||field==='minTickets'||field==='ticketPrice'){
+                    state.errors[field] = (state.form[field] <= 0 || !state.form[field]);
+                    continue
 
+                }else if(field==='city_id'||field==='Events'||field==='Guides'){
+                    continue
                 }
 
                 state.errors[field]=!state.form[field].trim()
@@ -121,8 +128,6 @@ const AddGTSlice =createSlice({
         })
             .addCase(addGTService.fulfilled, (state, action) => {
                 console.log("addGTService.fulfilled", action.payload)
-
-
                 state.form={
                     nameEn: '',
                     nameAr: '',
@@ -145,6 +150,9 @@ const AddGTSlice =createSlice({
                         specialties: []
                     },
                     selectedEvents: [],
+                    Events:[],
+                    Guides:[],
+                    city_id:''
                 }
                 state.isLoading = false;
                 Object.keys(state.errors).forEach(key => {
@@ -153,6 +161,47 @@ const AddGTSlice =createSlice({
             })
             .addCase(addGTService.rejected, (state, action) => {
                 console.log("addGTService.rejected", action.payload)
+                if((!!action.payload?.unauthorized)){
+                    tokenStore.clearToken()
+                    window.location.href = '/login'
+                }
+                state.isLoading = false;
+            })
+            .addCase(getGEByIDService.pending, (state) => {
+            })
+            .addCase(getGEByIDService.fulfilled, (state, action) => {
+                console.log("getGEByIDService.fulfilled", action.payload)
+                state.form={
+                    nameEn: state.form.nameEn,
+                    nameAr: state.form.nameAr,
+                    descriptionEn: state.form.descriptionEn,
+                    descriptionAr: state.form.descriptionAr,
+                    startDate: state.form.startDate,
+                    endDate: state.form.endDate,
+                    ticketPrice: state.form.ticketPrice,
+                    userPrice: state.form.userPrice,
+                    minTickets: state.form.minTickets,
+                    maxTickets:state.form.maxTickets,
+                    selectedGuide:{
+                        id: '',
+                        name: '',
+                        nameEn: '',
+                        image: '',
+                        languages: [],
+                        rating: '',
+                        experience: '',
+                        specialties: []
+                    },
+                    selectedEvents: [],
+                     Events: action.payload.events,
+                     Guides: action.payload.guides,
+                    city_id:state.form.city_id,
+
+                }
+
+            })
+            .addCase(getGEByIDService.rejected, (state, action) => {
+                console.log("getGEByIDService.rejected", action.payload)
                 if((!!action.payload?.unauthorized)){
                     tokenStore.clearToken()
                     window.location.href = '/login'

@@ -8,5 +8,6 @@
     addGT: "/dashboard/group_trip",
     addGuide: "/dashboard/guides/store",
     cities: "/dashboard/cities",
+    City:'/cities/'
 };
 export default API;

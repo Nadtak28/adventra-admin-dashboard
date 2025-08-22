@@ -14,7 +14,6 @@ const getIdsSlice=createSlice(
         },
         extraReducers:(builder) => {
             builder.addCase(getIdsService.fulfilled, (state, action) => {
-                console.log(action.payload)
                 state.cities=action.payload.cities
                 state.languages=action.payload.languages
                 state.categories=action.payload.categories
