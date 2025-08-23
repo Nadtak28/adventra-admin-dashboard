@@ -8,7 +8,7 @@ export const DashBoardService=createAsyncThunk(
     async (_, {rejectWithValue}) => {
         try{
             albolbol.defaults.headers['Authorization'] = `Bearer ${tokenStore.getToken()}`;
-            const response=await albolbol.get(API.DashBoard)
+            const response=await albolbol.post(API.DashBoard)
             return response.data;
         }
         catch (error) {

@@ -9,7 +9,7 @@ import {updateFields} from '../../features/cities/hook/citiesSlice.jsx'
 import {CitiesService} from '../../features/cities/api/citiesService.jsx'
 import {useDispatch, useSelector} from "react-redux";
 export default function CitiesDashboard() {
-    const {cities,totalCities,currentPage,lastPage,search,sortBy,isLoading} = useSelector(state => state.Cities);
+    const {cities,totalCities,currentPage,lastPage,search,sortBy,isLoading,avg_rate} = useSelector(state => state.Cities);
     const [isSearchFocused, setIsSearchFocused] = useState(false);
     const dispatch=useDispatch();
     const navigate=useNavigate();
@@ -44,7 +44,7 @@ export default function CitiesDashboard() {
 
                         <FilterBar search={search} sortBy={sortBy} handleInputChange={handleInputChange} isSearchFocused={isSearchFocused} setIsSearchFocused={setIsSearchFocused} />
                         <CityTable Cities={cities} isLoading={isLoading}/>
-                        <Pagination totalCities={totalCities} currentPage={currentPage} lastPage={lastPage} handleInputChange={handleInputChange} />
+                        <Pagination totalCities={totalCities} currentPage={currentPage} lastPage={lastPage} handleInputChange={handleInputChange} avg_rate={avg_rate} />
                     </div>
                 </div>
             </div>

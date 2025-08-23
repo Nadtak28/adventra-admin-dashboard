@@ -7,7 +7,7 @@ const Sidebar = ({ isCollapsed, toggleSidebar }) => {
         { icon: "🏙️", label: "Cities", active: false, path: "cities" },
         { icon: "📅", label: "Events & Group Trips", active: false, path: "event_grouptrip" },
         { icon: "👥", label: "Guides", active: false, path: "guides" },
-        { icon: "🏆", label: "Prizes", active: false, path: "prizes" },
+        { icon: "🔔", label: "Notification", active: false, path: "notification" },
         { icon: "👤", label: "Customers", active: false, path: "customers" },
     ]);
     const location = useLocation().pathname.split("/").pop();

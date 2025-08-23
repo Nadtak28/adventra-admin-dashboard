@@ -7,6 +7,8 @@ import AddEventSlice from "../features/event_group_trip/hook/addEventSlice.jsx";
 import AddGTSlice from "../features/event_group_trip/hook/addGTSlice.jsx";
 import addGuideSlice from "../features/guide/hook/addGuideSlice.jsx";
 import CitiesSlice from "../features/cities/hook/citiesSlice.jsx";
+import GuideSlice from "../features/guide/hook/guidesSlice.jsx";
+import Event_GTSlice from "../features/event_group_trip/hook/Event_GTSlice.jsx";
 export const store = configureStore({
   reducer: {
     login: loginSlice,
@@ -16,6 +18,8 @@ export const store = configureStore({
     AddEvent: AddEventSlice,
     AddGT:AddGTSlice,
     addGuide: addGuideSlice,
-    Cities:CitiesSlice
+    Cities:CitiesSlice,
+    Guides:GuideSlice,
+    Events_GTS:Event_GTSlice
   },
 });

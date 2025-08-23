@@ -170,7 +170,6 @@ const AddGTSlice =createSlice({
             .addCase(getGEByIDService.pending, (state) => {
             })
             .addCase(getGEByIDService.fulfilled, (state, action) => {
-                console.log("getGEByIDService.fulfilled", action.payload)
                 state.form={
                     nameEn: state.form.nameEn,
                     nameAr: state.form.nameAr,

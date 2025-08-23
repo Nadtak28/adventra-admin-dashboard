@@ -45,7 +45,6 @@ export const addGTService=createAsyncThunk(
 
         try{
             const response=await albolbolFiles.post(API.addGT,form)
-            console.log(response)
             return response.data;
         }
         catch (error) {

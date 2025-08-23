@@ -1,7 +1,7 @@
 import React from "react";
 import {Star} from "lucide-react";
 
-export default function Pagination({totalCities,currentPage,handleInputChange,lastPage}) {
+export default function Pagination({totalCities,currentPage,handleInputChange,lastPage,avg_rate}) {
     return (
         <div className="flex justify-center items-center gap-4 px-4 py-6">
             <div className="bg-gradient-to-r from-slate-800/60 to-slate-700/60 backdrop-blur-sm rounded-2xl p-4 border border-slate-700/40 shadow-xl">
@@ -70,7 +70,7 @@ export default function Pagination({totalCities,currentPage,handleInputChange,la
                 <p className="text-slate-300 mt-3 text-sm font-medium flex items-center justify-center gap-4">
                                     <span className="flex items-center gap-2">
                                         <Star size={16} className="text-yellow-400 fill-current" />
-                                        Average Rating: {4.5}
+                                        Average Rating: {avg_rate}
                                     </span>
                 </p>
             </div>

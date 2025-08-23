@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Search, ChevronDown, Plus, Calendar, DollarSign, Users, TrendingUp,
     MapPin, Clock, Eye, Activity, TicketPercent , Edit3,
@@ -7,13 +7,19 @@ import {
 } from 'lucide-react';
 import StateCard from "../../features/all/components/states_card.jsx";
 import Header from "../../features/all/components/header.jsx";
+import Filters from "../../features/event_group_trip/components/filter.jsx";
+
 import Footer from "../../features/event_group_trip/components/footer.jsx";
 import {useNavigate} from "react-router-dom";
+import {getIdsService} from "../../features/all/api/getIdsService.jsx";
+import {useDispatch} from "react-redux";
 
 export default function EventGroupTrip() {
-    const [searchQuery, setSearchQuery] = useState('');
-    const [selectedFilter, setSelectedFilter] = useState('all');
-    const [isSearchFocused, setIsSearchFocused] = useState(false);
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(getIdsService())
+    }, []);
+
     const navigate = useNavigate();
     const upcomingTours = [
         {
@@ -239,13 +245,6 @@ export default function EventGroupTrip() {
     const avgRating = recentTours.reduce((sum, tour) => sum + tour.rating, 0) / recentTours.length;
     const totalParticipants = recentTours.reduce((sum, tour) => sum + tour.participants, 0);
 
-    const filterButtons = [
-        { label: "All", value: "all", active: selectedFilter === "all" },
-        { label: "Active", value: "active", active: selectedFilter === "active" },
-        { label: "Upcoming", value: "upcoming", active: selectedFilter === "upcoming" },
-        { label: "Past", value: "past", active: selectedFilter === "past" }
-    ];
-
     return (
         <div className="relative space-y-6 bg-[#0b1520] min-h-screen -m-6 p-6 -mx-6">
             {/* Enhanced background effects */}
@@ -281,110 +280,7 @@ export default function EventGroupTrip() {
                             </StateCard>
                         </div>
 
-                        {/* Enhanced Search and Filter Bar */}
-                        <div className="flex flex-wrap gap-6 mb-8 px-4">
-                            {/* Enhanced Search Bar */}
-                            <div className={`
-                                relative group flex-1 min-w-[300px] h-14 rounded-2xl overflow-hidden 
-                                shadow-xl transition-all duration-500 ease-out
-                                ${isSearchFocused ? 'shadow-teal-400/20 scale-105' : 'shadow-black/50'}
-                                before:absolute before:inset-0 before:bg-gradient-to-r 
-                                before:from-teal-400/10 before:via-transparent before:to-slate-700/20
-                                before:opacity-0 before:transition-opacity before:duration-300
-                                ${isSearchFocused ? 'before:opacity-100' : ''}
-                            `}>
-                                {/* Animated border gradient */}
-                                <div className={`
-                                    absolute inset-0 bg-gradient-to-r from-teal-400/30 via-slate-600/30 to-teal-400/30
-                                    transition-opacity duration-500 rounded-2xl
-                                    ${isSearchFocused ? 'opacity-100' : 'opacity-0'}
-                                `} style={{ padding: '1px' }}>
-                                    <div className="w-full h-full bg-slate-800/90 backdrop-blur-md rounded-2xl"></div>
-                                </div>
-
-                                <div className="relative flex w-full h-full">
-                                    {/* Search Icon Container */}
-                                    <div className={`
-                                        flex items-center justify-center px-4 
-                                        bg-slate-800/80 backdrop-blur-sm border-r border-slate-600/30
-                                        transition-all duration-300 group-hover:bg-slate-700/80
-                                        ${isSearchFocused ? 'text-teal-300 bg-slate-700/90' : 'text-teal-400'}
-                                    `}>
-                                        <div className={`
-                                            transition-transform duration-300 
-                                            ${isSearchFocused ? 'scale-110 rotate-12' : 'group-hover:scale-105'}
-                                        `}>
-                                            <Search size={20} strokeWidth={2.5} />
-                                        </div>
-                                    </div>
-
-                                    {/* Input Field */}
-                                    <div className="relative flex-1 flex items-center z-1">
-                                        <input
-                                            type="text"
-                                            placeholder="Search tours, events, or guides..."
-                                            value={searchQuery}
-                                            onChange={(e) => setSearchQuery(e.target.value)}
-                                            onFocus={() => setIsSearchFocused(true)}
-                                            onBlur={() => setIsSearchFocused(false)}
-                                            className={`
-                                                w-full h-full px-5 py-4 
-                                                bg-slate-800/60 backdrop-blur-sm
-                                                text-white text-base font-medium
-                                                placeholder-slate-400/70
-                                                focus:outline-none focus:bg-slate-800/80
-                                                transition-all duration-300
-                                                ${isSearchFocused ? 'placeholder-teal-300/50' : ''}
-                                            `}
-                                        />
-
-                                        {/* Floating Icons */}
-                                        <div className={`
-                                            absolute right-4 flex items-center space-x-2
-                                            transition-all duration-300
-                                            ${searchQuery ? 'opacity-100 translate-x-0' : 'opacity-40 translate-x-2'}
-                                        `}>
-                                            <div className="text-slate-500 hover:text-teal-400 transition-colors duration-200 cursor-pointer">
-                                                <MapPin size={16} />
-                                            </div>
-                                            <div className="text-slate-500 hover:text-teal-400 transition-colors duration-200 cursor-pointer">
-                                                <Calendar size={16} />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Subtle glow effect */}
-                                <div className={`
-                                    absolute -inset-1 bg-gradient-to-r from-teal-400/20 to-slate-600/20 
-                                    rounded-2xl blur-xl transition-opacity duration-500
-                                    ${isSearchFocused ? 'opacity-50' : 'opacity-0'}
-                                `}></div>
-                            </div>
-
-                            {/* Enhanced Filter Buttons */}
-                            <div className="flex gap-3">
-                                {filterButtons.map((filter, index) => (
-                                    <button
-                                        key={filter.value}
-                                        onClick={() => setSelectedFilter(filter.value)}
-                                        className={`
-                                            px-5 py-3 rounded-2xl font-semibold text-sm transition-all duration-300 
-                                            ${filter.active
-                                            ? 'bg-gradient-to-r from-teal-600 to-teal-700 text-white shadow-lg shadow-teal-500/25 scale-105'
-                                            : 'bg-slate-800/60 text-slate-300 hover:bg-slate-700/60 hover:text-teal-300 hover:scale-105'
-                                        }
-                                            backdrop-blur-sm border border-slate-700/50 hover:border-teal-500/30
-                                        `}
-                                        style={{
-                                            animationDelay: `${index * 100}ms`
-                                        }}
-                                    >
-                                        {filter.label}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
+                        <Filters/>
 
                         {/* NEW: Top Rated Tours for Republishing - Cards Layout */}
                         <div className="mb-8">

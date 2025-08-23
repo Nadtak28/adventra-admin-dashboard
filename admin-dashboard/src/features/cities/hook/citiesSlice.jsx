@@ -9,6 +9,7 @@ const initialState = {
         search:'',
         sortBy:'name',
         isLoading:false,
+        avg_rate:0
 }
 const CitiesSlice =createSlice({
     name: "cityApi",
@@ -28,6 +29,7 @@ const CitiesSlice =createSlice({
                 state.lastPage = action.payload.last_page;
                 state.totalCities = action.payload.total;
                 state.currentPage = action.payload.current_page;
+                state.avg_rate = action.payload.avg_rate;
                 state.isLoading = false;
 
             })
