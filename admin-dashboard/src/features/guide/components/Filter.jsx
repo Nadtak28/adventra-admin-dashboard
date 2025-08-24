@@ -367,7 +367,7 @@ export default function GuideFilters(){
                                 viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 h-100 overflow-x-auto overflow-y-scrollborder border-slate-700/40 rounded-2xl p-4 shadow-inner backdrop-blur-sm[-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden' : 'space-y-4 h-150 overflow-y-scroll border border-slate-700/40 rounded-2xl p-4 shadow-inner backdrop-blur-sm[-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden'}>
                             {guides.map((guide) => (
                                 viewMode === 'grid' ? (
-                                    <div key={guide.id} className="group relative bg-gradient-to-br from-slate-800/80 to-slate-900/90 p-6 rounded-2xl border border-slate-700/50 backdrop-blur-sm hover:shadow-xl hover:shadow-teal-500/10 transition-all duration-500 hover:scale-105 hover:border-teal-500/30">
+                                    <div key={guide.id} className="group relative bg-gradient-to-br from-slate-800/80 to-slate-900/90 p-4 rounded-2xl border border-slate-700/50 backdrop-blur-sm hover:shadow-xl hover:shadow-teal-500/10 transition-all duration-500 hover:scale-105 hover:border-teal-500/30">
                                         <div className="absolute top-4 right-4">
                                             <span className={`px-2 py-1 rounded-full text-xs font-medium ${guide.status === 'active' ? 'bg-green-500/20 text-green-400 border border-green-500/30' : 'bg-red-500/20 text-red-400 border border-red-500/30'}`}>
                                                 {guide.status}
@@ -428,14 +428,17 @@ export default function GuideFilters(){
                                                 ))}
                                             </div>
 
-                                            <div className="grid grid-cols-2 gap-4 pt-4 border-t border-slate-700/50">
+                                            <div className="grid grid-cols-3 gap-4 pt-4 border-t border-slate-700/50">
                                                 <div className="text-center">
-                                                    <p className="text-slate-400 text-xs">Hourly Rate</p>
+                                                    <p className="text-slate-400 text-xs">Daily Rate</p>
                                                     <p className="text-teal-300 font-semibold">${guide.price}</p>
                                                 </div>
                                                 <div className="text-center">
-                                                    <p className="text-slate-400 text-xs">Monthly Salary</p>
+                                                    <p className="text-slate-400 text-xs">Const Salary</p>
                                                     <p className="text-white font-semibold">${guide.const_salary}</p>
+                                                </div><div className="text-center">
+                                                    <p className="text-slate-400 text-xs">Extra Salary</p>
+                                                    <p className="text-white font-semibold">${guide.extra_salary}</p>
                                                 </div>
                                             </div>
                                                 <button className="flex-1 bg-teal-500/20 hover:bg-teal-500/30 text-teal-300 hover:text-white px-4 py-2 rounded-xl transition-all duration-300 hover:scale-105 text-sm font-medium">
@@ -522,12 +525,15 @@ export default function GuideFilters(){
                                                 <div className="flex items-center justify-between pt-3 border-t border-slate-700/50">
                                                     <div className="flex items-center gap-6">
                                                         <div className="text-center">
-                                                            <p className="text-slate-400 text-xs">Hourly Rate</p>
+                                                            <p className="text-slate-400 text-xs">daily Rate</p>
                                                             <p className="text-teal-300 font-semibold">${guide.price}</p>
                                                         </div>
                                                         <div className="text-center">
                                                             <p className="text-slate-400 text-xs">Base Salary</p>
                                                             <p className="text-white font-semibold">${guide.const_salary}</p>
+                                                        </div><div className="text-center">
+                                                            <p className="text-slate-400 text-xs">Extra Salary</p>
+                                                            <p className="text-white font-semibold">${guide.extra_salary}</p>
                                                         </div>
                                                         {parseFloat(guide.extra_salary) > 0 && (
                                                             <div className="text-center">

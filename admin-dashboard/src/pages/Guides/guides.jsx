@@ -1,7 +1,8 @@
 import React, {useEffect} from 'react';
 import { Plus, Star, TrendingDown} from 'lucide-react';
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {getIdsService} from "../../features/all/api/getIdsService.jsx";
+import {GuidesService} from "../../features/guide/api/getGuidesPage.jsx";
 import Header from "../../features/all/components/header.jsx";
 import {useNavigate} from "react-router-dom";
 import GuideFilters from "../../features/guide/components/Filter.jsx";
@@ -12,56 +13,9 @@ export default function Guides() {
     const dispatch = useDispatch();
         useEffect(() => {
             dispatch(getIdsService())
+            dispatch(GuidesService())
         }, []);
-
-    const topRatedGuides = [
-        {
-            name: 'Emma Carter',
-            salary: '$4,500',
-            nextBooking: 'July 15, 2024',
-            rating: 4.9,
-            tours: 45
-        },
-        {
-            name: 'Owen Bennett',
-            salary: '$4,200',
-            nextBooking: 'July 20, 2024',
-            rating: 4.8,
-            tours: 38
-        },
-        {
-            name: 'Chloe Foster',
-            salary: '$4,000',
-            nextBooking: 'July 22, 2024',
-            rating: 4.7,
-            tours: 42
-        }
-    ];
-
-    const lowestRatedGuides = [
-        {
-            name: 'Caleb Scott',
-            salary: '$3,500',
-            nextBooking: 'July 25, 2024',
-            rating: 3.8,
-            tours: 23
-        },
-        {
-            name: 'Lily Evans',
-            salary: '$3,200',
-            nextBooking: 'July 28, 2024',
-            rating: 3.6,
-            tours: 18
-        },
-        {
-            name: 'Samuel Ford',
-            salary: '$3,000',
-            nextBooking: 'July 30, 2024',
-            rating: 3.4,
-            tours: 15
-        }
-    ];
-
+    const {topRatedGuides,badGuides}=useSelector(state => state.Guides)
 
     return (
         <div
@@ -93,7 +47,7 @@ export default function Guides() {
                             icon={Star}
                             gradient="from-yellow-500 to-orange-500"
                         />
-                        <div className="flex overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                        <div className="flex overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pb-10">
                             <div className="flex items-stretch p-8 gap-6 min-w-max">
                                 {topRatedGuides.map((guide, index) => (
                                     <GuideCard key={index} guide={guide} type="top" />
@@ -107,9 +61,9 @@ export default function Guides() {
                             icon={TrendingDown}
                             gradient="from-red-500 to-pink-500"
                         />
-                        <div className="flex overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pb-8">
+                        <div className="flex overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pb-10">
                             <div className="flex items-stretch p-8 gap-6 min-w-max">
-                                {lowestRatedGuides.map((guide, index) => (
+                                {badGuides.map((guide, index) => (
                                     <GuideCard key={index} guide={guide} type="lowest" />
                                 ))}
                             </div>
