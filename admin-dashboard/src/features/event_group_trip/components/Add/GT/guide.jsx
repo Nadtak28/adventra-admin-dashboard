@@ -161,6 +161,7 @@ export default function Guide({formData,handleInputChange}) {
                     </button>
                 )}
                 {formData.errors?.selectedGuide&& <p className="text-red-500 text-sm ml-3 mt-2 ">Field is required</p>}
+                {(formData.errors?.selectedGuide&&formData.form?.selectedGuide?.id)&& <p className="text-red-500 text-sm ml-3 mt-2 ">Guide IS busy on this date</p>}
             </div>
             {/* Tour Guide Selection Modal */}
             {showGuideModal && isCitySelected && (

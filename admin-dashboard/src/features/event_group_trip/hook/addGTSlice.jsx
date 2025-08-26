@@ -197,6 +197,10 @@ const AddGTSlice =createSlice({
                     tokenStore.clearToken()
                     window.location.href = '/login'
                 }
+                else if(action.payload?.message){
+                    console.log("nadeemooooo")
+                    state.errors.selectedGuide=true
+                }
                 state.isLoading = false;
             })
 
