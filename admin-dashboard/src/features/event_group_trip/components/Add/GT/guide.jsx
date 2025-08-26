@@ -40,7 +40,7 @@ export default function Guide({formData,handleInputChange}) {
                             <div className="flex items-start gap-4">
                                 <div className="relative">
                                     <img
-                                        src={formData.form.selectedGuide?.images?.[0]?.url || '/default-guide.jpg'}
+                                        src={formData.form.selectedGuide?.images?.[0]?.url || "/assets/guide.png"}
                                         alt={formData.form.selectedGuide?.name}
                                         className="w-20 h-20 rounded-2xl object-cover border-2 border-teal-500/50"
                                     />
@@ -160,8 +160,8 @@ export default function Guide({formData,handleInputChange}) {
                         </p>
                     </button>
                 )}
-                {formData.errors?.selectedGuide&& <p className="text-red-500 text-sm ml-3 mt-2 ">Field is required</p>}
-                {(formData.errors?.selectedGuide&&formData.form?.selectedGuide?.id)&& <p className="text-red-500 text-sm ml-3 mt-2 ">Guide IS busy on this date</p>}
+                {(formData.errors?.selectedGuide&&!formData.form?.selectedGuide?.id)&& <p className="text-red-500 text-sm ml-3 mt-2 ">Field is required</p>}
+                {(formData.errors?.selectedGuide&&formData.form?.selectedGuide?.id)&& <p className="text-red-500 text-sm ml-3 mt-2 ">Guide is busy on this date</p>}
             </div>
             {/* Tour Guide Selection Modal */}
             {showGuideModal && isCitySelected && (
@@ -200,7 +200,7 @@ export default function Guide({formData,handleInputChange}) {
                                     <div className="flex items-start gap-4">
                                         <div className="relative">
                                             <img
-                                                src={guide.images?.[0]?.url || '/default-guide.jpg'}
+                                                src={guide.images?.[0]?.url || "/assets/guide.png"}
                                                 alt={guide?.name}
                                                 className="w-16 h-16 rounded-2xl object-cover border-2 border-teal-500/30"
                                             />

@@ -165,6 +165,10 @@ const AddGTSlice =createSlice({
                     tokenStore.clearToken()
                     window.location.href = '/login'
                 }
+
+                else if(action.payload.busy){
+                    state.errors.selectedGuide=true
+                }
                 state.isLoading = false;
             })
             .addCase(getGEByIDService.pending, (state) => {
@@ -196,9 +200,6 @@ const AddGTSlice =createSlice({
                 if((!!action.payload?.unauthorized)){
                     tokenStore.clearToken()
                     window.location.href = '/login'
-                }
-                else if(action.payload?.message){
-                    state.errors.selectedGuide=true
                 }
                 state.isLoading = false;
             })
