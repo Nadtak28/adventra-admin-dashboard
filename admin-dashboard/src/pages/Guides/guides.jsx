@@ -21,8 +21,7 @@ export default function Guides() {
     return (
         <div
             className="relative flex size-full min-h-screen w-auto flex-col space-y-6 bg-[#0b1520] -m-6 p-6 -mx-6 overflow-x-hidden"
-            style={{ fontFamily: '"Spline Sans", "Noto Sans", sans-serif' }}
-        >
+            style={{ fontFamily: '"Spline Sans", "Noto Sans", sans-serif' }}>
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-teal-900/30 via-slate-800/10 to-transparent"></div>
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-slate-800/40 via-transparent to-transparent"></div>
 

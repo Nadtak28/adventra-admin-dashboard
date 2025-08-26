@@ -43,7 +43,7 @@ export default function Events({formData,handleInputChange}) {
                         <Calendar size={48} className="text-slate-600 mx-auto mb-4" />
                         <p className="text-slate-400 text-lg font-medium">Please select a city first to view available events</p>
                     </div>
-                ) : formData.form.selectedEvents.length > 0 ? (
+                ) : formData.form?.selectedEvents?.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {formData.form.selectedEvents.map(event => (
                             <div key={event.id} className="bg-slate-800/40 rounded-2xl overflow-hidden border border-slate-600/30 group hover:border-teal-500/50 transition-all duration-300">
@@ -98,7 +98,7 @@ export default function Events({formData,handleInputChange}) {
                                     onClick={() => setShowEventModal(false)}
                                     className="px-8 py-3 bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-500 hover:to-teal-600 text-white font-semibold rounded-2xl transition-all duration-300 hover:scale-105"
                                 >
-                                    ({formData.form.selectedEvents.length} Events were selected )
+                                    ({formData.form?.selectedEvents?.length} Events were selected )
                                 </button>
                             </div>
                             <button
@@ -125,7 +125,7 @@ export default function Events({formData,handleInputChange}) {
                         {/* Events Grid */}
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {filteredEvents.map(event => {
-                                const isSelected = formData.form.selectedEvents.find(e => e.id === event.id);
+                                const isSelected = formData.form.selectedEvents?.find(e => e.id === event.id);
                                 return (
                                     <div
                                         key={event.id}

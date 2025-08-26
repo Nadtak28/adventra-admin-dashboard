@@ -34,63 +34,63 @@ export default function Guide({formData,handleInputChange}) {
                         <p className="text-slate-400 text-lg font-medium">يجب اختيار مدينة أولاً</p>
                         <p className="text-slate-500 text-sm">Please select a city first to view available guides</p>
                     </div>
-                ) : formData.form.selectedGuide.id ? (
+                ) : formData.form.selectedGuide?.id ? (
                     <div className="bg-slate-800/40 rounded-2xl p-6 border border-slate-600/30">
                         <div className="flex items-start justify-between">
                             <div className="flex items-start gap-4">
                                 <div className="relative">
                                     <img
-                                        src={formData.form.selectedGuide.images?.[0]?.url || '/default-guide.jpg'}
-                                        alt={formData.form.selectedGuide.name}
+                                        src={formData.form.selectedGuide?.images?.[0]?.url || '/default-guide.jpg'}
+                                        alt={formData.form.selectedGuide?.name}
                                         className="w-20 h-20 rounded-2xl object-cover border-2 border-teal-500/50"
                                     />
-                                    {formData.form.selectedGuide.status === 'active' && (
+                                    {formData.form?.selectedGuide?.status === 'active' && (
                                         <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-slate-800"></div>
                                     )}
                                 </div>
                                 <div className="flex-1">
-                                    <h3 className="text-white font-bold text-xl mb-2">{formData.form.selectedGuide.name}</h3>
+                                    <h3 className="text-white font-bold text-xl mb-2">{formData.form?.selectedGuide?.name}</h3>
 
                                     <div className="flex items-center gap-3 mb-3">
                                         <div className="flex items-center gap-1">
                                             <Star size={16} className="text-yellow-400 fill-current" />
-                                            <span className="text-yellow-400 font-semibold text-sm">{formData.form.selectedGuide.rate || '0'}</span>
-                                            <span className="text-slate-400 text-sm">({formData.form.selectedGuide.stars_count || 0} ★)</span>
+                                            <span className="text-yellow-400 font-semibold text-sm">{formData.form?.selectedGuide?.rate || '0'}</span>
+                                            <span className="text-slate-400 text-sm">({formData.form?.selectedGuide?.stars_count || 0} ★)</span>
                                         </div>
                                         <div className="w-1 h-1 bg-slate-500 rounded-full"></div>
-                                        <span className="text-slate-300 text-sm">{formData.form.selectedGuide.reviewer_count || 0} reviews</span>
+                                        <span className="text-slate-300 text-sm">{formData.form?.selectedGuide?.reviewer_count || 0} reviews</span>
                                     </div>
 
                                     <div className="grid grid-cols-2 gap-4 mb-3">
                                         <div className="bg-slate-700/30 rounded-lg p-3">
                                             <span className="text-slate-400 text-xs block">Base Salary</span>
-                                            <p className="text-teal-300 font-bold text-lg">${formData.form.selectedGuide.const_salary}</p>
+                                            <p className="text-teal-300 font-bold text-lg">${formData.form?.selectedGuide?.const_salary}</p>
                                         </div>
                                         <div className="bg-slate-700/30 rounded-lg p-3">
                                             <span className="text-slate-400 text-xs block">Guiding service cost</span>
-                                            <p className="text-white font-bold text-lg">${formData.form.selectedGuide.price}</p>
+                                            <p className="text-white font-bold text-lg">${formData?.form?.selectedGuide?.price}</p>
                                         </div>
                                     </div>
 
                                     {formData.form.selectedGuide.phone && (
                                         <div className="flex items-center gap-2 mb-2">
                                             <span className="text-teal-400">📞</span>
-                                            <span className="text-slate-300 text-sm">{formData.form.selectedGuide.phone}</span>
+                                            <span className="text-slate-300 text-sm">{formData.form?.selectedGuide?.phone}</span>
                                         </div>
                                     )}
 
-                                    {formData.form.selectedGuide.email && (
+                                    {formData.form.selectedGuide?.email && (
                                         <div className="flex items-center gap-2 mb-3">
                                             <span className="text-teal-400">✉️</span>
-                                            <span className="text-slate-300 text-sm">{formData.form.selectedGuide.email}</span>
+                                            <span className="text-slate-300 text-sm">{formData.form.selectedGuide?.email}</span>
                                         </div>
                                     )}
 
-                                    {formData.form.selectedGuide.languages && formData.form.selectedGuide.languages.length > 0 && (
+                                    {formData.form.selectedGuide?.languages && formData.form.selectedGuide?.languages?.length > 0 && (
                                         <div className="mb-3">
                                             <span className="text-slate-400 text-xs block mb-1">Languages:</span>
                                             <div className="flex flex-wrap gap-1">
-                                                {formData.form.selectedGuide.languages.map(lang => (
+                                                {formData.form.selectedGuide?.languages.map(lang => (
                                                     <span key={lang.id} className="px-2 py-1 bg-teal-600/20 text-teal-300 text-xs rounded-lg border border-teal-500/30">
                                                         {lang.name}
                                                     </span>
@@ -99,11 +99,11 @@ export default function Guide({formData,handleInputChange}) {
                                         </div>
                                     )}
 
-                                    {formData.form.selectedGuide.categories && formData.form.selectedGuide.categories.length > 0 && (
+                                    {formData.form.selectedGuide?.categories && formData.form.selectedGuide?.categories?.length > 0 && (
                                         <div className="mb-3">
                                             <span className="text-slate-400 text-xs block mb-1">Specialties:</span>
                                             <div className="flex flex-wrap gap-1">
-                                                {formData.form.selectedGuide.categories.map(category => (
+                                                {formData.form.selectedGuide?.categories?.map(category => (
                                                     <span key={category.id} className="px-2 py-1 bg-slate-700/50 text-slate-300 text-xs rounded-lg">
                                                         {category.name}
                                                     </span>
@@ -112,10 +112,10 @@ export default function Guide({formData,handleInputChange}) {
                                         </div>
                                     )}
 
-                                    {formData.form.selectedGuide.description && (
+                                    {formData.form.selectedGuide?.description && (
                                         <div>
                                             <span className="text-slate-400 text-xs block mb-1">About:</span>
-                                            <p className="text-slate-300 text-sm line-clamp-3 leading-relaxed">{formData.form.selectedGuide.description}</p>
+                                            <p className="text-slate-300 text-sm line-clamp-3 leading-relaxed">{formData.form?.selectedGuide?.description}</p>
                                         </div>
                                     )}
                                 </div>
@@ -160,7 +160,7 @@ export default function Guide({formData,handleInputChange}) {
                         </p>
                     </button>
                 )}
-                {formData.errors.selectedGuide&& <p className="text-red-500 text-sm ml-3 mt-2 ">Field is required</p>}
+                {formData.errors?.selectedGuide&& <p className="text-red-500 text-sm ml-3 mt-2 ">Field is required</p>}
             </div>
             {/* Tour Guide Selection Modal */}
             {showGuideModal && isCitySelected && (
@@ -200,10 +200,10 @@ export default function Guide({formData,handleInputChange}) {
                                         <div className="relative">
                                             <img
                                                 src={guide.images?.[0]?.url || '/default-guide.jpg'}
-                                                alt={guide.name}
+                                                alt={guide?.name}
                                                 className="w-16 h-16 rounded-2xl object-cover border-2 border-teal-500/30"
                                             />
-                                            {guide.status === 'active' && (
+                                            {guide?.status === 'active' && (
                                                 <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-slate-800"></div>
                                             )}
                                         </div>

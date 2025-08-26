@@ -181,22 +181,14 @@ const AddGTSlice =createSlice({
                     userPrice: state.form.userPrice,
                     minTickets: state.form.minTickets,
                     maxTickets:state.form.maxTickets,
-                    selectedGuide:{
-                        id: '',
-                        name: '',
-                        nameEn: '',
-                        image: '',
-                        languages: [],
-                        rating: '',
-                        experience: '',
-                        specialties: []
-                    },
-                    selectedEvents: [],
+                    selectedGuide:state.form.selectedGuide,
+                    selectedEvents:state.form.selectedEvents,
                      Events: action.payload.events,
                      Guides: action.payload.guides,
                     city_id:state.form.city_id,
 
                 }
+
 
             })
             .addCase(getGEByIDService.rejected, (state, action) => {
