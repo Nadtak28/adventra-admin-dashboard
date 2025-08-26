@@ -9,6 +9,8 @@
     addGT: "/dashboard/group_trip",
     addGuide: "/dashboard/guides/store",
     cities: "/dashboard/cities",
+    users: "/dashboard/users/",
+    eventStatus:"/dashboard/event/",
     Guides:"/dashboard/guides",
     Ev_GT:'/dashboard/events_and_groups',
     City:'/cities/',

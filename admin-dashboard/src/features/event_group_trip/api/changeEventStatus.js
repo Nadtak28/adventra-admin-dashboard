@@ -2,16 +2,12 @@ import API from "../../../api/apiRoutes.jsx"
 import albolbol from "../../../api/albolbol.jsx"
 import {createAsyncThunk} from "@reduxjs/toolkit";
 
-export const GuidesService=createAsyncThunk(
-    "GuidesService",
-    async (per_page,{rejectWithValue,getState}) => {
+export const ChangeEventStatueService=createAsyncThunk(
+    "ChangeEventStatueService",
+    async ({status,id},{rejectWithValue,getState}) => {
         try{
-            const response1=await albolbol.post(API.Guides,{per_page:per_page.good,order_type:'DESC'})
-            const response2=await albolbol.post(API.Guides,{per_page:per_page.bad,order_type:'ASC'})
-            return {
-                topRatedGuides:response1.data,
-                badGuides:response2.data,
-            };
+            const response=await albolbol.post(`${API.eventStatus}${id}/change_status`, {action:status})
+            return response.data
         }
         catch (error) {
             console.log(error);

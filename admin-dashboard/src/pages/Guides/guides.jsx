@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react';
-import { Plus, Star, TrendingDown} from 'lucide-react';
+import React, {useEffect, useState} from 'react';
+import {ChevronDown, Plus, Star, TrendingDown} from 'lucide-react';
 import {useDispatch, useSelector} from "react-redux";
 import {getIdsService} from "../../features/all/api/getIdsService.jsx";
 import {GuidesService} from "../../features/guide/api/getGuidesPage.jsx";
@@ -11,11 +11,12 @@ import SectionHeader from "../../features/guide/components/sectionHeader.jsx";
 export default function Guides() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const [perPage, setPerPage] = useState({good:5,bad:5});
         useEffect(() => {
             dispatch(getIdsService())
-            dispatch(GuidesService())
+            dispatch(GuidesService(perPage))
         }, []);
-    const {topRatedGuides,badGuides}=useSelector(state => state.Guides)
+    const {topRatedGuides,badGuides,isLoading}=useSelector(state => state.Guides)
 
     return (
         <div
@@ -39,7 +40,7 @@ export default function Guides() {
                         </div>
 
                         {/* Search and Filter */}
-                        <GuideFilters />
+                        <GuideFilters isLoading={isLoading}/>
 
                         {/* Top Rated Guides */}
                         <SectionHeader
@@ -48,7 +49,7 @@ export default function Guides() {
                             gradient="from-yellow-500 to-orange-500"
                         />
                         <div className="flex overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pb-10">
-                            <div className="flex items-stretch p-8 gap-6 min-w-max">
+                            <div className="flex items-stretch p-10 gap-6 min-w-max">
                                 {topRatedGuides.map((guide, index) => (
                                     <GuideCard key={index} guide={guide} type="top" />
                                 ))}
@@ -62,7 +63,7 @@ export default function Guides() {
                             gradient="from-red-500 to-pink-500"
                         />
                         <div className="flex overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pb-10">
-                            <div className="flex items-stretch p-8 gap-6 min-w-max">
+                            <div className="flex items-stretch p-10 gap-6 min-w-max">
                                 {badGuides.map((guide, index) => (
                                     <GuideCard key={index} guide={guide} type="lowest" />
                                 ))}

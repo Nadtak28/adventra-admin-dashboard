@@ -26,7 +26,6 @@ export const filterService=createAsyncThunk(
                     {
                         const response1=await albolbol.post(API.search,{...form,status:'active',types:[data.type]})
                         const response2=await albolbol.post(API.search,{...form,status:'inactive',types:[data.type]})
-                        console.log(response1.data,response2.data)
                         response = {
                             guide: [
                                 ...(response1.data.guide || []),
@@ -76,6 +75,11 @@ export const filterService=createAsyncThunk(
                         response=response1.data
                     }
                     return {...response,type:"group_trip"}
+                case 'user':
+                    const response1=await albolbol.post(API.search,{...form,status:'active',types:[data.type]})
+                    const response2=await albolbol.post(API.search,{...form,status:'inactive',types:[data.type]})
+                    const users={activeUsers:response1.data,inActiveUsers:response2.data}
+                    return {...users,type:"user"}
             }
         }
         catch (error) {

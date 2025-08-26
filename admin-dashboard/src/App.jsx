@@ -4,8 +4,9 @@ import Dashboard from './pages/dashboard.jsx'
 import EventGroupTrip from "./pages/events_group_trip/event_groupTrip.jsx";
 import Cities from "./pages/Cities/cities.jsx"
 import AddCity from "./pages/Cities/add_city.jsx"
-// import City from "./pages/Cities/city.jsx"
+import City from "./pages/Cities/city.jsx"
 import Guides from "./pages/Guides/guides.jsx"
+import Users from "./pages/users.jsx"
 import AddGuides from "./pages/Guides/add_guide.jsx"
 import ProtectedRoute from "./features/routes/protectedRoute.jsx"
 import {tokenStore} from "./utils/dataStore.js";
@@ -24,10 +25,11 @@ function App() {
                <Route index element={<Dashboard/>}/>
                <Route path="event_grouptrip" element={<EventGroupTrip/>}/>
                <Route path="cities" element={<Cities/>}/>
+               <Route path="cities/1" element={<City />} />
                <Route path="guides" element={<Guides/>}/>
+               <Route path="users" element={<Users/>}/>
                <Route path="guides/add" element={<AddGuides/>}/>
                <Route path="cities/add" element={<AddCity />} />
-               {/*<Route path="/cities/:id" element={<City />} />*/}
                <Route path="event_grouptrip/add_event" element={<AddEvent />} />
                <Route path="event_grouptrip/add_group_trip" element={<AddGroupTrip />} />
         </Route>

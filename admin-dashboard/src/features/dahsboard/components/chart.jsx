@@ -20,6 +20,10 @@ export default function Chart({dashBoard,updateFields}) {
     // دالة طباعة اسم الشهر
     const handleMonthClick = (monthData, index) => {
         updateFields('currentMonth', -index+monthsData.length-1);
+        setTimeout(()=>{
+            window.scrollTo({top: 10, behavior: 'smooth'});
+        },100)
+
     };
 
     // دوال التنقل
