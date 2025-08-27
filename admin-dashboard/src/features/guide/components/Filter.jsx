@@ -4,7 +4,7 @@ import {filterService} from "../../all/api/filterService.jsx";
 import SearchBar from "../components/filter/searchBar.jsx";
 import FilterSection from "../components/filter/filterSection.jsx";
 import SearchResult from "../components/filter/searchResult.jsx";
-export default function GuideFilters({isLoading}){
+export default function GuideFilters({isLoading,nav}){
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCities, setSelectedCities] = useState([]);
     const [selectedCategories, setSelectedCategories] = useState([]);
@@ -64,7 +64,7 @@ export default function GuideFilters({isLoading}){
             <FilterSection selectedCities={selectedCities} setSelectedCities={setSelectedCities} clearAllFilters={clearAllFilters} selectedCategories={selectedCategories} selectedLanguages={selectedLanguages} selectedStatus={selectedStatus} setSelectedCategories={setSelectedCategories} setSelectedLanguages={setSelectedLanguages} setSelectedStatus={setSelectedStatus} />
 
             {/* Search Results */}
-            <SearchResult isLoading={isLoading} searchTerm={searchTerm} selectedLanguages={selectedLanguages} selectedStatus={selectedStatus} selectedCategories={selectedCategories} selectedCities={selectedCities} sortBy={sortBy} setSortBy={setSortBy} clearAllFilters={clearAllFilters}/>
+            <SearchResult nav={nav} isLoading={isLoading} searchTerm={searchTerm} selectedLanguages={selectedLanguages} selectedStatus={selectedStatus} selectedCategories={selectedCategories} selectedCities={selectedCities} sortBy={sortBy} setSortBy={setSortBy} clearAllFilters={clearAllFilters}/>
         </div>
     );
 }

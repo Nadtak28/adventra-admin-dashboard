@@ -13,9 +13,6 @@ import {updateCityService} from "../../features/cities/api/updateCityService.jsx
 import {getIdsService} from "../../features/all/api/getIdsService.jsx";
 
 const MainContent = () => {
-    useEffect(() => {
-        dispatch(getIdsService())
-    }, []);
     const { id } = useParams();
     const dispatch = useDispatch();
     const { form, isLoading } = useSelector((state) => state.City);
@@ -62,15 +59,14 @@ const MainContent = () => {
         videos:[],
         isActive: form.status === 'active'
     });
-    console.log(editForm);
-
     useEffect(() => {
         dispatch(CityService({ id }));
+        dispatch(cityEvents_GuidesService({ id }));
     }, [dispatch, id]);
 
     useEffect(() => {
-        dispatch(cityEvents_GuidesService({ id }));
-    }, [dispatch, id]);
+        dispatch(getIdsService())
+    }, []);
 
     // تحديث النموذج عند تغيير البيانات
     useEffect(() => {
@@ -130,6 +126,8 @@ const MainContent = () => {
         }for(const media of editForm.videos) {
             old_media.push(media.id)
         }
+        console.log(old_media)
+        console.log(media)
         const status=editForm.isActive===true?'active':'inactive';
         const data={
             name:editForm.nameEn,
@@ -142,16 +140,20 @@ const MainContent = () => {
             old_media:old_media,
             media:media
         }
-        try {
-            await dispatch(updateCityService({data,id}));
+        console.log(data)
+            const result=await dispatch(updateCityService({data,id}));
             setIsEditing(false);
             dispatch(CityService({ id }));
+            if(result.type==='updateCityService/fulfilled')
+            {
+                alert('Information updated successfully!');
+                setFiles({images:[],videos:[]})
+                //هون بضيف الnavigate فيما بعد
+            }
+            else {
+                alert('Problem happened ');
+            }
 
-            alert('Information updated successfully!');
-        } catch (error) {
-            console.error('error:', error);
-            alert('error happened!');
-        }
     };
 
     // دالة تحديث قيم النموذج

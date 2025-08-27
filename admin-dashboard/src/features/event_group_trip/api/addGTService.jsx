@@ -45,13 +45,14 @@ export const addGTService=createAsyncThunk(
 
         try{
             const response=await albolbolFiles.post(API.addGT,form)
-            if(response.data[0]=="the guide is busy in this date"){
-               return rejectWithValue({busy:true})
-            }
+
             return response.data;
         }
         catch (error) {
             console.log(error);
+            if(error.response.data[0]=="the guide is busy in this date"){
+                return rejectWithValue({busy:true})
+            }
             if (error.status === 401) {
                 return rejectWithValue({unauthorized: true});
             }

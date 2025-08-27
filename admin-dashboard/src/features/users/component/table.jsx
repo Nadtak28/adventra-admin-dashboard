@@ -5,7 +5,7 @@ const UserRow = ({ user, toggleUserStatus }) => {
     const isActive = user.status === "active";
     const avatarUrl =
         user.image && user.image.length > 0
-            ? user.image[0]
+            ? user.image?.[0].url
             : `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=3b82f6&color=ffffff`;
 
     return (

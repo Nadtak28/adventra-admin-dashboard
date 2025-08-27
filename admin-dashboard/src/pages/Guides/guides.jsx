@@ -17,7 +17,9 @@ export default function Guides() {
             dispatch(GuidesService(perPage))
         }, []);
     const {topRatedGuides,badGuides,isLoading}=useSelector(state => state.Guides)
-
+    const nav=(id)=>{
+        navigate(`/dashboard/guides/${id}`)
+    }
     return (
         <div
             className="relative flex size-full min-h-screen w-auto flex-col space-y-6 bg-[#0b1520] -m-6 p-6 -mx-6 overflow-x-hidden"
@@ -39,7 +41,7 @@ export default function Guides() {
                         </div>
 
                         {/* Search and Filter */}
-                        <GuideFilters isLoading={isLoading}/>
+                        <GuideFilters isLoading={isLoading} nav={nav}/>
 
                         {/* Top Rated Guides */}
                         <SectionHeader
@@ -50,7 +52,7 @@ export default function Guides() {
                         <div className="flex overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pb-10">
                             <div className="flex items-stretch p-10 gap-6 min-w-max">
                                 {topRatedGuides.map((guide, index) => (
-                                    <GuideCard key={index} guide={guide} type="top" />
+                                    <GuideCard key={index} guide={guide} nav={nav} />
                                 ))}
                             </div>
                         </div>
@@ -64,7 +66,7 @@ export default function Guides() {
                         <div className="flex overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pb-10">
                             <div className="flex items-stretch p-10 gap-6 min-w-max">
                                 {badGuides.map((guide, index) => (
-                                    <GuideCard key={index} guide={guide} type="lowest" />
+                                    <GuideCard key={index} guide={guide} nav={nav} />
                                 ))}
                             </div>
                         </div>

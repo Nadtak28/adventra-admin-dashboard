@@ -31,7 +31,7 @@ export default function Guide({formData,handleInputChange}) {
                 {!isCitySelected ? (
                     <div className="text-center py-12">
                         <User size={48} className="text-slate-600 mx-auto mb-4" />
-                        <p className="text-slate-400 text-lg font-medium">يجب اختيار مدينة أولاً</p>
+                        <p className="text-slate-400 text-lg font-medium">Should Select City first</p>
                         <p className="text-slate-500 text-sm">Please select a city first to view available guides</p>
                     </div>
                 ) : formData.form.selectedGuide?.id ? (

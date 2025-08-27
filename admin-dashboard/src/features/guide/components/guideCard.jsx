@@ -1,7 +1,7 @@
 import {Users, Calendar, Star, TrendingDown, MapPin, Languages, Mail, Phone, Award, TrendingUp} from 'lucide-react';
 import React from "react";
 
-const GuideCard = ({ guide, type }) => {
+const GuideCard = ({ guide, nav }) => {
     const getPerformanceColor = (rating) => {
         const numRating = parseFloat(rating);
         if (numRating >= 4) return 'from-green-400 to-emerald-400';
@@ -28,7 +28,10 @@ const GuideCard = ({ guide, type }) => {
     const performancePercentage = getPerformancePercentage(guide.monthly_rating);
 
     return (
-        <div className="group relative flex h-full flex-1 flex-col gap-4 rounded-2xl min-w-64 bg-gradient-to-br from-slate-800/80 to-slate-900/90 p-6 border border-slate-700/50 backdrop-blur-sm hover:shadow-2xl hover:shadow-teal-500/10 transition-all duration-500 hover:scale-105 hover:border-teal-500/30 hover:-translate-y-2">
+        <div onClick={()=>{
+            nav(guide.id)
+        }}
+            className="group relative flex h-full flex-1 flex-col gap-4 rounded-2xl min-w-64 bg-gradient-to-br from-slate-800/80 to-slate-900/90 p-6 border border-slate-700/50 backdrop-blur-sm hover:shadow-2xl hover:shadow-teal-500/10 transition-all duration-500 hover:scale-105 hover:border-teal-500/30 hover:-translate-y-2">
 
             {/* Performance Badge */}
             <div className="absolute -top-2 -right-2 z-10">

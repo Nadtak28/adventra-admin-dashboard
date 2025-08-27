@@ -12,8 +12,11 @@
     users: "/dashboard/users/",
     eventStatus:"/dashboard/event/",
     Guides:"/dashboard/guides",
+    Guide:"/guides/" ,
     Ev_GT:'/dashboard/events_and_groups',
     City:'/cities/',
     UpdateCity:'/dashboard/cities/',
+    UpdateGuide:'/dashboard/guides/',
+    feedBack: '/feedback/',
 };
 export default API;

@@ -464,7 +464,7 @@ const MediaSlider = ({ items, type, title, isEditing, onDeleteMedia }) => {
                 <div
                     className="absolute inset-0 bg-cover bg-center transition-all duration-1000 group-hover:scale-105"
                     style={{
-                        backgroundImage: `url("${currentItem?.url || defaultImage}")`,
+                        backgroundImage: `url("${currentItem?.url}")`,
                     }}
                 />
             )}

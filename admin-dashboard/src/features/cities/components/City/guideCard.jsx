@@ -5,9 +5,8 @@ const GuideCard = ({ guide, index }) => {
     const navigate = useNavigate();
 
     function onClick(guide) {
-        navigate(`dashboard/guides/${guide.id}`);
+        navigate(`/dashboard/guides/${guide.id}`);
     }
-
     return (
         <div
             onClick={() => onClick(guide)}

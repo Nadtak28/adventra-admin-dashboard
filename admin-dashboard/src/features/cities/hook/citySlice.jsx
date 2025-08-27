@@ -35,6 +35,7 @@ const CitySlice =createSlice({
             .addCase(CityService.fulfilled, (state, action) => {
                 console.log("CityService.fulfilled", action.payload)
                 state.form.id=action.payload.id;
+                state.form.status=action.payload.status;
                 state.form.nameEn=action.payload.name;
                 state.form.nameAr=action.payload.name_ar;
                 state.form.country=action.payload.country;
@@ -55,6 +56,7 @@ const CitySlice =createSlice({
                 state.isLoading = false;
             })
             .addCase(cityEvents_GuidesService.fulfilled, (state, action) => {
+                console.log("CityEvent_guidesService.fulfilled", action.payload)
                 state.form.events=action.payload.events;
                 state.form.guides=action.payload.guides;
 
@@ -68,8 +70,6 @@ const CitySlice =createSlice({
                 }
             }).addCase(updateCityService.fulfilled, (state, action) => {
                 console.log("UpdateCityService.fulfilled", action.payload)
-
-
             })
             .addCase(updateCityService.rejected, (state, action) => {
                 console.log("UpdateCityService.rejected", action.payload)

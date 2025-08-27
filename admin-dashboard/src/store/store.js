@@ -9,6 +9,7 @@ import AddGTSlice from "../features/event_group_trip/hook/addGTSlice.jsx";
 import addGuideSlice from "../features/guide/hook/addGuideSlice.jsx";
 import CitiesSlice from "../features/cities/hook/citiesSlice.jsx";
 import GuideSlice from "../features/guide/hook/guidesSlice.jsx";
+import OneGuideSlice from "../features/guide/hook/guideSlice.jsx";
 import Event_GTSlice from "../features/event_group_trip/hook/Event_GTSlice.jsx";
 import UsersSlice from "../features/users/hook/usersSlice.jsx";
 export const store = configureStore({
@@ -22,6 +23,7 @@ export const store = configureStore({
     addGuide: addGuideSlice,
     Cities:CitiesSlice,
     Guides:GuideSlice,
+    Guide:OneGuideSlice,
     Events_GTS:Event_GTSlice,
     Users:UsersSlice,
     City:CitySlice,

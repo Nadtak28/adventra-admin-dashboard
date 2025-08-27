@@ -6,6 +6,7 @@ import Cities from "./pages/Cities/cities.jsx"
 import AddCity from "./pages/Cities/add_city.jsx"
 import City from "./pages/Cities/city.jsx"
 import Guides from "./pages/Guides/guides.jsx"
+import Guide from "./pages/Guides/guide.jsx"
 import Users from "./pages/users.jsx"
 import AddGuides from "./pages/Guides/add_guide.jsx"
 import ProtectedRoute from "./features/routes/protectedRoute.jsx"
@@ -27,6 +28,7 @@ function App() {
                <Route path="cities" element={<Cities/>}/>
                <Route path="cities/:id" element={<City />} />
                <Route path="guides" element={<Guides/>}/>
+               <Route path="guides/:id" element={<Guide/>}/>
                <Route path="users" element={<Users/>}/>
                <Route path="guides/add" element={<AddGuides/>}/>
                <Route path="cities/add" element={<AddCity />} />

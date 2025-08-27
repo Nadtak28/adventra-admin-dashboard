@@ -2,7 +2,7 @@ import {useState} from "react";
 import {useSelector} from "react-redux";
 import {MapPin, Search, Star, Loader2} from "lucide-react";
 
-export default function SearchResult({isLoading, searchTerm, selectedCities, selectedCategories, selectedLanguages, selectedStatus, sortBy, setSortBy, clearAllFilters}) {
+export default function SearchResult({nav,isLoading, searchTerm, selectedCities, selectedCategories, selectedLanguages, selectedStatus, sortBy, setSortBy, clearAllFilters}) {
     const {guides} = useSelector((state) => state.Guides);
     const [viewMode, setViewMode] = useState('grid');
 
@@ -125,7 +125,10 @@ export default function SearchResult({isLoading, searchTerm, selectedCities, sel
                             }>
                             {guides.map((guide) => (
                                 viewMode === 'grid' ? (
-                                    <div key={guide.id} className="group relative bg-gradient-to-br from-slate-800/80 to-slate-900/90 p-4 rounded-2xl border border-slate-700/50 backdrop-blur-sm hover:shadow-xl hover:shadow-teal-500/10 transition-all duration-500 hover:scale-105 hover:border-teal-500/30">
+                                    <div onClick={()=>{
+                                        nav(guide.id)
+                                    }}
+                                        key={guide.id} className="group relative bg-gradient-to-br from-slate-800/80 to-slate-900/90 p-4 rounded-2xl border border-slate-700/50 backdrop-blur-sm hover:shadow-xl hover:shadow-teal-500/10 transition-all duration-500 hover:scale-105 hover:border-teal-500/30">
                                         <div className="absolute top-4 right-4">
                                                 <span className={`px-2 py-1 rounded-full text-xs font-medium ${guide.status === 'active' ? 'bg-green-500/20 text-green-400 border border-green-500/30' : 'bg-red-500/20 text-red-400 border border-red-500/30'}`}>
                                                     {guide.status}
@@ -207,7 +210,10 @@ export default function SearchResult({isLoading, searchTerm, selectedCities, sel
                                         </div>
                                     </div>
                                 ) : (
-                                    <div key={guide.id} className="group relative bg-gradient-to-br from-slate-800/80 to-slate-900/90 p-6 rounded-2xl border border-slate-700/50 backdrop-blur-sm hover:shadow-xl hover:shadow-teal-500/10 transition-all duration-500 hover:border-teal-500/30">
+                                    <div onClick={()=>{
+                                        nav(guide.id)
+                                    }}
+                                        key={guide.id} className="group relative bg-gradient-to-br from-slate-800/80 to-slate-900/90 p-6 rounded-2xl border border-slate-700/50 backdrop-blur-sm hover:shadow-xl hover:shadow-teal-500/10 transition-all duration-500 hover:border-teal-500/30">
                                         <div className="flex items-start gap-6">
                                             <div className="w-40 h-40 bg-gradient-to-br from-teal-400 to-teal-600 rounded-xl flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
                                                 {guide.images && guide.images.length > 0 ? (

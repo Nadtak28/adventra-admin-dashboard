@@ -229,6 +229,25 @@ export default function SearchResult({data, searchTerm, selectedCities, selected
                                                     <span className="text-slate-400 text-xs">({item.reviewer_count} reviews)</span>
                                                 </div>
 
+                                                {item.is_limited && (
+                                                    <div className="flex flex-col gap-2">
+                                                        <div className="flex items-center justify-between text-sm">
+                                                            <span className="text-slate-400 flex items-center gap-1">
+                                                                <Clock size={12} />
+                                                                Start:
+                                                            </span>
+                                                            <span className="text-green-400">{new Date(item.starting_date).toLocaleDateString()}</span>
+                                                        </div>
+                                                        <div className="flex items-center justify-between text-sm">
+                                                            <span className="text-slate-400 flex items-center gap-1">
+                                                                <Clock size={12} />
+                                                                End:
+                                                            </span>
+                                                            <span className="text-red-400">{new Date(item.ending_date).toLocaleDateString()}</span>
+                                                        </div>
+                                                    </div>
+                                                )}
+
 
                                                 {item.has_offer ? (
                                                     <>
@@ -317,6 +336,20 @@ export default function SearchResult({data, searchTerm, selectedCities, selected
                                                         </div>
                                                     </div>
 
+                                                    {item.is_limited && (
+                                                        <div className="flex flex-wrap items-center gap-4 text-sm">
+                                                            <div className="flex items-center gap-2">
+                                                                <Clock size={14} className="text-green-400" />
+                                                                <span className="text-slate-400">Start:</span>
+                                                                <span className="text-green-400">{new Date(item.starting_date).toLocaleDateString()}</span>
+                                                            </div>
+                                                            <div className="flex items-center gap-2">
+                                                                <Clock size={14} className="text-red-400" />
+                                                                <span className="text-slate-400">End:</span>
+                                                                <span className="text-red-400">{new Date(item.ending_date).toLocaleDateString()}</span>
+                                                            </div>
+                                                        </div>
+                                                    )}
 
                                                     <div className="flex items-center justify-between pt-3 border-t border-slate-700/50">
                                                         <div className="flex items-center gap-6">
