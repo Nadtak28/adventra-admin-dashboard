@@ -1,10 +1,15 @@
-import {Edit3, MoreVertical, Star, TrendingUp, TrendingDown} from "lucide-react";
+import {Eye, Star, TrendingUp, TrendingDown} from "lucide-react";
 import React from "react";
 import { CircularProgress, Skeleton, Box } from '@mui/material';
+import {useNavigate} from "react-router-dom";
 
 export default function CityTable({Cities, isLoading}){
     const image= "https://lh3.googleusercontent.com/aida-public/AB6AXuC8Esr-Fnjo0pTDA7rMgYOVRFB64s-mmaioHUtLdi-LFS6lQnbJoq7nDCVMfhRN368MJiVuOoLMFeev8NbHeGNFlaC3Ofc7IyjHaldTerFRn8XrK9f7vThzKKchhIRm_qXW9LIIiC2GBPJaoylcjVGPRfXDldQY0MjkUeHCE1Uh7QYWtVtLI0Gs8EHGFbc0NIe1-2LIQPuFQA_31fpgqvwi-YrxHpl2Q1-1sKBOSB3PafGJZr2DvcjkwjwdlMmih5GYsyDzzpje0sw"
+    const navigate = useNavigate();
 
+    function nav(city) {
+        navigate(`/dashboard/cities/${city.id}`);
+    }
     const formatNumber = (num) => {
         if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
         if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
@@ -175,7 +180,8 @@ export default function CityTable({Cities, isLoading}){
                         ) : (
                             // Data State - عرض البيانات الفعلية
                             Cities?.map((city, index) => (
-                                <tr key={city.id} className="group border-t border-t-slate-700/30 hover:bg-gradient-to-r hover:from-slate-800/60 hover:to-slate-700/40 transition-all duration-300">
+                                <tr onClick={()=>{nav(city)}}
+                                    key={city.id} className="group border-t border-t-slate-700/30 hover:bg-gradient-to-r hover:from-slate-800/60 hover:to-slate-700/40 transition-all duration-300">
                                     <td className="px-6 py-5">
                                         <div className="flex items-center gap-4">
                                             <div className="relative">
@@ -239,12 +245,10 @@ export default function CityTable({Cities, isLoading}){
                                     <td className="px-6 py-5">
                                         <div className="flex items-center gap-3">
                                             <button className="group/btn flex items-center gap-2 text-slate-400 hover:text-white transition-all duration-300 px-4 py-2 rounded-xl bg-slate-800/60 backdrop-blur-sm border border-slate-700/50 hover:border-teal-500/50 hover:bg-slate-700/60 text-sm font-medium shadow-lg hover:shadow-teal-500/20 hover:scale-105">
-                                                <Edit3 size={14} className="group-hover/btn:rotate-12 transition-transform duration-300" />
-                                                Edit
+                                                <Eye size={14} className="group-hover/btn:rotate-12 transition-transform duration-300" />
+                                                View
                                             </button>
-                                            <button className="text-slate-400 hover:text-white transition-all duration-300 p-2 rounded-xl hover:bg-slate-700/60 hover:scale-110">
-                                                <MoreVertical size={16} />
-                                            </button>
+
                                         </div>
                                     </td>
                                 </tr>

@@ -2,6 +2,7 @@ import React from "react";
 import {Star} from "lucide-react";
 
 export default function Pagination({totalCities,currentPage,handleInputChange,lastPage,avg_rate}) {
+    const showing=currentPage === lastPage?totalCities:5*currentPage;
     return (
         <div className="flex justify-center items-center gap-4 px-4 py-6">
             <div className="bg-gradient-to-r from-slate-800/60 to-slate-700/60 backdrop-blur-sm rounded-2xl p-4 border border-slate-700/40 shadow-xl">
@@ -64,10 +65,10 @@ export default function Pagination({totalCities,currentPage,handleInputChange,la
                 {/* Page Info */}
                 <div className="mt-3 pt-3 border-t border-slate-600/30">
                     <p className="text-slate-400 text-xs text-center font-medium">
-                        Page {currentPage} of {lastPage} • Showing {totalCities} cities
+                        Page {currentPage} of {lastPage} • Showing {showing}  of {totalCities} cities
                     </p>
                 </div>
-                <p className="text-slate-300 mt-3 text-sm font-medium flex items-center justify-center gap-4">
+                                <p className="text-slate-300 mt-3 text-sm font-medium flex items-center justify-center gap-4">
                                     <span className="flex items-center gap-2">
                                         <Star size={16} className="text-yellow-400 fill-current" />
                                         Average Rating: {avg_rate}

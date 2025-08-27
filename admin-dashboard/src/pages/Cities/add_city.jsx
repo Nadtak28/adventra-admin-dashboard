@@ -64,8 +64,12 @@ export default function AddCity() {
         const result=await dispatch(AddCityService(Files))
         if(result.type==='AddCityService/fulfilled')
         {
+            alert('city successfully added');
             setFiles({images:[],videos:[]})
             //هون بضيف الnavigate فيما بعد
+        }
+        else {
+            alert('Problem happened ');
         }
     };
     return (

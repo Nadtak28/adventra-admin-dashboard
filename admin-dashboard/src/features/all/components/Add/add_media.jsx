@@ -189,7 +189,7 @@ export default function AddMedia({formData,addMedia,Files,setFiles}){
                 )}
             </div>
         )}
-        {formData.errors.media&& <p className="text-red-500 text-sm ml-3 ">Should add one Image at least</p>}
+        {formData?.errors?.media&& <p className="text-red-500 text-sm ml-3 ">Should add one Image at least</p>}
     </div>
     )
 }

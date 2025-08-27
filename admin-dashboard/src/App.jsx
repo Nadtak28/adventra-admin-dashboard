@@ -25,7 +25,7 @@ function App() {
                <Route index element={<Dashboard/>}/>
                <Route path="event_grouptrip" element={<EventGroupTrip/>}/>
                <Route path="cities" element={<Cities/>}/>
-               <Route path="cities/1" element={<City />} />
+               <Route path="cities/:id" element={<City />} />
                <Route path="guides" element={<Guides/>}/>
                <Route path="users" element={<Users/>}/>
                <Route path="guides/add" element={<AddGuides/>}/>

@@ -14,7 +14,7 @@ export default function Login() {
     };
 
     if (LoggedIn) {
-        return <Navigate to="/dashboard" replace />;
+        window.location.reload();
     }
 
     return (

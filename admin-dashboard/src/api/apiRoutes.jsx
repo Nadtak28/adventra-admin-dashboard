@@ -14,5 +14,6 @@
     Guides:"/dashboard/guides",
     Ev_GT:'/dashboard/events_and_groups',
     City:'/cities/',
+    UpdateCity:'/dashboard/cities/',
 };
 export default API;

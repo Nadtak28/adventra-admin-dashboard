@@ -1,6 +1,8 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {CityService} from "../api/CityService.jsx"
 import {tokenStore} from "../../../utils/dataStore.js";
+import {cityEvents_GuidesService} from "../api/cityEvents_GuidesService.jsx";
+import {updateCityService} from "../api/updateCityService.jsx";
 const initialState = {
     form:{
         id:'',
@@ -10,87 +12,37 @@ const initialState = {
         descriptionAr: '',
         descriptionEn: '',
         language:{},
+        images:[],
+        videos:[],
         status:"",
+        guides:[],
+        events:[]
     },
     isLoading:false,
-    errors:{
-        nameAr: false,
-        nameEn: false,
-        country: false,
-        descriptionAr: false,
-        descriptionEn: false,
-        language:false,
-        media:false
-    }
+    error:''
 }
 const CitySlice =createSlice({
-    name: "CityApi",
+    name: "CitygetApi",
     initialState,
     reducers: {
-        updateFields(state, action) {
-            state.form[action.payload.field] = action.payload.value;
-            state.errors[action.payload.field] = false;
-        },
-        add_emptyMedia(state,action){
-            switch(action.payload.type){
-                case "add":
-                    state.errors.media = false;
-                    break;
-                case "empty":
-                    state.errors.media = true;
-            }
-        },
-        Submit(state) {
-            for (const field in state.form) {
-                if(field==="country"){
-                    if(!state.form[field])
-                        state.errors[field]=true
-                    continue
-                }else if(field==='language'){
-                    if(!state.form[field].id)
-                        state.errors[field]=true
-                    continue
-                }else if(field==='status'){
-                    continue
-                }
-                state.errors[field]=!state.form[field].trim()
-            }
-        },
-        reset(state) {
-            state.form={
-                nameAr: '',
-                nameEn: '',
-                country: '',
-                descriptionAr: '',
-                descriptionEn: '',
-                language:'',
-            }
-            state.isLoading = false;
-            state.errors={
-                nameAr: false,
-                nameEn: false,
-                country: false,
-                descriptionAr: false,
-                descriptionEn: false,
-                language:false,
-                media:false
-            }
-        }
+
     },
     extraReducers:(builder) => {
         builder.addCase(CityService.pending, (state) => {
             state.isLoading = true;
             state.validData=false;
-
         })
             .addCase(CityService.fulfilled, (state, action) => {
                 console.log("CityService.fulfilled", action.payload)
                 state.form.id=action.payload.id;
                 state.form.nameEn=action.payload.name;
                 state.form.nameAr=action.payload.name_ar;
-                state.descriptionEn=action.payload.description;
-                state.descriptionAr=action.payload.description_ar;
-                state.
+                state.form.country=action.payload.country;
+                state.form.descriptionEn=action.payload.description;
+                state.form.descriptionAr=action.payload.description_ar;
+                state.form.language=action.payload.language;
+                state.form.images=action.payload.images;
+                state.form.videos=action.payload.videos;
                 state.isLoading = false;
 
             })
@@ -101,6 +53,30 @@ const CitySlice =createSlice({
                     window.location.href = '/login'
                 }
                 state.isLoading = false;
+            })
+            .addCase(cityEvents_GuidesService.fulfilled, (state, action) => {
+                state.form.events=action.payload.events;
+                state.form.guides=action.payload.guides;
+
+
+            })
+            .addCase(cityEvents_GuidesService.rejected, (state, action) => {
+                console.log("CityService.rejected", action.payload)
+                if((!!action.payload?.unauthorized)){
+                    tokenStore.clearToken()
+                    window.location.href = '/login'
+                }
+            }).addCase(updateCityService.fulfilled, (state, action) => {
+                console.log("UpdateCityService.fulfilled", action.payload)
+
+
+            })
+            .addCase(updateCityService.rejected, (state, action) => {
+                console.log("UpdateCityService.rejected", action.payload)
+                if((!!action.payload?.unauthorized)){
+                    tokenStore.clearToken()
+                    window.location.href = '/login'
+                }
             })
 
     }

@@ -47,8 +47,12 @@ export default function AddGroupTrip() {
         const result=await dispatch(addGTService(Files))
         if(result.type==='addGTService/fulfilled')
         {
+            alert('group trip successfully added');
             setFiles({images:[],videos:[]})
             //هون بضيف الnavigate فيما بعد
+        }
+        else {
+            alert('Problem happened ');
         }
          };
 

@@ -38,8 +38,12 @@ export default function AddEvent() {
         const result=await dispatch(AddEventService(Files))
         if(result.type==='AddEventService/fulfilled')
         {
+            alert('event successfully added');
             setFiles({images:[],videos:[]})
             //هون بضيف الnavigate فيما بعد
+        }
+        else {
+            alert('Problem happened ');
         }
 
     };

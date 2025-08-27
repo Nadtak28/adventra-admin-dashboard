@@ -2,12 +2,13 @@ import API from "../../../api/apiRoutes.jsx"
 import albolbolFiles from "../../../api/albolbolFiles.jsx"
 import {createAsyncThunk} from "@reduxjs/toolkit";
 
-export const CityService=createAsyncThunk(
-    "CityService",
-    async ({id}, {rejectWithValue,getState}) => {
+export const updateCityService=createAsyncThunk(
+    "updateCityService",
+    async ({data,id}, {rejectWithValue,getState}) => {
+
         try{
-            const response=await albolbolFiles.get(`${API.City}${id}`)
-            return response.data.data;
+            const response=await albolbolFiles.post(`${API.UpdateCity}${id}`,data)
+            return response.data;
         }
         catch (error) {
             console.log(error);
