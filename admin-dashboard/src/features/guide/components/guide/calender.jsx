@@ -84,7 +84,6 @@ const Calendar = ({ onDateSelect, Tasks }) => {
 
         startDate.setHours(0, 0, 0, 0);
         endDate.setHours(23, 59, 59, 999);
-
         if (checkDate >= startDate && checkDate <= endDate) {
           return {
             isReserved: true,
