@@ -52,7 +52,7 @@ export default function AddGroupTrip() {
             //هون بضيف الnavigate فيما بعد
         }
         else {
-            alert('Problem happened ');
+            alert('Wrong Input');
         }
          };
 

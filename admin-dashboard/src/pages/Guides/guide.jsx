@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import ReviewsSection from "../../features/guide/components/guide/reviewsSection.jsx";
 import {getGuideService} from "../../features/guide/api/getGuideService.jsx";
+import {getGuideTasksService} from "../../features/guide/api/getGuideTasksService.jsx";
 import {getIdsService} from "../../features/all/api/getIdsService.jsx";
 
 const Guide = () => {
@@ -15,9 +16,9 @@ const Guide = () => {
     const {cities}=useSelector((state) => state.getIds);
     const [isEdit, setEdit] = useState(false);
     //loading from selector
-    const availability=[]
     useEffect(()=>{
         dispatch(getGuideService({id}))
+        dispatch(getGuideTasksService({id}))
         dispatch(getIdsService())
     },[])
     if (isLoading) {
@@ -59,11 +60,7 @@ const Guide = () => {
                             <section className="flex justify-center">
                                 <div className="w-full max-w-md  rounded-lg shadow-lg p-6">
                                     <BookingSection
-                                        guideId={Number(id)}
-                                        guideName={guide?.name}
-                                        guideImage={guide?.image}
-                                        availability={availability}
-                                        loadingAvailability={isLoading}
+                                        Tasks={guide.tasks}
                                     />
                                 </div>
                             </section>

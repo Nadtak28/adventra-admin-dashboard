@@ -1,26 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Calendar from "./calender.jsx";
 
 
-const BookingSection = ({
-                            guideName,
-                            guideImage,
-                            guideId,
-                            availability,
-                            loadingAvailability,
-                        }) => {
+const BookingSection = ({ Tasks}) => {
     const [selectedDate, setSelectedDate] = useState(null);
-
-    // Debug logging
-    // useEffect(() => {
-    //     console.log("BookingSection - Props received:", {
-    //         guideId,
-    //         availability,
-    //         loadingAvailability,
-    //         guideName: guideName,
-    //         guideImage: guideImage,
-    //     });
-    // }, [guideId, availability, loadingAvailability, guideName, guideImage]);
 
     const handleDateSelect = (formattedDate) => {
         console.log("BookingSection - Selected date:", formattedDate);
@@ -32,8 +15,7 @@ const BookingSection = ({
            {/* Pass only availability prop to Calendar */}
            <Calendar
                onDateSelect={handleDateSelect}
-               guideId={guideId}
-               availability={availability}
+               Tasks={Tasks}
            />
        </>
     );

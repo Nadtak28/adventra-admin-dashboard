@@ -27,14 +27,14 @@ export default function TourGuideForm() {
 
     const handleSubmit = async () => {
         dispatch(Submit());
-        await dispatch(addGuideService())
+        const result=await dispatch(addGuideService())
         if(result.type==='addGuideService/fulfilled')
         {
             alert('guide successfully added');
             //هون بضيف الnavigate فيما بعد
         }
         else {
-            alert('Problem happened ');
+            alert('Wrong Input');
         }
     };
 

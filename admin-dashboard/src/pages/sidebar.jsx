@@ -157,7 +157,7 @@ const Sidebar = ({ isCollapsed, toggleSidebar }) => {
 
                 <div className="p-4 border-t border-white/10">
                     <div className={`group cursor-pointer ${isExpanded ? '' : 'flex justify-center'}`}>
-                        <div className={`flex items-center gap-4 px-4 py-3 rounded-2xl hover:bg-white/5 transition-all duration-700 ease-in-out ${
+                        <div onClick={() => {navigate('/dashboard/settings')}} className={`flex items-center gap-4 px-4 py-3 rounded-2xl hover:bg-white/5 transition-all duration-700 ease-in-out ${
                             isExpanded ? 'w-full' : 'w-12 h-12 justify-center p-0 mx-auto'
                         }`}>
                             <div className={`relative transition-all duration-700 ease-in-out ${isExpanded ? '' : 'mx-auto'}`}>
@@ -173,7 +173,8 @@ const Sidebar = ({ isCollapsed, toggleSidebar }) => {
                         </div>
 
                         {!isExpanded && !isHovered && (
-                            <div className={`absolute left-full ml-3 px-3 py-2 bg-[#0b1520] border border-white/20 text-white text-sm rounded-lg transition-all duration-300 pointer-events-none whitespace-nowrap z-30 shadow-xl opacity-0 group-hover:opacity-100 scale-95 group-hover:scale-100`}>
+                            <div onClick={() => {navigate('/dashboard/settings')}}
+                                className={`absolute left-full ml-3 px-3 py-2 bg-[#0b1520] border border-white/20 text-white text-sm rounded-lg transition-all duration-300 pointer-events-none whitespace-nowrap z-30 shadow-xl opacity-0 group-hover:opacity-100 scale-95 group-hover:scale-100`}>
                                 Settings
                                 <div className="absolute -left-1 top-1/2 -translate-y-1/2 w-2 h-2 bg-[#0b1520] border-l border-b border-white/20 transform rotate-45"></div>
                             </div>

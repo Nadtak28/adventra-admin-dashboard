@@ -1,6 +1,7 @@
 import Login from "./pages/login";
 import DashboardLayout from "./features/routes/dashboardLayout.jsx";
 import Dashboard from './pages/dashboard.jsx'
+import Settings from './pages/Settings.jsx'
 import EventGroupTrip from "./pages/events_group_trip/event_groupTrip.jsx";
 import Cities from "./pages/Cities/cities.jsx"
 import AddCity from "./pages/Cities/add_city.jsx"
@@ -24,6 +25,7 @@ function App() {
         <Route path="/login" element={tokenStore.getToken()?<Navigate to="/dashboard" replace />:<Login/>} />
         <Route path="/dashboard" element={<ProtectedRoute><DashboardLayout/></ProtectedRoute>}>
                <Route index element={<Dashboard/>}/>
+               <Route path="settings" element={<Settings/>}/>
                <Route path="event_grouptrip" element={<EventGroupTrip/>}/>
                <Route path="cities" element={<Cities/>}/>
                <Route path="cities/:id" element={<City />} />

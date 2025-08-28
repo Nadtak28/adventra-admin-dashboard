@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const Calendar = ({ onDateSelect, guideId, availability }) => {
+const Calendar = ({ onDateSelect, Tasks }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
   const [tooltipData, setTooltipData] = useState({
@@ -8,7 +8,6 @@ const Calendar = ({ onDateSelect, guideId, availability }) => {
     content: "",
     position: {},
   });
-
   const monthNames = [
     "January",
     "February",
@@ -42,7 +41,14 @@ const Calendar = ({ onDateSelect, guideId, availability }) => {
     const dayStr = String(day).padStart(2, "0");
     return `${yearStr}-${monthStr}-${dayStr}`;
   };
-
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  };
   // Parse date string
   const parseDate = (dateStr) => {
     if (!dateStr) return null;
@@ -67,8 +73,8 @@ const Calendar = ({ onDateSelect, guideId, availability }) => {
     checkDate.setHours(0, 0, 0, 0);
 
     // Check if date falls within any reserved period
-    if (availability?.reserved && Array.isArray(availability.reserved)) {
-      for (const reservation of availability.reserved) {
+    if (Tasks && Array.isArray(Tasks)) {
+      for (const reservation of Tasks) {
         if (!reservation.start_date || !reservation.end_date) continue;
 
         const startDate = parseDate(reservation.start_date);
@@ -82,7 +88,7 @@ const Calendar = ({ onDateSelect, guideId, availability }) => {
         if (checkDate >= startDate && checkDate <= endDate) {
           return {
             isReserved: true,
-            message: "Reserved period",
+            message: `📌 ${reservation.taskable_type} | ${formatDate(reservation.start_date)} → ${formatDate(reservation.end_date)}`,
           };
         }
       }
@@ -93,7 +99,6 @@ const Calendar = ({ onDateSelect, guideId, availability }) => {
 
   const handleDateClick = (day, reservationStatus) => {
     if (reservationStatus.isReserved) return;
-
     setSelectedDate(day);
     if (onDateSelect) {
       const formattedDate = formatDateString(
@@ -101,7 +106,6 @@ const Calendar = ({ onDateSelect, guideId, availability }) => {
         currentDate.getMonth() + 1,
         day
       );
-      console.log("Date selected:", formattedDate);
       onDateSelect(formattedDate);
     }
   };
@@ -213,17 +217,12 @@ const Calendar = ({ onDateSelect, guideId, availability }) => {
 
             const isToday = dayDate.getTime() === today.getTime();
             const isPastDate = dayDate < today;
-            const isDisabled =
-              reservationStatus.isReserved || isPastDate || isToday;
+            const isDisabled = isToday ||isPastDate;
 
             let buttonStyles =
               "relative h-12 w-full rounded-xl text-sm font-medium transition-all duration-300 transform ";
 
-            if (reservationStatus.isReserved) {
-              // Simplified reserved styling
-              buttonStyles +=
-                "cursor-not-allowed bg-red-200 text-red-900 border-2 border-red-400 ";
-            } else if (isPastDate || isToday) {
+             if (isPastDate || isToday) {
               buttonStyles += "cursor-not-allowed bg-gray-100 text-gray-400 ";
               if (isToday) {
                 buttonStyles += "ring-2 ring-[#519489] "; // Highlight today

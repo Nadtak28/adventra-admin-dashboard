@@ -18,5 +18,7 @@
     UpdateCity:'/dashboard/cities/',
     UpdateGuide:'/dashboard/guides/',
     feedBack: '/feedback/',
+    addLanguage: '/dashboard/languages',
+    addCategory: '/dashboard/categories',
 };
 export default API;
