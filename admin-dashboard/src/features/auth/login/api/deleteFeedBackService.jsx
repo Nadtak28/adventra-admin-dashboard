@@ -7,6 +7,7 @@ export const deleteFeedBackService=createAsyncThunk(
     async ({id}, {rejectWithValue,getState}) => {
 
         try{
+            console.log(id)
             const response=await albolbol.get(`${API.feedBack}${id}`)
             return response.data;
         }

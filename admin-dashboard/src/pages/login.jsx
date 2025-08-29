@@ -1,8 +1,9 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { updateFields } from "../features/auth/login/hook/loginSlice.js";
 import { LoginService } from "../features/auth/login/api/loginService.jsx";
-import { useState } from "react";
-import { Navigate } from "react-router-dom";
+import {useEffect, useState} from "react";
+import {requestFCMToken} from "../features/auth/login/api/FCMTokenService.jsx";
+import {sendFcmToken} from "../features/auth/login/api/sendFCMTokenService.jsx";
 
 export default function Login() {
     const { email, password, isLoading, emailError, passwordError, message, LoggedIn } = useSelector(state => state.login);
@@ -10,9 +11,16 @@ export default function Login() {
     const [showPassword, setShowPassword] = useState(false);
 
     const handleSubmit = async () => {
-        dispatch(LoginService({ email, password }));
-    };
+        const result =await dispatch(LoginService({ email, password }));
+        if(result.type==='Login/fulfilled'){
+                const fcmToken = await requestFCMToken();
+                console.log(fcmToken);
+                if (fcmToken) {
+                    dispatch(sendFcmToken({fcmToken}));
+                }
+        }
 
+    };
     if (LoggedIn) {
         window.location.reload();
     }

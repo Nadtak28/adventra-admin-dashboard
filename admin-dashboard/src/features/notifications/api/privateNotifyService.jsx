@@ -2,12 +2,11 @@ import API from "../../../api/apiRoutes.jsx"
 import albolbol from "../../../api/albolbol.jsx"
 import {createAsyncThunk} from "@reduxjs/toolkit";
 
-export const getEv_GTService=createAsyncThunk(
-    "getEv_GTService",
-    async (_, {rejectWithValue,getState}) => {
-
+export const privateNotifyService=createAsyncThunk(
+    "privateNotifyService",
+    async ({data}, {rejectWithValue,getState}) => {
         try{
-            const response = await albolbol.get(API.Ev_GT);
+            const response=await albolbol.post(API.personalNotify,data)
             return response.data;
         }
         catch (error) {

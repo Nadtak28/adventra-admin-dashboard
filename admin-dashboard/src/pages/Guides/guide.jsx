@@ -68,11 +68,9 @@ const Guide = () => {
                             {/* Reviews Section */}
                             <section className=" rounded-lg shadow-lg">
                                 <ReviewsSection
-                                    type="guide"
-                                    entityId={Number(id)}
                                     feedbacks={guide?.feedbacks}
                                     rating={guide.rate}
-                                    id={guide.id}
+                                    type={'guide'}
                                 />
                             </section>
                         </div>

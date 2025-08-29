@@ -1,5 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {getIdsService} from '../../all/api/getIdsService.jsx'
+import {getIdsService} from '../api/getIdsService.jsx'
 import {tokenStore} from "../../../utils/dataStore.js";
 const initialState = {
     cities:[],

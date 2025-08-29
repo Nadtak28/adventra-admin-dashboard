@@ -1,8 +1,8 @@
-import {Activity, Calendar, CheckCircle, ChevronDown, XCircle, Star, Award, Clock, Users, Loader2} from "lucide-react";
+import {Activity, ArrowRight, CheckCircle, ChevronDown, XCircle, Star, Award, Clock, Users, Loader2} from "lucide-react";
 import React from "react";
 import {useDispatch} from "react-redux";
 
-export default function Events({events,isLoading,changeStatus,viewEvents}){
+export default function Events({events,isLoading,changeStatus,viewEvents,navEvent}){
 
     const calculateProfit = (price, basicCost, soldTickets = 1, extraCost = 0) => {
         const revenue = price * soldTickets;
@@ -48,6 +48,7 @@ export default function Events({events,isLoading,changeStatus,viewEvents}){
                                 <th className="px-6 py-4 text-left text-white text-sm font-semibold">Expected Profit</th>
                                 <th className="px-6 py-4 text-left text-white text-sm font-semibold">Rating</th>
                                 <th className="px-6 py-4 text-left text-white text-sm font-semibold">Status</th>
+                                <th className="px-6 py-4 text-left text-white text-sm font-semibold">Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -58,7 +59,8 @@ export default function Events({events,isLoading,changeStatus,viewEvents}){
                                 const expectedProfit = calculateProfit(event.price, event.basic_cost, soldTickets, event.extra_cost);
 
                                 return (
-                                    <tr key={event.id} className="group border-t border-t-slate-700/30 hover:bg-gradient-to-r hover:from-slate-800/60 hover:to-slate-700/40 transition-all duration-300">
+                                    <tr
+                                        key={event.id} className="group border-t border-t-slate-700/30 hover:bg-gradient-to-r hover:from-slate-800/60 hover:to-slate-700/40 transition-all duration-300">
                                         <td className="px-6 py-5">
                                             <div className="flex items-center gap-4">
                                                 <div className="relative">
@@ -84,7 +86,7 @@ export default function Events({events,isLoading,changeStatus,viewEvents}){
                                                     <p className="text-white font-semibold text-lg group-hover:text-teal-300 transition-colors duration-300">{event.name}</p>
                                                     <div className="flex items-center gap-2 mt-1">
                                                     <span className="inline-block px-3 py-1 bg-gradient-to-r from-teal-600/20 to-teal-700/20 text-teal-300 text-xs rounded-full border border-teal-500/20">
-                                                        {event.category}
+                                                        {event.category.name}
                                                     </span>
                                                         {hasActiveOffer && (
                                                             <span className="inline-block px-2 py-1 bg-red-500/20 text-red-400 text-xs rounded-full border border-red-500/30">
@@ -200,6 +202,15 @@ export default function Events({events,isLoading,changeStatus,viewEvents}){
                                                     </div>
                                                 )}
                                             </div>
+                                        </td>
+                                        <td className="px-6 py-5">
+                                            <button
+                                                onClick={() => {navEvent(event.id)}}
+                                                className="flex items-center gap-2 px-4 py-2 rounded-2xl text-sm font-semibold transition-all duration-300 shadow-lg bg-gradient-to-r from-blue-600/20 to-cyan-600/20 text-blue-400 border border-blue-500/30 hover:from-blue-500/30 hover:to-cyan-500/30 hover:scale-105 hover:shadow-blue-500/25 group"
+                                            >
+                                                <span>View</span>
+                                                <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform duration-300" />
+                                            </button>
                                         </td>
                                     </tr>
                                 )})}

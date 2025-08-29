@@ -1,7 +1,6 @@
-
 import React, {useEffect, useState, useCallback, useRef} from 'react';
 import {
-     ChevronDown, Plus, Calendar, DollarSign, Activity, CheckCircle, XCircle, Star,
+    ChevronDown, Plus, Calendar, DollarSign, Activity, CheckCircle, XCircle, Star,
 } from 'lucide-react';
 import StateCard from "../../features/all/components/states_card.jsx";
 import Header from "../../features/all/components/header.jsx";
@@ -15,10 +14,12 @@ import {getIdsService} from "../../features/all/api/getIdsService.jsx";
 import {getEv_GTService} from "../../features/event_group_trip/api/getEv_GTService.jsx";
 import {useDispatch,useSelector} from "react-redux";
 import {ChangeEventStatueService} from "../../features/event_group_trip/api/changeEventStatus.js";
+
 export default function EventGroupTrip() {
     const dispatch = useDispatch();
     const [changed, setChanged] = useState(false);
     const event_GTRef=useRef();
+
     useEffect(() => {
         dispatch(getIdsService())
     }, []);
@@ -35,6 +36,7 @@ export default function EventGroupTrip() {
         const Status = status === 'active' ? 'inactive' : 'active';
         dispatch(ChangeEventStatueService({id, status: Status}));
     }, [dispatch]);
+
     const viewMoreTopRatedTours = ()=>{
         event_GTRef.current.MoreTopRatedTours()
     }
@@ -46,6 +48,12 @@ export default function EventGroupTrip() {
     }
     const viewEvents = ()=>{
         event_GTRef.current.Events()
+    }
+    const navEvent=(id)=>{
+        navigate(`/dashboard/events/${id}`)
+    }
+    const navGT=(id)=>{
+        navigate(`/dashboard/group_trip/${id}`)
     }
     return (
         <div className="relative space-y-6 bg-[#0b1520] min-h-screen -m-6 p-6 -mx-6">
@@ -63,26 +71,42 @@ export default function EventGroupTrip() {
                             <Header title='Tours & Events Dashboard' description="Manage group tours and events efficiently" />
                         </div>
 
-                        {/* Enhanced Stats Cards */}
+                        {/* Enhanced Stats Cards with Loading States */}
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 px-4">
-                            <StateCard name='Total Tours' value={groupsCount}>
+                            <StateCard
+                                name='Total Tours'
+                                value={isLoadingPage ? '...' : groupsCount}
+                                isLoading={isLoadingPage}
+                            >
                                 <Calendar size={20} className="text-teal-400" />
                             </StateCard>
 
-                            <StateCard name='Total Events' value={eventsCount}>
+                            <StateCard
+                                name='Total Events'
+                                value={isLoadingPage ? '...' : eventsCount}
+                                isLoading={isLoadingPage}
+                            >
                                 <Activity size={20} className="text-teal-400" />
                             </StateCard>
 
-                            <StateCard name='Total Revenue' value={`$${Math.round(totalRevenue).toLocaleString()}`}>
+                            <StateCard
+                                name='Total Revenue'
+                                value={isLoadingPage ? '...' : `$${Math.round(totalRevenue).toLocaleString()}`}
+                                isLoading={isLoadingPage}
+                            >
                                 <DollarSign size={20} className="text-teal-400" />
                             </StateCard>
 
-                            <StateCard name='Avg Rating' value={monthlyRate.toFixed(1)}>
+                            <StateCard
+                                name='Avg Rating'
+                                value={isLoadingPage ? '...' : monthlyRate.toFixed(1)}
+                                isLoading={isLoadingPage}
+                            >
                                 <Star size={20} className="text-teal-400" />
                             </StateCard>
                         </div>
 
-                        <Filters ref={event_GTRef}/>
+                        <Filters ref={event_GTRef} navEvent={navEvent} navGT={navGT} />
 
                         <TopRatedGroupTrip topRatedGroupTrips={topRatedGroupTrips} viewMoreTopRatedTours={viewMoreTopRatedTours} />
 
@@ -90,9 +114,8 @@ export default function EventGroupTrip() {
 
                         <RecentGroupTrips recentGroupTrips={recentGroupTrips} isLoading={isLoadingPage} viewRecentGroupTrips={viewRecentGroupTrips}/>
 
-
                         {/* Enhanced Events - WITH IMAGES */}
-                        <Events events={events} isLoading={isLoadingPage} changeStatus={changeStatus} viewEvents={viewEvents}/>
+                        <Events events={events} isLoading={isLoadingPage} changeStatus={changeStatus} viewEvents={viewEvents} navEvent={navEvent}/>
 
                         {/* Enhanced Action Buttons */}
                         <div className="flex justify-center gap-6 px-4 py-8">

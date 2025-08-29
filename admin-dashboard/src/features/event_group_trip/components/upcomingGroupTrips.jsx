@@ -1,7 +1,7 @@
 import {Calendar, ChevronDown, Clock, Edit3, Eye, TicketPercent, Users, Star, Award, Loader2} from "lucide-react";
 import React from "react";
 
-export default function UpcomingGroupTrips({upcomingGroupTrips,isLoading,viewUpcomingGroupTrips}){
+export default function soldTicketsUpcomingGroupTrips({upcomingGroupTrips,isLoading,viewUpcomingGroupTrips}){
     const formatDate = (dateString) => {
         return new Date(dateString).toLocaleDateString('en-US', {
             month: 'short',
@@ -183,17 +183,8 @@ export default function UpcomingGroupTrips({upcomingGroupTrips,isLoading,viewUpc
                                         </td>
                                         <td className="px-6 py-5">
                                             <div className="text-center">
-                                                <div className="text-white font-bold text-lg">${tour.revenue}</div>
+                                                <div className="text-white font-bold text-lg">${Math.round((tour.tickets_count-tour.remaining_tickets)*tour.price)}</div>
                                                 <div className="text-slate-400 text-xs">total earned</div>
-                                                {parseFloat(tour.extra_cost) > 0 && (
-                                                    <div className="mt-2 p-2 bg-red-500/10 rounded-lg border border-red-500/20">
-                                                        <div className="flex items-center gap-1 justify-center">
-                                                            <Award size={12} className="text-red-400" />
-                                                            <span className="text-red-400 text-xs font-medium">Total prizes cost</span>
-                                                        </div>
-                                                        <div className="text-red-400 text-sm font-bold">${tour.extra_cost}</div>
-                                                    </div>
-                                                )}
                                             </div>
                                         </td>
                                         <td className="px-6 py-5">

@@ -2,49 +2,19 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { Edit, Save, X, ToggleLeft, ToggleRight } from "lucide-react";
-import HeroSection from "../../features/cities/components/City/heroSection.jsx";
-import CityInfoSection from "../../features/cities/components/City/Info.jsx";
-import EventsSection from "../../features/cities/components/City/events.jsx";
-import GuidesSection from "../../features/cities/components/City/guides.jsx";
-import { CityService } from "../../features/cities/api/cityService.jsx";
-import { cityEvents_GuidesService } from "../../features/cities/api/cityEvents_GuidesService.jsx";
+import HeroSection from "../../features/event_group_trip/components/event/heroSection.jsx";
+import EventInfoSection from "../../features/event_group_trip/components/event/Info.jsx";
 import AddMedia from "../../features/all/components/Add/add_media.jsx";
-import {updateCityService} from "../../features/cities/api/updateCityService.jsx";
+import {updateEventService} from "../../features/event_group_trip/api/updateEventService.jsx";
 import {getIdsService} from "../../features/all/api/getIdsService.jsx";
+import {EventService} from "../../features/event_group_trip/api/getEventService.jsx";
+import ReviewsSection from "../../features/guide/components/guide/reviewsSection.jsx";
 
 const MainContent = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
-    const { form, isLoading } = useSelector((state) => state.City);
-    const { languages } = useSelector((state) => state.getIds);
-
-    const countries=[
-        { id: 1, name: 'afghanistan' },
-        { id: 2, name: 'albania' },
-        { id: 3, name: 'algeria' },
-        { id: 4, name: 'america-samoa' },
-        { id: 5, name: 'andorra' },
-        { id: 6, name: 'angola' },
-        { id: 7, name: 'anguilla' },
-        { id: 8, name: 'antarctica' },
-        { id: 9, name: 'antigua-and-barbuda' },
-        { id: 10, name: 'argentina' },
-        { id: 11, name: 'armenia' },
-        { id: 12, name: 'aruba' },
-        { id: 13, name: 'australia' },
-        { id: 14, name: 'austria' },
-        { id: 15, name: 'azerbaijan' },
-        { id: 16, name: 'bahamas' },
-        { id: 17, name: 'bahrain' },
-        { id: 18, name: 'bangladesh' },
-        { id: 19, name: 'barbados' },
-        { id: 20, name: 'belarus' },
-        { id: 21, name: 'belgium' },
-        { id: 22, name: 'belize' },
-        { id: 23, name: 'benin' },
-        { id: 24, name: 'bermuda' },
-        { id: 25, name: 'bhutan' }
-    ]
+    const { form, isLoading } = useSelector((state) => state.Event);
+    const { categories, cities } = useSelector((state) => state.getIds);
 
     // حالة التعديل
     const [isEditing, setIsEditing] = useState(false);
@@ -53,15 +23,19 @@ const MainContent = () => {
         nameAr: '',
         descriptionEn: '',
         descriptionAr: '',
-        country: '',
-        language: '',
-        images:[],
-        videos:[],
-        isActive: form.status === 'active'
+        city: null,
+        category: null,
+        images: [],
+        videos: [],
+        isActive: false,
+        price: 0,
+        basic_cost: 0,
     });
+
+    const [Files, setFiles] = useState({ images: [], videos: [] });
+
     useEffect(() => {
-        dispatch(CityService({ id }));
-        dispatch(cityEvents_GuidesService({ id }));
+        dispatch(EventService({ id }));
     }, [dispatch, id]);
 
     useEffect(() => {
@@ -76,11 +50,13 @@ const MainContent = () => {
                 nameAr: form?.nameAr || '',
                 descriptionEn: form?.descriptionEn || '',
                 descriptionAr: form?.descriptionAr || '',
-                country: form?.country?.id || '',
-                language: form?.language?.id || '',
+                city: form?.city || null,
+                category: form?.category || null,
                 images: form?.images || [],
                 videos: form?.videos || [],
-                isActive: form.status === 'active'
+                basic_cost: form?.basic_cost || 0,
+                price: form?.price || 0,
+                isActive: form?.status === 'active'
             });
         }
     }, [form]);
@@ -100,68 +76,87 @@ const MainContent = () => {
                 nameAr: form?.nameAr || '',
                 descriptionEn: form?.descriptionEn || '',
                 descriptionAr: form?.descriptionAr || '',
-                country: form?.country?.id || '',
-                language: form?.language?.id || '',
+                city: form?.city || null,
+                category: form?.category || null,
                 images: form?.images || [],
                 videos: form?.videos || [],
-                isActive: form.status === 'active'
-
+                basic_cost: form?.basic_cost || 0,
+                price: form?.price || 0,
+                isActive: form?.status === 'active'
             });
         }
-        setFiles({images:[],videos:[]})
+        setFiles({ images: [], videos: [] });
     };
 
     // دالة حفظ التعديلات
     const handleSaveChanges = async () => {
-        let media=[]
-        for(const file of Files.images) {
+        let media = [];
+        for (const file of Files.images) {
             media.push(file.File);
         }
-        for(const file of Files.videos) {
+        for (const file of Files.videos) {
             media.push(file.File);
         }
-        let old_media=[]
-        for(const media of editForm.images) {
-            old_media.push(media.id)
-        }for(const media of editForm.videos) {
-            old_media.push(media.id)
-        }
-        const status=editForm.isActive===true?'active':'inactive';
-        const data={
-            name:editForm.nameEn,
-            name_ar:editForm.nameAr,
-            description_ar:editForm.descriptionAr,
-            description:editForm.descriptionEn,
-            country_id:editForm.country,
-            language_id:editForm.language,
-            status:status,
-            old_media:old_media,
-            media:media
-        }
-        console.log(data)
-            const result=await dispatch(updateCityService({data,id}));
-            setIsEditing(false);
-            dispatch(CityService({ id }));
-            if(result.type==='updateCityService/fulfilled')
-            {
-                alert('Information updated successfully!');
-                setFiles({images:[],videos:[]})
-                //هون بضيف الnavigate فيما بعد
-            }
-            else {
-                alert('Problem happened ');
-            }
 
+        let old_media = [];
+        for (const mediaItem of editForm.images) {
+            old_media.push(mediaItem.id);
+        }
+        for (const mediaItem of editForm.videos) {
+            old_media.push(mediaItem.id);
+        }
+
+        const status = editForm.isActive === true ? 'active' : 'inactive';
+        const data = {
+            name: editForm.nameEn,
+            name_ar: editForm.nameAr,
+            description_ar: editForm.descriptionAr,
+            description: editForm.descriptionEn,
+            city_id: editForm.city?.id || editForm.city.id,
+            category_id: editForm.category?.id || editForm.category.id,
+            status: status,
+            price: editForm.price,
+            basic_cost: editForm.basic_cost,
+            old_media: old_media,
+            media: media
+        };
+
+        console.log(data);
+        const result = await dispatch(updateEventService({ data, id }));
+        setIsEditing(false);
+        dispatch(EventService({ id }));
+
+        if (result.type === 'updateEventService/fulfilled') {
+            alert('Information updated successfully!');
+            setFiles({ images: [], videos: [] });
+        } else {
+            alert('Problem happened ');
+        }
     };
 
     // دالة تحديث قيم النموذج
     const handleInputChange = (field, value) => {
-        setEditForm(prev => ({
-            ...prev,
-            [field]: value
-        }));
+        if (field === 'city') {
+            // البحث عن الcity object بناءً على الid
+            const selectedCity = cities.find(city => city.id === parseInt(value));
+            setEditForm(prev => ({
+                ...prev,
+                [field]: selectedCity || value
+            }));
+        } else if (field === 'category') {
+            // البحث عن الcategory object بناءً على الid
+            const selectedCategory = categories.find(category => category.id === parseInt(value));
+            setEditForm(prev => ({
+                ...prev,
+                [field]: selectedCategory || value
+            }));
+        } else {
+            setEditForm(prev => ({
+                ...prev,
+                [field]: value
+            }));
+        }
     };
-
     // دالة تغيير حالة المدينة
     const handleToggleStatus = () => {
         setEditForm(prev => ({
@@ -169,6 +164,7 @@ const MainContent = () => {
             isActive: !prev.isActive
         }));
     };
+
     const handleDeleteMedia = (id, type) => {
         setEditForm((prev) => {
             if (type === "image") {
@@ -179,10 +175,10 @@ const MainContent = () => {
             return prev;
         });
     };
-    const [Files,setFiles] = useState({images:[],videos:[]});
-    const handleFilesChange=(type) => {
 
-    }
+    const handleFilesChange = (type) => {
+        // إضافة منطق التعامل مع الملفات هنا
+    };
 
     return (
         <div className="relative space-y-6 bg-[#0b1520] min-h-screen -m-6 p-6">
@@ -191,7 +187,7 @@ const MainContent = () => {
                 <div className="bg-slate-800/90 backdrop-blur-sm border border-slate-700 rounded-lg p-3 shadow-lg">
                     <div className="flex items-center gap-3">
                         <div className="flex items-center gap-2">
-                            <span className="text-sm text-slate-300">City Status:</span>
+                            <span className="text-sm text-slate-300">Event Status:</span>
                             <button
                                 onClick={handleToggleStatus}
                                 className={`flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium transition-all ${
@@ -221,7 +217,7 @@ const MainContent = () => {
                                 className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
                             >
                                 <Edit className="w-4 h-4" />
-                                Edit City
+                                Edit Event
                             </button>
                         ) : (
                             <div className="flex items-center gap-2">
@@ -350,45 +346,54 @@ const MainContent = () => {
                 <div className="flex flex-col max-w-[1200px] mx-auto w-full">
                     {/* Hero Section */}
                     <HeroSection
-                        cityName={isEditing ? editForm.nameEn : form?.nameEn}
-                        cityNameAr={isEditing ? editForm.nameAr : form?.nameAr}
-                        cityCountry={isEditing ? editForm.country : form?.country?.name}
-                        cityImage={editForm.images}
-                        cityVideos={editForm.videos}
+                        eventName={isEditing ? editForm.nameEn : form?.nameEn}
+                        eventNameAr={isEditing ? editForm.nameAr : form?.nameAr}
+                        eventCity={isEditing ?
+                            (typeof editForm.city === 'object' ? editForm.city?.name : editForm.city) :
+                            form?.city?.name
+                        }
+                        eventImage={editForm.images}
+                        eventVideos={editForm.videos}
                         isEditing={isEditing}
                         onNameEnChange={(value) => handleInputChange('nameEn', value)}
                         onNameArChange={(value) => handleInputChange('nameAr', value)}
-                        onCountryChange={(value) => handleInputChange('country', value)}
                         onDeleteMedia={handleDeleteMedia}
                     />
-                    {isEditing&&
-                        (
-                            <AddMedia formData={editForm} addMedia={handleFilesChange} Files={Files} setFiles={setFiles} />
-                        )
-                    }
-                    <CityInfoSection
-                        cityDescription={isEditing ? editForm.descriptionEn : form?.descriptionEn}
-                        cityDescriptionAr={isEditing ? editForm.descriptionAr : form?.descriptionAr}
-                        cityCountry={isEditing ? editForm.country : form?.country?.name}
-                        cityLanguage={isEditing ? editForm.language : form?.language?.name}
+
+                    {isEditing && (
+                        <AddMedia
+                            formData={editForm}
+                            addMedia={handleFilesChange}
+                            Files={Files}
+                            setFiles={setFiles}
+                        />
+                    )}
+
+                    <EventInfoSection
+                        eventCity={isEditing ? editForm.city : form?.city}
+                        eventCategory={isEditing ? editForm.category : form?.category}
+                        eventDescription={isEditing ? editForm.descriptionEn : form?.descriptionEn}
+                        eventDescriptionAr={isEditing ? editForm.descriptionAr : form?.descriptionAr}
+                        basicCost={isEditing ? editForm.basic_cost : form?.basic_cost}
+                        price={isEditing ? editForm.price : form?.price}
+                        main_price={isEditing ? editForm.main_price : form?.main_price}
                         isEditing={isEditing}
                         onDescriptionEnChange={(value) => handleInputChange('descriptionEn', value)}
                         onDescriptionArChange={(value) => handleInputChange('descriptionAr', value)}
-                        onCountryChange={(value) => handleInputChange('country', value)}
-                        onLanguageChange={(value) => handleInputChange('language', value)}
-                        countries={countries}
-                        languages={languages}
+                        onCityChange={(value) => handleInputChange('city', value)}
+                        onCategoryChange={(value) => handleInputChange('category', value)}
+                        onBasicCostChange={(value) => handleInputChange('basic_cost', value)}
+                        onPriceChange={(value) => handleInputChange('price', value)}
+                        cities={cities}
+                        categories={categories}
                     />
-
-                    {/* Events Section */}
-                    <div className="mt-8">
-                        <EventsSection events={form?.events} loading={isLoading} />
-                    </div>
-
-                    {/* Guides Section */}
-                    <div className="mt-8 mb-8">
-                        <GuidesSection guides={form?.guides} loading={isLoading} />
-                    </div>
+                    <section className=" rounded-lg shadow-lg">
+                        <ReviewsSection
+                            feedbacks={form?.feedbacks}
+                            rating={form.rate}
+                            type={'event'}
+                        />
+                    </section>
                 </div>
             </main>
         </div>

@@ -1,7 +1,8 @@
 import {Calendar, Clock, Star, Users, Loader2} from "lucide-react";
 import React, {useState} from "react";
+import {useNavigate} from "react-router-dom";
 
-export default function SearchResult({data, searchTerm, selectedCities, selectedCategories, selectedLanguages, selectedStatus, sortBy, setSortBy, clearAllFilters, hasOffer, searchType, isLoading}) {
+export default function SearchResult({navEvent,data, searchTerm, selectedCities, selectedCategories, selectedLanguages, selectedStatus, sortBy, setSortBy, clearAllFilters, hasOffer, searchType, isLoading}) {
     const [viewMode, setViewMode] = useState('grid');
 
     const getStatusBadgeColor = (status) => {
@@ -185,16 +186,21 @@ export default function SearchResult({data, searchTerm, selectedCities, selected
                                 searchType === 'event' ? (
                                     viewMode === 'grid' ? (
                                         // Events Grid View
-                                        <div key={item.id} className="group relative bg-gradient-to-br from-slate-800/80 to-slate-900/90 p-6 rounded-2xl border border-slate-700/50 backdrop-blur-sm hover:shadow-xl hover:shadow-teal-500/10 transition-all duration-500 hover:scale-105 hover:border-teal-500/30">
+                                        <div onClick={() => {navEvent(item.id)}}
+                                            key={item.id} className="group relative bg-gradient-to-br from-slate-800/80 to-slate-900/90 p-6 rounded-2xl border border-slate-700/50 backdrop-blur-sm hover:shadow-xl hover:shadow-teal-500/10 transition-all duration-500 hover:scale-105 hover:border-teal-500/30">
                                             <div className="absolute top-4 right-4 flex items-center gap-2">
-                                                    <span className={`px-2 py-1 rounded-full text-xs font-medium border ${getStatusBadgeColor(item.status)}`}>
+                                                   <span className={`px-3 py-1.5 absolute right-85 rounded-xl text-xs font-medium border ${getStatusBadgeColor(item.status)}`}>
                                                         {item.status}
+                                                    </span>
+                                                    <span className={`px-2 py-1 rounded-full text-xs font-medium border ${getStatusBadgeColor('in_progress')}`}>
+                                                        {item.category?.name}
                                                     </span>
                                                 {item.has_offer && (
                                                     <span className="px-2 py-1 rounded-full text-xs font-medium bg-orange-500/20 text-orange-400 border border-orange-500/30">
                                                             OFFER
                                                         </span>
                                                 )}
+
                                             </div>
 
                                             <div className="w-30 h-30 bg-gradient-to-br from-teal-400 to-teal-600 rounded-xl flex items-center justify-center text-white font-bold text-xl mb-4 mx-auto">
@@ -290,7 +296,8 @@ export default function SearchResult({data, searchTerm, selectedCities, selected
                                         </div>
                                     ) : (
                                         // Events List View
-                                        <div key={item.id} className="group relative bg-gradient-to-br from-slate-800/80 to-slate-900/90 p-6 rounded-2xl border border-slate-700/50 backdrop-blur-sm hover:shadow-xl hover:shadow-teal-500/10 transition-all duration-500 hover:border-teal-500/30">
+                                        <div onClick={() => {navEvent(item.id)}}
+                                            key={item.id} className="group relative bg-gradient-to-br from-slate-800/80 to-slate-900/90 p-6 rounded-2xl border border-slate-700/50 backdrop-blur-sm hover:shadow-xl hover:shadow-teal-500/10 transition-all duration-500 hover:border-teal-500/30">
                                             <div className="flex items-start gap-6">
                                                 <div className="w-40 h-40 bg-gradient-to-br from-teal-400 to-teal-600 rounded-xl flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
                                                     {item.images && item.images.length > 0 ? (
@@ -318,6 +325,9 @@ export default function SearchResult({data, searchTerm, selectedCities, selected
                                                         </div>
 
                                                         <div className="flex items-center gap-3">
+                                                            <span className={`px-2 py-1 rounded-full text-xs font-medium border ${getStatusBadgeColor('in_progress')}`}>
+                                                                {item.category.name}
+                                                            </span>
                                                             <div className="flex items-center gap-1 bg-slate-700/50 px-3 py-1.5 rounded-xl">
                                                                 <Star size={14} className="text-yellow-400" fill="currentColor" />
                                                                 <span className="text-white text-sm font-medium">{item.rate}</span>

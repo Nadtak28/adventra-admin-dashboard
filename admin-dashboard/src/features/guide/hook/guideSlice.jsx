@@ -62,7 +62,7 @@ const OneGuideSlice =createSlice({
             })
             .addCase(getGuideTasksService.fulfilled, (state, action) => {
                 let tasks=[]
-                if( action.payload["userTask "].length>0) {
+                if( action.payload.userTask.length>0) {
                     for (let task of action.payload.userTask) {
                         tasks.push(task)
                     }

@@ -13,22 +13,21 @@ import {
 } from "lucide-react";
 
 const HeroSection = ({
-                         cityName,
-                         cityCountry,
-                         cityImage,
-                         cityVideos,
-                         cityNameAr,
+                         eventName,
+                         eventNameAr,
+                         eventCity,
+                         eventImage,
+                         eventVideos,
                          isEditing = false,
                          onNameEnChange,
                          onNameArChange,
-                         onCountryChange,
                          onDeleteMedia
                      }) => {
     const [loaded, setLoaded] = useState(false);
     const [headerLoaded, setHeaderLoaded] = useState(false);
 
-    const images = cityImage || [];
-    const videos = cityVideos || [];
+    const images = eventImage || [];
+    const videos = eventVideos || [];
     const hasMedia = images.length > 0 || videos.length > 0;
 
     useEffect(() => {
@@ -85,8 +84,7 @@ const HeroSection = ({
                                     <MapPin className="w-5 h-5 text-white" />
                                 </div>
                                 <EditableInput
-                                    value={cityCountry}
-                                    onChange={onCountryChange}
+                                    value={eventCity}
                                     isEditing={false}
                                     placeholder="country name"
                                     className="text-gray-200 text-base font-semibold tracking-wide bg-transparent border-0 p-0 focus:ring-0"
@@ -103,7 +101,7 @@ const HeroSection = ({
                                 style={{ animationDelay: "300ms" }}
                             >
                                 <EditableInput
-                                    value={cityName}
+                                    value={eventName}
                                     onChange={onNameEnChange}
                                     isEditing={isEditing}
                                     placeholder="city name "
@@ -122,7 +120,7 @@ const HeroSection = ({
                         </div>
 
                         {/* City Name Arabic */}
-                        {(cityNameAr || isEditing) && (
+                        {(eventNameAr || isEditing) && (
                             <div className="flex-1 text-right">
                                 <div
                                     className={`transform transition-all duration-1000 ${
@@ -133,7 +131,7 @@ const HeroSection = ({
                                     style={{ animationDelay: "400ms" }}
                                 >
                                     <EditableInput
-                                        value={cityNameAr}
+                                        value={eventNameAr}
                                         onChange={onNameArChange}
                                         isEditing={isEditing}
                                         placeholder="Arabic City Name"
@@ -217,7 +215,7 @@ const HeroSection = ({
                             </div>
                             <div className="space-y-2">
                                 <p className="text-gray-200 text-xl font-semibold">
-                                    Discover {cityName}
+                                    Discover {eventName}
                                 </p>
                                 <p className="text-gray-400 text-sm">
                                     Media content coming soon

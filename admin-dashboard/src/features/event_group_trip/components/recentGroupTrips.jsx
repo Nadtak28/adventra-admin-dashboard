@@ -62,7 +62,7 @@ export default function RecentGroupTrips({recentGroupTrips,isLoading,viewRecentG
                             <tbody>
                             {recentGroupTrips.map((tour, index) => {
                                 const soldTickets = tour.tickets_count - tour.remaining_tickets;
-                                const { profit, margin } = calculateProfitMargin(tour.revenue, tour.basic_cost, tour.extra_cost, soldTickets);
+                                const { profit, margin } = calculateProfitMargin(soldTickets*tour.price, tour.basic_cost,tour.extra_cost, soldTickets);
                                 const hasActiveOffer = tour.has_offer && tour.offers && tour.offers.length > 0;
 
                                 return (
@@ -134,7 +134,7 @@ export default function RecentGroupTrips({recentGroupTrips,isLoading,viewRecentG
                                             </div>
                                         </td>
                                         <td className="px-6 py-5">
-                                            <div className="text-white font-bold text-xl">${tour.revenue}</div>
+                                            <div className="text-white font-bold text-xl">${soldTickets*tour.price}</div>
                                             <div className="text-slate-400 text-xs">total earned</div>
                                         </td>
                                         <td className="px-6 py-5">

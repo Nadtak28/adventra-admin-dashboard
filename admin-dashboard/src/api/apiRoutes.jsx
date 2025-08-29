@@ -15,10 +15,15 @@
     Guide:"/guides/" ,
     Ev_GT:'/dashboard/events_and_groups',
     City:'/cities/',
+    Event:'/events/',
     UpdateCity:'/dashboard/cities/',
+    UpdateEvent:'/dashboard/events/',
     UpdateGuide:'/dashboard/guides/',
     feedBack: '/feedback/',
     addLanguage: '/dashboard/languages',
     addCategory: '/dashboard/categories',
+    notification:'/notifications' ,
+    publicNotify:'/dashboard/publicNotification',
+    personalNotify:'/dashboard/personalNotification',
 };
 export default API;

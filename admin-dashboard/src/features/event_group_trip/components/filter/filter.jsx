@@ -5,7 +5,8 @@ import {filterService} from "../../../all/api/filterService.jsx";
 import SearchBarANDSelector from "../filter/searchBar_Selector.jsx";
 import FilterSection from "../filter/filterSection.jsx";
 import SearchResult from "../filter/searchResult.jsx";
-    const EventsToursFilters=forwardRef((props, ref)=>
+import {useNavigate} from "react-router-dom";
+    const EventsToursFilters=forwardRef(({navEvent,navGT}, ref)=>
     {
     const {data,isLoading} = useSelector((state) => state.Events_GTS);
     // const {searchType,searchTerm,selectedCities,selectedCategories,selectedLanguages,selectedStatus,hasOffer,sortBy,order_type} = useSelector((state) => state.Events_GTS.search);
@@ -153,6 +154,7 @@ import SearchResult from "../filter/searchResult.jsx";
                 hasOffer={hasOffer}
                 searchType={searchType}
                 isLoading={isLoading}
+                navEvent={navEvent}
             />
         </div>
     );

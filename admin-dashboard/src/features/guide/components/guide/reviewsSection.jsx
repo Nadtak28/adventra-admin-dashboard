@@ -4,6 +4,7 @@ import AnimatedSection from "./animatedSection.jsx";
 import { Star, X, Trash2 } from "lucide-react";
 import {deleteFeedBackService} from "../../../auth/login/api/deleteFeedBackService.jsx";
 import {getGuideService} from "../../api/getGuideService.jsx";
+import {EventService} from "../../../event_group_trip/api/getEventService.jsx";
 
 /**
  * Props:
@@ -13,7 +14,7 @@ import {getGuideService} from "../../api/getGuideService.jsx";
 export default function ReviewsSection({
                                            feedbacks,
                                            rating,
-                                            id
+                                            type
                                        }) {
     const [selectedUser, setSelectedUser] = useState(null);
     const dispatch = useDispatch();
@@ -22,7 +23,8 @@ export default function ReviewsSection({
 
     // Delete feedback handler
     const handleDeleteFeedback = async (feedbackId) => {
-        const result=await dispatch(deleteFeedBackService(feedbackId));
+        const id=feedbackId
+        const result=await dispatch(deleteFeedBackService({id}));
         if(result.type==='deleteFeedBackService/fulfilled')
         {
             alert('Information updated successfully!');
@@ -30,7 +32,11 @@ export default function ReviewsSection({
         else {
             alert('Problem happened ');
         }
-        dispatch(getGuideService({id}))
+        if(type==='guide') {
+            dispatch(getGuideService({id}))
+        }else if(type==='event') {
+            dispatch(EventService({ id }));
+        }
     };
 
     // Star renderer
