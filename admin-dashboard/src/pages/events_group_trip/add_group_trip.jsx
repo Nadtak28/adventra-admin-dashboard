@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import AddMedia from "../../features/all/components/Add/add_media.jsx";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useSelector,useDispatch} from "react-redux";
 import AddHeader from "../../features/all/components/Add/add_header.jsx";
 import Info from "../../features/event_group_trip/components/Add/GT/info.jsx"
@@ -14,16 +14,22 @@ import {getGEByIDService} from "../../features/event_group_trip/api/getGuides&Ev
 import {getIdsService} from "../../features/all/api/getIdsService.jsx";
 import SubmitButton from "../../features/all/components/Add/submit_button.jsx";
 import CitySelection from "../../features/event_group_trip/components/Add/GT/city.jsx";
+import {GetGTService} from "../../features/event_group_trip/api/getGTService.js";
 export default function AddGroupTrip() {
 
+    const { id } = useParams();
     const navigate = useNavigate();
     const formData=useSelector(state=>state.AddGT)
     const [Files, setFiles] = useState({images:[],videos:[]});
     const [isOpen, setIsOpen] = useState(false);
     const dispatch = useDispatch();
     const {cities}=useSelector(state=>state.getIds)
+
     useEffect(() => {
         dispatch(getIdsService())
+        if(id) {
+            dispatch(GetGTService({id, type: 'add'}))
+        }
     }, []);
     useEffect(() => {
         if(!!formData.form.city_id) {
@@ -55,7 +61,30 @@ export default function AddGroupTrip() {
             alert('Wrong Input');
         }
          };
+    async function convertUrlsToFiles(filesArray) {
+        const fileObjects = [];
 
+        // Iterate over each item in the input array
+        for (const item of filesArray) {
+            try {
+                const response = await fetch(item.url);
+
+                const blob = await response.blob();
+
+                const filename = item.url.split('/').pop();
+
+                // Get the  type from the Blob
+                const fileType = blob.type;
+
+                const file = new File([blob], filename, { type: fileType });
+
+                fileObjects.push(file);
+            } catch (error) {
+                console.error(`Error converting URL to File for ${item.url}:`, error);
+            }
+        }
+        return fileObjects;
+    }
     return (
         <div className="relative min-h-screen bg-[#0b1520] -m-6 p-6">
             {/* Enhanced background effects */}

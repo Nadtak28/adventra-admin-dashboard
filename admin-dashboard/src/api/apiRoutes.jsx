@@ -16,6 +16,7 @@
     Ev_GT:'/dashboard/events_and_groups',
     City:'/cities/',
     Event:'/events/',
+    GroupTrip:'/group_trip/',
     UpdateCity:'/dashboard/cities/',
     UpdateEvent:'/dashboard/events/',
     UpdateGuide:'/dashboard/guides/',

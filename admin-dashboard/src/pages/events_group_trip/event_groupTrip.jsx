@@ -55,6 +55,10 @@ export default function EventGroupTrip() {
     const navGT=(id)=>{
         navigate(`/dashboard/group_trip/${id}`)
     }
+    const navAddGT=(id)=>{
+        console
+        navigate(`/dashboard/event_grouptrip/add_group_trip/${id}`)
+    }
     return (
         <div className="relative space-y-6 bg-[#0b1520] min-h-screen -m-6 p-6 -mx-6">
             {/* Enhanced background effects */}
@@ -108,7 +112,7 @@ export default function EventGroupTrip() {
 
                         <Filters ref={event_GTRef} navEvent={navEvent} navGT={navGT} />
 
-                        <TopRatedGroupTrip topRatedGroupTrips={topRatedGroupTrips} viewMoreTopRatedTours={viewMoreTopRatedTours} />
+                        <TopRatedGroupTrip navAddGT={navAddGT} topRatedGroupTrips={topRatedGroupTrips} viewMoreTopRatedTours={viewMoreTopRatedTours} />
 
                         <UpcomingGroupTrips upcomingGroupTrips={upcomingGroupTrips} isLoading={isLoadingPage} viewUpcomingGroupTrips={viewUpcomingGroupTrips}/>
 

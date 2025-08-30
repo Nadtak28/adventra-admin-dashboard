@@ -1,21 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { Edit, Save, X, ToggleLeft, ToggleRight } from "lucide-react";
+import { Edit, Save, X, ToggleLeft, ToggleRight, Plus, Calendar, Percent } from "lucide-react";
 import HeroSection from "../../features/event_group_trip/components/event/heroSection.jsx";
 import EventInfoSection from "../../features/event_group_trip/components/event/Info.jsx";
+import OffersSection from "../../features/event_group_trip/components/event/offers.jsx";
 import AddMedia from "../../features/all/components/Add/add_media.jsx";
 import {updateEventService} from "../../features/event_group_trip/api/updateEventService.jsx";
 import {getIdsService} from "../../features/all/api/getIdsService.jsx";
 import {EventService} from "../../features/event_group_trip/api/getEventService.jsx";
 import ReviewsSection from "../../features/guide/components/guide/reviewsSection.jsx";
+import {updateEventOfferService} from "../../features/event_group_trip/api/updateEventOfferService.js";
+import {addEventOfferService} from "../../features/event_group_trip/api/addEventOfferService.jsx";
 
 const MainContent = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
     const { form, isLoading } = useSelector((state) => state.Event);
     const { categories, cities } = useSelector((state) => state.getIds);
-
+    const[priceBfOffer, setPriceBfOffer] = useState();
     // حالة التعديل
     const [isEditing, setIsEditing] = useState(false);
     const [editForm, setEditForm] = useState({
@@ -30,6 +33,8 @@ const MainContent = () => {
         isActive: false,
         price: 0,
         basic_cost: 0,
+        offers: [],
+        has_offer: false
     });
 
     const [Files, setFiles] = useState({ images: [], videos: [] });
@@ -56,7 +61,9 @@ const MainContent = () => {
                 videos: form?.videos || [],
                 basic_cost: form?.basic_cost || 0,
                 price: form?.price || 0,
-                isActive: form?.status === 'active'
+                isActive: form?.status === 'active',
+                offers: form?.offers || [],
+                has_offer: form?.has_offer || false
             });
         }
     }, [form]);
@@ -82,7 +89,9 @@ const MainContent = () => {
                 videos: form?.videos || [],
                 basic_cost: form?.basic_cost || 0,
                 price: form?.price || 0,
-                isActive: form?.status === 'active'
+                isActive: form?.status === 'active',
+                offers: form?.offers || [],
+                has_offer: form?.has_offer || false
             });
         }
         setFiles({ images: [], videos: [] });
@@ -115,17 +124,15 @@ const MainContent = () => {
             city_id: editForm.city?.id || editForm.city.id,
             category_id: editForm.category?.id || editForm.category.id,
             status: status,
-            price: editForm.price,
+            price: form.main_price? priceBfOffer:editForm.price,
             basic_cost: editForm.basic_cost,
             old_media: old_media,
-            media: media
+            media: media,
         };
 
-        console.log(data);
         const result = await dispatch(updateEventService({ data, id }));
         setIsEditing(false);
         dispatch(EventService({ id }));
-
         if (result.type === 'updateEventService/fulfilled') {
             alert('Information updated successfully!');
             setFiles({ images: [], videos: [] });
@@ -157,12 +164,65 @@ const MainContent = () => {
             }));
         }
     };
+
     // دالة تغيير حالة المدينة
     const handleToggleStatus = () => {
         setEditForm(prev => ({
             ...prev,
             isActive: !prev.isActive
         }));
+    };
+
+    // دالة التعامل مع تغيير العرض الحالي
+    const handleOfferChange = (field, value) => {
+        setEditForm(prev => {
+            const updatedOffers = [...prev.offers];
+            if (updatedOffers.length > 0) {
+                updatedOffers[0] = {
+                    ...updatedOffers[0],
+                    [field]: field.includes('date') ? value + 'T00:00:00.000000Z' : value
+                };
+            }
+            return {
+                ...prev,
+                offers: updatedOffers
+            };
+        });
+    };
+
+    // دالة إضافة عرض جديد
+    const handleAddOffer = async (data) => {
+        const formattedOffer = {
+            discount: data.discount,
+            start_date: data.start_date,
+            end_date: data.end_date,
+        };
+
+        const result=await dispatch(addEventOfferService({ data:formattedOffer,id}));
+        if(result.type==='addEventOfferService/fulfilled') {
+            console.log(result);
+            alert('Offer updated successfully!');
+        }
+        else{
+            alert('Something went wrong!');
+        }
+        dispatch(EventService({ id }));
+    };
+    const handleEditOffer = async(data) => {
+        const formattedOffer = {
+            discount: data.discount,
+            start_date: data.start_date,
+            end_date: data.end_date,
+        };
+        const result=await dispatch(updateEventOfferService({ data:formattedOffer,id}));
+        if(result.type==='updateEventOfferService/fulfilled') {
+            console.log(result);
+            alert('Offer updated successfully!');
+        }
+        else{
+            alert('Something went wrong!');
+        }
+        dispatch(EventService({ id }));
     };
 
     const handleDeleteMedia = (id, type) => {
@@ -343,7 +403,7 @@ const MainContent = () => {
                     }
                 `}</style>
 
-                <div className="flex flex-col max-w-[1200px] mx-auto w-full">
+                <div className="flex flex-col max-w-[1200px] mx-auto w-full space-y-6">
                     {/* Hero Section */}
                     <HeroSection
                         eventName={isEditing ? editForm.nameEn : form?.nameEn}
@@ -386,7 +446,23 @@ const MainContent = () => {
                         onPriceChange={(value) => handleInputChange('price', value)}
                         cities={cities}
                         categories={categories}
+                        offers={form?.offers||[]}
+                        has_offer={form.has_offer}
+                        priceBfOffer={priceBfOffer}
+                        setPriceBfOffer={setPriceBfOffer}
                     />
+
+                    {/* Offers Section */}
+                    <OffersSection
+                        offers={editForm.offers}
+                        hasOffer={editForm.has_offer}
+                        isEditing={isEditing}
+                        onOfferChange={handleOfferChange}
+                        onAddOffer={handleAddOffer}
+                        event={form.id}
+                        handleEditOffer={handleEditOffer}
+                    />
+
                     <section className=" rounded-lg shadow-lg">
                         <ReviewsSection
                             feedbacks={form?.feedbacks}

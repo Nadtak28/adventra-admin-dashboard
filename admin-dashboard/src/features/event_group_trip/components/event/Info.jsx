@@ -1,4 +1,4 @@
-import { MapPin, Globe, ChartColumnStacked, Edit3, DollarSign } from "lucide-react";
+import { MapPin, Globe, BarChart3, DollarSign } from "lucide-react";
 import { useState, useEffect } from "react";
 
 const EventInfoSection = ({
@@ -16,8 +16,13 @@ const EventInfoSection = ({
                               onCategoryChange,
                               onBasicCostChange,
                               onPriceChange,
+                              onMainPriceChange,
                               cities = [],
                               categories = [],
+                              offers=[],
+                              priceBfOffer,
+                              setPriceBfOffer,
+                              has_offer
                           }) => {
     const infoCards = [
         {
@@ -34,7 +39,7 @@ const EventInfoSection = ({
         },
         {
             title: "City",
-            content: eventCity, // This will be the object or the name string
+            content: eventCity,
             icon: MapPin,
             delay: "animation-delay-400",
             type: "select",
@@ -44,8 +49,8 @@ const EventInfoSection = ({
         },
         {
             title: "Category",
-            content: eventCategory, // This will be the object or the name string
-            icon: ChartColumnStacked,
+            content: eventCategory,
+            icon: BarChart3,
             delay: "animation-delay-600",
             type: "select",
             onChangeEn: onCategoryChange,
@@ -54,14 +59,16 @@ const EventInfoSection = ({
         },
         {
             title: "Pricing",
-            content: { basicCost, price },
+            content: { basicCost, price, main_price },
             icon: DollarSign,
             delay: "animation-delay-800",
             type: "pricing",
             onChangeBasic: onBasicCostChange,
             onChangePrice: onPriceChange,
+            onChangeMainPrice: onMainPriceChange,
             placeholderBasic: "Basic cost...",
-            placeholderPrice: "Event price..."
+            placeholderPrice: "Event price...",
+            placeholderMainPrice: "Main price..."
         },
     ];
 
@@ -107,11 +114,18 @@ const EventInfoSection = ({
                                         <PricingInput
                                             basicCost={card.content.basicCost}
                                             price={card.content.price}
+                                            main_price={card.content.main_price}
                                             onBasicCostChange={card.onChangeBasic}
                                             onPriceChange={card.onChangePrice}
+                                            onMainPriceChange={card.onChangeMainPrice}
                                             isEditing={isEditing}
                                             placeholderBasic={card.placeholderBasic}
                                             placeholderPrice={card.placeholderPrice}
+                                            placeholderMainPrice={card.placeholderMainPrice}
+                                            offers={offers}
+                                            has_offer={has_offer}
+                                            priceBfOffer={priceBfOffer}
+                                            setPriceBfOffer={setPriceBfOffer}
                                         />
                                     ) : (
                                         <EditableInput
@@ -198,16 +212,13 @@ const EditableTextarea = ({ value, onChange, isEditing, placeholder, className =
 
 // مكوّن الـ SelectInput المُحدث ليتعامل مع الكائنات
 const SelectInput = ({ onChange, options = [], placeholder = "Select an option", isEditing, content }) => {
-    // تحديد القيمة المختارة حاليًا - إما object في حالة العرض أو id في حالة التحرير
     const getCurrentValue = () => {
         if (isEditing) {
-            // في حالة التحرير، content قد يكون object أو id
             return typeof content === 'object' && content?.id ? content.id : content;
         }
         return content;
     };
 
-    // عرض النص المختار
     const getDisplayText = () => {
         if (typeof content === 'object' && content?.name) {
             return content.name;
@@ -236,24 +247,36 @@ const SelectInput = ({ onChange, options = [], placeholder = "Select an option",
     );
 };
 
-// مكوّن الأسعار الجديد
+// مكوّن الأسعار المحدث مع main_price
 const PricingInput = ({
                           basicCost,
                           price,
+                          main_price,
                           onBasicCostChange,
                           onPriceChange,
+                          onMainPriceChange,
                           isEditing,
                           placeholderBasic,
-                          placeholderPrice
+                          placeholderPrice,
+                          placeholderMainPrice,
+                          offers,
+                          has_offer,
+                          priceBfOffer,
+                            setPriceBfOffer,
                       }) => {
     const [localBasicCost, setLocalBasicCost] = useState(basicCost || "");
     const [localPrice, setLocalPrice] = useState(price || "");
+    const [localMainPrice, setLocalMainPrice] = useState(main_price || "");
 
     useEffect(() => setLocalBasicCost(basicCost || ""), [basicCost]);
     useEffect(() => setLocalPrice(price || ""), [price]);
+    useEffect(() => setLocalMainPrice(main_price || ""), [main_price]);
+
+    // تحديد ما إذا كان هناك عرض (main_price موجود)
+    const hasOffer = has_offer;
 
     return isEditing ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-4">
             {/* Basic Cost */}
             <div>
                 <label className="block text-gray-400 text-sm mb-2">Basic Cost</label>
@@ -274,39 +297,103 @@ const PricingInput = ({
                 </div>
             </div>
 
-            {/* Price */}
-            <div>
-                <label className="block text-gray-400 text-sm mb-2">Event Price</label>
-                <div className="relative">
-                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">$</span>
-                    <input
-                        type="number"
-                        step="0.01"
-                        min="0"
-                        value={localPrice}
-                        onChange={(e) => {
-                            setLocalPrice(e.target.value);
-                            onPriceChange(e.target.value);
-                        }}
-                        placeholder={placeholderPrice}
-                        className="w-full bg-slate-800/90 border-2 border-slate-600/50 text-white rounded-lg pl-8 pr-4 py-2 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
-                    />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Main Price */}
+                {hasOffer&&<div>
+                    <label className="block text-gray-400 text-sm mb-2">
+                        Main Price
+                    </label>
+                    <div className="relative">
+                        <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">$</span>
+                        <input
+                            type="number"
+                            step="0.01"
+                            min="0"
+                            value={priceBfOffer}
+                            onChange={(e) => {
+                                setPriceBfOffer(e.target.value);
+                                setLocalPrice(parseFloat(e.target.value-(e.target.value*offers?.[0].discount/100)).toFixed(2));
+                            }}
+                            placeholder={placeholderMainPrice}
+                            className="w-full bg-slate-800/90 border-2 border-slate-600/50 text-white rounded-lg pl-8 pr-4 py-2 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                        />
+                    </div>
+                </div>}
+
+                {/* Event Price */}
+                <div>
+                    <label className="block text-gray-400 text-sm mb-2">
+                        Event Price
+                        <span className="text-xs text-gray-500 block">
+                            {localMainPrice ? "(After discount)" : "(Main price)"}
+                        </span>
+                    </label>
+                    <div className="relative">
+                        <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">$</span>
+                        <input
+                            type="number"
+                            step="0.01"
+                            min="0"
+                            value={localPrice}
+                            onChange={(e) => {
+                                if(!hasOffer) {
+                                    setLocalPrice(e.target.value);
+                                    onPriceChange(e.target.value);
+                                }
+                            }}
+                            placeholder={placeholderPrice}
+                            className="w-full bg-slate-800/90 border-2 border-slate-600/50 text-white rounded-lg pl-8 pr-4 py-2 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                        />
+                    </div>
                 </div>
             </div>
         </div>
     ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
+        <div className="space-y-4">
+            {/* Basic Cost */}
+            <div className="bg-slate-800/30 rounded-lg p-3">
                 <span className="text-gray-400 text-sm block mb-1">Basic Cost:</span>
-                <p className="text-gray-200 text-lg font-semibold">
+                <p className="text-gray-200 text-base font-medium">
                     {basicCost ? `$${parseFloat(basicCost).toFixed(2)}` : "Not set"}
                 </p>
             </div>
-            <div>
-                <span className="text-gray-400 text-sm block mb-1">Event Price:</span>
-                <p className="text-gray-200 text-lg font-semibold">
-                    {price ? `$${parseFloat(price).toFixed(2)}` : "Not set"}
-                </p>
+
+            {/* Pricing Display */}
+            <div className="bg-gradient-to-r from-slate-800/30 to-slate-700/30 rounded-lg p-4">
+                {hasOffer ? (
+                    // عرض السعر الأصلي والسعر بعد الخصم
+                    <div className="space-y-3">
+                        <div className="flex items-center justify-between">
+                            <span className="text-gray-400 text-sm">Original Price:</span>
+                            <p className="text-gray-400 text-lg line-through decoration-red-500 decoration-2">
+                                ${parseFloat(main_price).toFixed(2)}
+                            </p>
+                        </div>
+
+                        <div className="flex items-center justify-between">
+                            <span className="text-green-400 text-sm font-medium">Special Price:</span>
+                            <p className="text-green-400 text-2xl font-bold">
+                                ${parseFloat(price).toFixed(2)}
+                            </p>
+                        </div>
+
+                        {/* حساب نسبة الخصم */}
+                        {main_price && price && parseFloat(main_price) > parseFloat(price) && (
+                            <div className="text-center">
+                                <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full">
+                                    Save {offers?.[0].discount}%
+                                </span>
+                            </div>
+                        )}
+                    </div>
+                ) : (
+                    <div className="text-center">
+                        <span className="text-gray-400 text-sm block mb-2">Event Price:</span>
+                        <p className="text-[#519489] text-2xl font-bold">
+                            {price ? `$${parseFloat(price).toFixed(2)}` : "Not set"}
+                        </p>
+                    </div>
+                )}
             </div>
         </div>
     );

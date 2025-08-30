@@ -189,7 +189,7 @@ export default function SearchResult({navEvent,data, searchTerm, selectedCities,
                                         <div onClick={() => {navEvent(item.id)}}
                                             key={item.id} className="group relative bg-gradient-to-br from-slate-800/80 to-slate-900/90 p-6 rounded-2xl border border-slate-700/50 backdrop-blur-sm hover:shadow-xl hover:shadow-teal-500/10 transition-all duration-500 hover:scale-105 hover:border-teal-500/30">
                                             <div className="absolute top-4 right-4 flex items-center gap-2">
-                                                   <span className={`px-3 py-1.5 absolute right-85 rounded-xl text-xs font-medium border ${getStatusBadgeColor(item.status)}`}>
+                                                   <span className={`px-3 py-1.5 absolute right-80 rounded-xl text-xs font-medium border ${getStatusBadgeColor(item.status)}`}>
                                                         {item.status}
                                                     </span>
                                                     <span className={`px-2 py-1 rounded-full text-xs font-medium border ${getStatusBadgeColor('in_progress')}`}>

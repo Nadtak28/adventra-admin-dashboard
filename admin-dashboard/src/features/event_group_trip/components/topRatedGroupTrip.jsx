@@ -3,7 +3,7 @@ import React from "react";
 import {useDispatch} from "react-redux";
 import {filterService} from "../../all/api/filterService.jsx";
 
-export default  function TopRatedGroupTrip ({topRatedGroupTrips,viewMoreTopRatedTours}){
+export default  function TopRatedGroupTrip ({navAddGT,topRatedGroupTrips,viewMoreTopRatedTours}){
     const dispatch = useDispatch();
 
     return(
@@ -164,14 +164,15 @@ export default  function TopRatedGroupTrip ({topRatedGroupTrips,viewMoreTopRated
                             </div>
 
                             {/* Action Button */}
-                            <button className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-teal-600 to-cyan-700 hover:from-teal-500 hover:to-cyan-600 text-white py-3 px-4 rounded-xl font-semibold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-teal-500/25">
+                            <button onClick={() => { navAddGT(tour.id) }}
+                                    className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-teal-600 to-cyan-700 hover:from-teal-500 hover:to-cyan-600 text-white py-3 px-4 rounded-xl font-semibold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-teal-500/25">
                                 <RefreshCw size={16} className="group-hover:rotate-180 transition-transform duration-500" />
                                 Republish Tour
                             </button>
                         </div>
 
                         {/* Hover Glow Effect */}
-                        <div className="absolute -inset-1 bg-gradient-to-r from-teal-400/20 to-cyan-600/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-50 transition-opacity duration-500"></div>
+                        <div className="absolute -inset-1 bg-gradient-to-r from-teal-400/20 to-cyan-600/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-50 transition-opacity duration-500 pointer-events-none"></div>
                     </div>
                 ))}
             </div>

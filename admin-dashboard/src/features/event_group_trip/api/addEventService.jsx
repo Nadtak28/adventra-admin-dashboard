@@ -6,6 +6,19 @@ export const AddEventService=createAsyncThunk(
     "AddEventService",
     async (Files, {rejectWithValue,getState}) => {
         const state=getState().AddEvent;
+        // Function to add seconds if they are missing from a datetime string
+        const addSeconds = (datetimeString) => {
+            if (!datetimeString.match(/:\d{2}:\d{2}$/)) {
+                const separatorIndex = datetimeString.indexOf('T') !== -1 ? datetimeString.indexOf('T') : datetimeString.indexOf(' ');
+                const lastColonIndex = datetimeString.lastIndexOf(':');
+                if (datetimeString.length - lastColonIndex < 3 || datetimeString.indexOf('.') !== -1) {
+                    datetimeString += ':00';
+                }
+            }
+            return datetimeString;
+        };
+
+
         let errorDetected = false;
         for (const field in state.form) {
             if(!state.form.isTimeBased){
@@ -44,13 +57,13 @@ export const AddEventService=createAsyncThunk(
             media:media}
         if(state.form.isTimeBased)
         {
-           form={
-               ...form,
-               tickets_count:state.form.maxTickets,
-               tickets_limit:state.form.ticketCount,
-               start_date:state.form.startDate.replace('T', ' '),
-               end_date:state.form.endDate.replace('T', ' '),
-           };
+            form = {
+                ...form,
+                tickets_count: state.form.maxTickets,
+                tickets_limit: state.form.ticketCount,
+                start_date: addSeconds(state.form.startDate.replace('T', ' ')),
+                end_date: addSeconds(state.form.endDate.replace('T', ' ')),
+            };
         }
 
         try{

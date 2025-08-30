@@ -2,6 +2,7 @@ import {createSlice} from "@reduxjs/toolkit";
 import {addGTService} from "../api/addGTService.jsx"
 import {tokenStore} from "../../../utils/dataStore.js";
 import {getGEByIDService} from "../api/getGuides&EventsByIDService.jsx";
+import {GetGTService} from "../api/getGTService.js";
 const today = () => {
     const now = new Date();
     const year = now.getFullYear();
@@ -54,7 +55,9 @@ const initialState = {
         maxTickets:false,
         selectedGuide:false,
         selectedEvents:false,
-    }
+    },
+    images:[],
+    videos:[],
 }
 const AddGTSlice =createSlice({
     name: "AddGTSlice",
@@ -192,11 +195,40 @@ const AddGTSlice =createSlice({
                     city_id:state.form.city_id,
 
                 }
-
-
             })
             .addCase(getGEByIDService.rejected, (state, action) => {
                 console.log("getGEByIDService.rejected", action.payload)
+                if((!!action.payload?.unauthorized)){
+                    tokenStore.clearToken()
+                    window.location.href = '/login'
+                }
+                state.isLoading = false;
+            })
+            .addCase(GetGTService.pending, (state) => {
+            })
+            .addCase(GetGTService.fulfilled, (state, action) => {
+                if(action.payload.type==='add'){
+                    state.form = {
+                        nameEn: action.payload.data.name,
+                        nameAr: action.payload.data.name_ar,
+                        descriptionEn: action.payload.data.description,
+                        descriptionAr: action.payload.data.description_ar,
+                        ticketPrice: action.payload.data.price,
+                        userPrice: action.payload.data.basic_cost,
+                        minTickets: action.payload.data.tickets_limit,
+                        maxTickets: action.payload.data.tickets_count,
+                        selectedGuide: action.payload.data.guide,
+                        selectedEvents: action.payload.data.events,
+                        city_id: action.payload.data.cities[0].id,
+                        Events:[],
+                        Guides:[],
+                    }
+                    state.images=action.payload.data.images
+                    state.videos=action.payload.data.videos
+                }
+            })
+            .addCase(GetGTService.rejected, (state, action) => {
+                console.log("GetGTService.rejected", action.payload)
                 if((!!action.payload?.unauthorized)){
                     tokenStore.clearToken()
                     window.location.href = '/login'

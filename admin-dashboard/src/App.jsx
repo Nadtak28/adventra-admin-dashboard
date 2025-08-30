@@ -72,6 +72,7 @@ function App() {
                <Route path="cities/add" element={<AddCity />} />
                <Route path="event_grouptrip/add_event" element={<AddEvent />} />
                <Route path="event_grouptrip/add_group_trip" element={<AddGroupTrip />} />
+               <Route path="event_grouptrip/add_group_trip/:id" element={<AddGroupTrip />} />
         </Route>
     </Routes>
 

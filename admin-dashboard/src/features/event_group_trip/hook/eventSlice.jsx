@@ -34,8 +34,7 @@ const EventSlice =createSlice({
     },
     extraReducers:(builder) => {
         builder.addCase(EventService.pending, (state) => {
-            state.isLoading = true;
-            state.validData=false;
+            state.form.main_price=null
         })
             .addCase(EventService.fulfilled, (state, action) => {
                 console.log("EventService.fulfilled", action.payload)
