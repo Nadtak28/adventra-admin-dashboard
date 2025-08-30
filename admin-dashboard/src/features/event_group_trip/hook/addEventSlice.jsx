@@ -1,6 +1,7 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {AddEventService} from "../api/addEventService.jsx"
 import {tokenStore} from "../../../utils/dataStore.js";
+import {EventService} from "../api/getEventService.jsx";
 const today = () => {
     const now = new Date();
     const year = now.getFullYear();
@@ -115,6 +116,37 @@ const AddEventSlice =createSlice({
             })
             .addCase(AddEventService.rejected, (state, action) => {
                 console.log("AddEventService.rejected", action.payload)
+                if((!!action.payload?.unauthorized)){
+                    tokenStore.clearToken()
+                    window.location.href = '/login'
+                }
+                state.isLoading = false;
+            }).addCase(EventService.fulfilled, (state, action) => {
+                if(action.payload?.type==='add'){
+                console.log("EventService.fulfilled", action.payload)
+                state.form = {
+                    nameEn:action.payload.data.name,
+                    nameAr: action.payload.data?.name_ar,
+                    descriptionEn: action.payload.data.description,
+                    descriptionAr: action.payload.data.description_ar,
+                    ticketPrice: '',
+                    userPrice: '',
+                    eventType: action.payload.data.category.id,
+                    city: action.payload.data.city.id,
+                    maxTickets: '',
+                    ticketCount: '',
+                    isTimeBased: false,
+                    startDate: today(),
+                    endDate: ''
+                }
+                state.isLoading = false;
+                Object.keys(state.errors).forEach(key => {
+                    state.errors[key] = false;
+                });
+            }
+            })
+            .addCase(EventService.rejected, (state, action) => {
+                console.log("EventService.rejected", action.payload)
                 if((!!action.payload?.unauthorized)){
                     tokenStore.clearToken()
                     window.location.href = '/login'

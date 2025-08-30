@@ -1,7 +1,7 @@
 import {Calendar, ChevronDown, Clock, Edit3, Eye, TicketPercent, Users, Star, Award, Loader2} from "lucide-react";
 import React from "react";
 
-export default function soldTicketsUpcomingGroupTrips({upcomingGroupTrips,isLoading,viewUpcomingGroupTrips}){
+export default function soldTicketsUpcomingGroupTrips({navGT,upcomingGroupTrips,isLoading,viewUpcomingGroupTrips}){
     const formatDate = (dateString) => {
         return new Date(dateString).toLocaleDateString('en-US', {
             month: 'short',
@@ -61,7 +61,6 @@ export default function soldTicketsUpcomingGroupTrips({upcomingGroupTrips,isLoad
                                 <th className="px-6 py-4 text-left text-white text-sm font-semibold">Guide & Rating</th>
                                 <th className="px-6 py-4 text-left text-white text-sm font-semibold">Pricing</th>
                                 <th className="px-6 py-4 text-left text-white text-sm font-semibold">Revenue</th>
-                                <th className="px-6 py-4 text-left text-white text-sm font-semibold">Offer</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -70,7 +69,8 @@ export default function soldTicketsUpcomingGroupTrips({upcomingGroupTrips,isLoad
                                 const hasActiveOffer = tour.has_offer && tour.offers && tour.offers.length > 0;
 
                                 return (
-                                    <tr key={tour.id} className="group border-t border-t-slate-700/30 hover:bg-gradient-to-r hover:from-slate-800/60 hover:to-slate-700/40 transition-all duration-300">
+                                    <tr onClick={()=>{navGT(tour.id)}}
+                                        key={tour.id} className="group border-t border-t-slate-700/30 hover:bg-gradient-to-r hover:from-slate-800/60 hover:to-slate-700/40 transition-all duration-300">
                                         <td className="px-6 py-5">
                                             <div className="flex items-center gap-4">
                                                 <div className="relative">
@@ -187,40 +187,7 @@ export default function soldTicketsUpcomingGroupTrips({upcomingGroupTrips,isLoad
                                                 <div className="text-slate-400 text-xs">total earned</div>
                                             </div>
                                         </td>
-                                        <td className="px-6 py-5">
-                                            <div className="flex items-center gap-2">
-                                                <button className="group/btn p-2.5 bg-slate-800/60 backdrop-blur-sm border border-slate-700/50 hover:border-teal-500/50 text-slate-400 hover:text-teal-300 rounded-xl hover:bg-slate-700/60 transition-all duration-300 hover:scale-110">
-                                                    <Eye size={14} className="group-hover/btn:scale-110 transition-transform duration-300" />
-                                                </button>
-                                                <button
-                                                    disabled={!tour.has_offer}
-                                                    className="
-                                                            group/btn p-2.5 backdrop-blur-sm border rounded-xl transition-all duration-300
 
-                                                            // Default (Enabled) styles
-                                                            bg-slate-800/60 border-slate-700/50 text-slate-400 hover:border-teal-500/50 hover:text-teal-300 hover:bg-slate-700/60 hover:scale-110
-
-                                                            // Disabled styles
-                                                            disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:bg-slate-800/60 disabled:hover:border-slate-700/50 disabled:hover:text-slate-400">
-                                                    <Edit3 size={14} className="group-hover/btn:rotate-12 transition-transform duration-300" />
-                                                </button>
-                                                <button
-                                                    disabled={tour.has_offer}
-                                                    className="
-                                                            group/btn p-2.5 backdrop-blur-sm border rounded-xl transition-all duration-300
-
-                                                            // Default Styles (when enabled)
-                                                            bg-slate-800/60 border-slate-700/50 text-slate-400
-                                                            hover:border-teal-500/50 hover:text-teal-300 hover:bg-slate-700/60 hover:scale-110
-
-                                                            // Disabled Styles
-                                                            disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100
-                                                            disabled:hover:bg-slate-800/60 disabled:hover:border-slate-700/50
-                                                            disabled:hover:text-slate-400">
-                                                    <TicketPercent size={14} />
-                                                </button>
-                                            </div>
-                                        </td>
                                     </tr>
                                 )})}
                             </tbody>

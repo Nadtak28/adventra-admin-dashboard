@@ -40,7 +40,7 @@ const MainContent = () => {
     const [Files, setFiles] = useState({ images: [], videos: [] });
 
     useEffect(() => {
-        dispatch(EventService({ id }));
+        dispatch(EventService({ id ,type:'hgfd'}));
     }, [dispatch, id]);
 
     useEffect(() => {
@@ -132,7 +132,7 @@ const MainContent = () => {
 
         const result = await dispatch(updateEventService({ data, id }));
         setIsEditing(false);
-        dispatch(EventService({ id }));
+        dispatch(EventService({ id,type:'no' }));
         if (result.type === 'updateEventService/fulfilled') {
             alert('Information updated successfully!');
             setFiles({ images: [], videos: [] });
@@ -206,7 +206,7 @@ const MainContent = () => {
         else{
             alert('Something went wrong!');
         }
-        dispatch(EventService({ id }));
+        dispatch(EventService({ id,type:'no' }));
     };
     const handleEditOffer = async(data) => {
         const formattedOffer = {
@@ -222,7 +222,7 @@ const MainContent = () => {
         else{
             alert('Something went wrong!');
         }
-        dispatch(EventService({ id }));
+        dispatch(EventService({ id,type:'no' }));
     };
 
     const handleDeleteMedia = (id, type) => {
@@ -450,6 +450,7 @@ const MainContent = () => {
                         has_offer={form.has_offer}
                         priceBfOffer={priceBfOffer}
                         setPriceBfOffer={setPriceBfOffer}
+                        form={form}
                     />
 
                     {/* Offers Section */}

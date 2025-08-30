@@ -1,26 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { Edit, Save, X, ToggleLeft, ToggleRight } from "lucide-react";
-import HeroSection from "../../features/cities/components/City/heroSection.jsx";
-import CityInfoSection from "../../features/cities/components/City/Info.jsx";
-import EventsSection from "../../features/cities/components/City/events.jsx";
-import GuidesSection from "../../features/cities/components/City/guides.jsx";
-import { CityService } from "../../features/cities/api/cityService.jsx";
-import { cityEvents_GuidesService } from "../../features/cities/api/cityEvents_GuidesService.jsx";
+import { Edit, Save, X, ToggleLeft, ToggleRight, Plus, Calendar, Percent } from "lucide-react";
+import HeroSection from "../../features/event_group_trip/components/group_trip/heroSection.jsx";
+import EventInfoSection from "../../features/event_group_trip/components/group_trip/Info.jsx";
+import OffersSection from "../../features/event_group_trip/components/group_trip/offers.jsx";
 import AddMedia from "../../features/all/components/Add/add_media.jsx";
-import {updateCityService} from "../../features/cities/api/updateCityService.jsx";
 import {getIdsService} from "../../features/all/api/getIdsService.jsx";
+import ReviewsSection from "../../features/guide/components/guide/reviewsSection.jsx";
+import {updateEventOfferService} from "../../features/event_group_trip/api/updateEventOfferService.js";
+import {GetGTService} from "../../features/event_group_trip/api/getGTService.js";
+import {addGTOfferSerivce} from "../../features/event_group_trip/api/addGTOfferSlice.jsx";
+import {updateGroupTripService} from "../../features/event_group_trip/api/updateGroupTripService.jsx";
+import EventsSection from "../../features/cities/components/City/events.jsx";
 
 const MainContent = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
-    const { form, isLoading } = useSelector((state) => state.City);
-    const { languages } = useSelector((state) => state.getIds);
-
-    const countries=[
-        {"afghanistan":1,"albania":2,"algeria":3,"america-samoa":4,"andorra":5,"angola":6,"anguilla":7,"antarctica":8,"antigua-and-barbuda":9,"argentina":10,"armenia":11,"aruba":12,"australia":13,"austria":14,"azerbaijan":15,"bahamas":16,"bahrain":17,"bangladesh":18,"barbados":19,"belarus":20,"belgium":21,"belize":22,"benin":23,"bermuda":24,"bhutan":25,"bolivia":26,"bosnia-and-herzegovina":27,"botswana":28,"brazil":29,"brunei-darussalam":30,"bulgaria":31,"burkina-fas":32,"burundi":33,"cambodia":34,"cameroon":35,"canada":36,"cape-verde":37,"cayman_islands":38,"center-african-republic":39,"chad":40,"chile":41,"china":42,"christmas-island":43,"cocos-islands":44,"colombia":45,"comoros":46,"congo":47,"cook-islands":48,"costa-rica":49,"cote-de-ivoire":50,"croatia":51,"cuba":52,"cyprus":53,"czech":54,"denmark":55,"djibouti":56,"dominica":57,"dominican":58,"east-timor":59,"ecuador":60,"egypt":61,"el-salvador":62,"equatorial-guinea":63,"eritrea":64,"estonia":65,"ethiopia":66,"falkland-islands":67,"faroe-islands":68,"fiji":69,"finland":70,"france":71,"gabon":72,"the-gambia":73,"georgia":74,"germany":75,"ghana":76,"gibraltar":77,"greece":78,"greenland":79,"grenada":80,"guadeloupe":81,"guam":82,"guatemala":83,"guinea":84,"guinea-bissau":85,"guyana":86,"haiti":87,"holy-see":88,"honduras":89,"hong-kong":90,"hungary":91,"island":92,"india":93,"indonesia":94,"iran":95,"iraq":96,"ireland":97,"italy":98,"ivory-coast":99,"jamaica":100,"japan":101,"jordan":102,"kazakhstan":103,"kenya":104,"kiribati":105,"north-korea":106,"south-korea":107,"kosovo":108,"kuwait":109,"kyrgyzstan":110,"lao-people":111,"latvia":112,"lebanon":113,"lesotho":114,"liberia":115,"libya":116,"liechtenstein":117,"lithuania":118,"luxembourg":119,"macau":120,"madagascar":121,"malawi":122,"malaysia":123,"maldives":124,"mali":125,"malta":126,"marshall-islands":127,"martinique":128,"mauritania":129,"mauritius":130,"mexico":131,"micronesia":132,"moldova":133,"monaco":134,"mongolia":135,"montenegro":136,"montserrat":137,"morocco":138,"mozambique":139,"myanmar":140,"namibia":141,"nauru":142,"nepal":143,"netherlands":144,"new-caledonia":145,"new-zealand":146,"nicaragua":147,"niger":148,"nigeria":149,"niue":150,"north-macedonia":151,"northern-mariana-islands":152,"norway":153,"oman":154,"pakistan":155,"palau":156,"palestine":157,"panama":158,"papua-new-guinea":159,"paraguay":160,"peru":161,"philippines":162,"pitcairn-islands":163,"poland":164,"portugal":165,"puerto-rico":166,"qatar":167,"reunion-island":168,"romania":169,"russia":170,"rwanda":171,"saint-kitts-and-nevis":172,"saint lucia":173,"samoa":174,"san-marino":175,"saudi-arabia":176,"senegal":177,"serbia":178,"seychelles":179,"sierra-leone":180,"singapore":181,"slovakia":182,"slovenia":183,"solomon-islands":184,"somali":185,"south-africa":186,"south-sudan":187,"spain":188,"sri-lanka":189,"sudan":190,"suriname":191,"swaziland":192,"sweden":193,"switzerland":194,"syria":195,"taiwan":196,"tajikistan":197,"tanzania":198,"thailand":199,"tibet":200,"timer-lest":201,"togo":202,"tokelau":203,"tonga":204,"trinidad-and-tobago":205,"tunisia":206,"turkey":207,"turkmenistan":208,"turks-and-caicos-islands":209,"tuvalu":210,"uganda":211,"ukraine":212,"uae":213,"uk":214,"usa":215,"uruguay":216,"uzbekistan":217,"vanuatu":218,"venezuela":219,"vietnam":220,"virgin-islands":221,"wallis-and-futuna-islands":222,"yemen":223,"zambia":224,"zimbabwe":225}
-    ]
+    const { form, isLoading } = useSelector((state) => state.GT);
+    const { categories, cities } = useSelector((state) => state.getIds);
+    const { guides } = useSelector((state) => state.getIds||[]);
+    const[priceBfOffer, setPriceBfOffer] = useState();
     // حالة التعديل
     const [isEditing, setIsEditing] = useState(false);
     const [editForm, setEditForm] = useState({
@@ -28,15 +28,18 @@ const MainContent = () => {
         nameAr: '',
         descriptionEn: '',
         descriptionAr: '',
-        country: '',
-        language: '',
-        images:[],
-        videos:[],
-        isActive: form.status === 'active'
+        images: [],
+        videos: [],
+        price: 0,
+        basic_cost: 0,
+        offers: [],
+        has_offer: false
     });
+
+    const [Files, setFiles] = useState({ images: [], videos: [] });
+
     useEffect(() => {
-        dispatch(CityService({ id }));
-        dispatch(cityEvents_GuidesService({ id }));
+        dispatch(GetGTService({ id,type:'no' }));
     }, [dispatch, id]);
 
     useEffect(() => {
@@ -51,11 +54,14 @@ const MainContent = () => {
                 nameAr: form?.nameAr || '',
                 descriptionEn: form?.descriptionEn || '',
                 descriptionAr: form?.descriptionAr || '',
-                country: form?.country?.id || '',
-                language: form?.language?.id || '',
+                guide: form?.guide || null,
                 images: form?.images || [],
                 videos: form?.videos || [],
-                isActive: form.status === 'active'
+                basic_cost: form?.basic_cost || 0,
+                price: form?.price || 0,
+                isActive: form?.status,
+                offers: form?.offers || [],
+                has_offer: form?.has_offer || false
             });
         }
     }, [form]);
@@ -75,75 +81,144 @@ const MainContent = () => {
                 nameAr: form?.nameAr || '',
                 descriptionEn: form?.descriptionEn || '',
                 descriptionAr: form?.descriptionAr || '',
-                country: form?.country?.id || '',
-                language: form?.language?.id || '',
+                city: form?.city || null,
+                category: form?.category || null,
                 images: form?.images || [],
                 videos: form?.videos || [],
-                isActive: form.status === 'active'
-
+                basic_cost: form?.basic_cost || 0,
+                price: form?.price || 0,
+                isActive: form?.status,
+                offers: form?.offers || [],
+                has_offer: form?.has_offer || false
             });
         }
-        setFiles({images:[],videos:[]})
+        setFiles({ images: [], videos: [] });
     };
 
     // دالة حفظ التعديلات
     const handleSaveChanges = async () => {
-        let media=[]
-        for(const file of Files.images) {
+        let media = [];
+        for (const file of Files.images) {
             media.push(file.File);
         }
-        for(const file of Files.videos) {
+        for (const file of Files.videos) {
             media.push(file.File);
         }
-        let old_media=[]
-        for(const media of editForm.images) {
-            old_media.push(media.id)
-        }for(const media of editForm.videos) {
-            old_media.push(media.id)
-        }
-        const status=editForm.isActive===true?'active':'inactive';
-        const data={
-            name:editForm.nameEn,
-            name_ar:editForm.nameAr,
-            description_ar:editForm.descriptionAr,
-            description:editForm.descriptionEn,
-            country_id:editForm.country,
-            language_id:editForm.language,
-            status:status,
-            old_media:old_media,
-            media:media
-        }
-        console.log(data)
-            const result=await dispatch(updateCityService({data,id}));
-            setIsEditing(false);
-            dispatch(CityService({ id }));
-            if(result.type==='updateCityService/fulfilled')
-            {
-                alert('Information updated successfully!');
-                setFiles({images:[],videos:[]})
-                //هون بضيف الnavigate فيما بعد
-            }
-            else {
-                alert('Problem happened ');
-            }
 
+        let old_media = [];
+        for (const mediaItem of editForm.images) {
+            old_media.push(mediaItem.id);
+        }
+        for (const mediaItem of editForm.videos) {
+            old_media.push(mediaItem.id);
+        }
+
+        const data = {
+            name: editForm.nameEn,
+            name_ar: editForm.nameAr,
+            description_ar: editForm.descriptionAr,
+            description: editForm.descriptionEn,
+            guide_id: form.guide?.id,
+            price: form.main_price? priceBfOffer:editForm.price,
+            basic_cost: editForm.basic_cost,
+            extra_cost:form?.extra_cost,
+            adding_tickets_count:0,
+            tickets_limit:form?.tickets_limit,
+            old_media: old_media,
+            media: media,
+        };
+        const result = await dispatch(updateGroupTripService({ data, id }));
+        setIsEditing(false);
+        dispatch(GetGTService({ id,type:'no' }));
+        if (result.type === 'updateGroupTripService/fulfilled') {
+            alert('Information updated successfully!');
+            setFiles({ images: [], videos: [] });
+        } else {
+            alert('Problem happened ');
+        }
     };
 
     // دالة تحديث قيم النموذج
     const handleInputChange = (field, value) => {
-        setEditForm(prev => ({
-            ...prev,
-            [field]: value
-        }));
+        if (field === 'city') {
+            // البحث عن الcity object بناءً على الid
+            const selectedCity = cities.find(city => city.id === parseInt(value));
+            setEditForm(prev => ({
+                ...prev,
+                [field]: selectedCity || value
+            }));
+        } else if (field === 'category') {
+            // البحث عن الcategory object بناءً على الid
+            const selectedCategory = categories.find(category => category.id === parseInt(value));
+            setEditForm(prev => ({
+                ...prev,
+                [field]: selectedCategory || value
+            }));
+        } else {
+            setEditForm(prev => ({
+                ...prev,
+                [field]: value
+            }));
+        }
     };
 
     // دالة تغيير حالة المدينة
     const handleToggleStatus = () => {
-        setEditForm(prev => ({
-            ...prev,
-            isActive: !prev.isActive
-        }));
+
     };
+
+    // دالة التعامل مع تغيير العرض الحالي
+    const handleOfferChange = (field, value) => {
+        setEditForm(prev => {
+            const updatedOffers = [...prev.offers];
+            if (updatedOffers.length > 0) {
+                updatedOffers[0] = {
+                    ...updatedOffers[0],
+                    [field]: field.includes('date') ? value + 'T00:00:00.000000Z' : value
+                };
+            }
+            return {
+                ...prev,
+                offers: updatedOffers
+            };
+        });
+    };
+
+    // دالة إضافة عرض جديد
+    const handleAddOffer = async (data) => {
+        const formattedOffer = {
+            discount: data.discount,
+            start_date: data.start_date,
+            end_date: data.end_date,
+        };
+
+        const result=await dispatch(addGTOfferSerivce({ data:formattedOffer,id}));
+        if(result.type==='addGTOfferSerivce/fulfilled') {
+            console.log(result);
+            alert('Offer updated successfully!');
+        }
+        else{
+            alert('Something went wrong!');
+        }
+        dispatch(GetGTService({ id ,type:'no'}));
+    };
+    const handleEditOffer = async(data) => {
+        const formattedOffer = {
+            discount: data.discount,
+            start_date: data.start_date,
+            end_date: data.end_date,
+        };
+        const result=await dispatch(updateEventOfferService({ data:formattedOffer,id}));
+        if(result.type==='updateEventOfferService/fulfilled') {
+            console.log(result);
+            alert('Offer updated successfully!');
+        }
+        else{
+            alert('Something went wrong!');
+        }
+        dispatch(getGTSerivce({ id,type:'no' }));
+    };
+
     const handleDeleteMedia = (id, type) => {
         setEditForm((prev) => {
             if (type === "image") {
@@ -154,10 +229,10 @@ const MainContent = () => {
             return prev;
         });
     };
-    const [Files,setFiles] = useState({images:[],videos:[]});
-    const handleFilesChange=(type) => {
 
-    }
+    const handleFilesChange = (type) => {
+        // إضافة منطق التعامل مع الملفات هنا
+    };
 
     return (
         <div className="relative space-y-6 bg-[#0b1520] min-h-screen -m-6 p-6">
@@ -166,9 +241,8 @@ const MainContent = () => {
                 <div className="bg-slate-800/90 backdrop-blur-sm border border-slate-700 rounded-lg p-3 shadow-lg">
                     <div className="flex items-center gap-3">
                         <div className="flex items-center gap-2">
-                            <span className="text-sm text-slate-300">City Status:</span>
+                            <span className="text-sm text-slate-300">GT Status:</span>
                             <button
-                                onClick={handleToggleStatus}
                                 className={`flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium transition-all ${
                                     editForm.isActive
                                         ? 'bg-green-500/20 text-green-400 border border-green-500/30'
@@ -176,17 +250,10 @@ const MainContent = () => {
                                 }`}
                                 disabled={!isEditing}
                             >
-                                {editForm.isActive ? (
                                     <>
                                         <ToggleRight className="w-4 h-4" />
-                                        Active
+                                        {form?.status}
                                     </>
-                                ) : (
-                                    <>
-                                        <ToggleLeft className="w-4 h-4" />
-                                        InActive
-                                    </>
-                                )}
                             </button>
                         </div>
 
@@ -196,7 +263,7 @@ const MainContent = () => {
                                 className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
                             >
                                 <Edit className="w-4 h-4" />
-                                Edit City
+                                Edit GT
                             </button>
                         ) : (
                             <div className="flex items-center gap-2">
@@ -322,48 +389,75 @@ const MainContent = () => {
                     }
                 `}</style>
 
-                <div className="flex flex-col max-w-[1200px] mx-auto w-full">
+                <div className="flex flex-col max-w-[1200px] mx-auto w-full space-y-6">
                     {/* Hero Section */}
                     <HeroSection
-                        cityName={isEditing ? editForm.nameEn : form?.nameEn}
-                        cityNameAr={isEditing ? editForm.nameAr : form?.nameAr}
-                        cityCountry={isEditing ? editForm.country : form?.country?.name}
-                        cityImage={editForm.images}
-                        cityVideos={editForm.videos}
+                        eventName={isEditing ? editForm.nameEn : form?.nameEn}
+                        eventNameAr={isEditing ? editForm.nameAr : form?.nameAr}
+                        eventCity={isEditing ?
+                            (typeof editForm.city === 'object' ? editForm.city?.name : editForm.city) :
+                            form?.city?.name
+                        }
+                        eventImage={editForm.images}
+                        eventVideos={editForm.videos}
                         isEditing={isEditing}
                         onNameEnChange={(value) => handleInputChange('nameEn', value)}
                         onNameArChange={(value) => handleInputChange('nameAr', value)}
-                        onCountryChange={(value) => handleInputChange('country', value)}
                         onDeleteMedia={handleDeleteMedia}
                     />
-                    {isEditing&&
-                        (
-                            <AddMedia formData={editForm} addMedia={handleFilesChange} Files={Files} setFiles={setFiles} />
-                        )
-                    }
-                    <CityInfoSection
-                        cityDescription={isEditing ? editForm.descriptionEn : form?.descriptionEn}
-                        cityDescriptionAr={isEditing ? editForm.descriptionAr : form?.descriptionAr}
-                        cityCountry={isEditing ? editForm.country : form?.country?.name}
-                        cityLanguage={isEditing ? editForm.language : form?.language?.name}
+
+                    {isEditing && (
+                        <AddMedia
+                            formData={editForm}
+                            addMedia={handleFilesChange}
+                            Files={Files}
+                            setFiles={setFiles}
+                        />
+                    )}
+
+                    <EventInfoSection
+                        guide={isEditing ? editForm.guide : form?.guide}
+                        eventCategory={isEditing ? editForm.category : form?.category}
+                        eventDescription={isEditing ? editForm.descriptionEn : form?.descriptionEn}
+                        eventDescriptionAr={isEditing ? editForm.descriptionAr : form?.descriptionAr}
+                        basicCost={isEditing ? editForm.basic_cost : form?.basic_cost}
+                        price={isEditing ? editForm.price : form?.price}
+                        main_price={isEditing ? editForm.main_price : form?.main_price}
                         isEditing={isEditing}
                         onDescriptionEnChange={(value) => handleInputChange('descriptionEn', value)}
                         onDescriptionArChange={(value) => handleInputChange('descriptionAr', value)}
-                        onCountryChange={(value) => handleInputChange('country', value)}
-                        onLanguageChange={(value) => handleInputChange('language', value)}
-                        countries={countries}
-                        languages={languages}
+                        onGuideChange={(value) => handleInputChange('guide', value)}
+                        onCategoryChange={(value) => handleInputChange('category', value)}
+                        onBasicCostChange={(value) => handleInputChange('basic_cost', value)}
+                        onPriceChange={(value) => handleInputChange('price', value)}
+                        onMaxTicketsChange={(value) => handleInputChange('ticket_count', value)}
+                        guides={guides}
+                        extra_cost={form.extra_cost}
+                        offers={form?.offers||[]}
+                        has_offer={form.has_offer}
+                        priceBfOffer={priceBfOffer}
+                        setPriceBfOffer={setPriceBfOffer}
+                        form={form}
                     />
 
-                    {/* Events Section */}
-                    <div className="mt-8">
-                        <EventsSection events={form?.events} loading={isLoading} />
-                    </div>
-
-                    {/* Guides Section */}
-                    <div className="mt-8 mb-8">
-                        <GuidesSection guides={form?.guides} loading={isLoading} />
-                    </div>
+                    {/* Offers Section */}
+                    <OffersSection
+                        offers={editForm.offers}
+                        hasOffer={editForm.has_offer}
+                        isEditing={isEditing}
+                        onOfferChange={handleOfferChange}
+                        onAddOffer={handleAddOffer}
+                        event={form.id}
+                        handleEditOffer={handleEditOffer}
+                    />
+                    <EventsSection events={form.events} loading={false}/>
+                    <section className=" rounded-lg shadow-lg">
+                        <ReviewsSection
+                            feedbacks={form?.feedbacks}
+                            rating={form.rate}
+                            type={'group_trip'}
+                        />
+                    </section>
                 </div>
             </main>
         </div>

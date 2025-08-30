@@ -19,6 +19,7 @@
     GroupTrip:'/group_trip/',
     UpdateCity:'/dashboard/cities/',
     UpdateEvent:'/dashboard/events/',
+    UpdateGT:'/dashboard/group_trips/',
     UpdateGuide:'/dashboard/guides/',
     feedBack: '/feedback/',
     addLanguage: '/dashboard/languages',

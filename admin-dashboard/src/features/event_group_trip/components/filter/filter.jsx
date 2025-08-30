@@ -155,6 +155,7 @@ import {useNavigate} from "react-router-dom";
                 searchType={searchType}
                 isLoading={isLoading}
                 navEvent={navEvent}
+                navGT={navGT}
             />
         </div>
     );

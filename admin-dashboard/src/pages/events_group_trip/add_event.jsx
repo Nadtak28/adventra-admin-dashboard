@@ -4,13 +4,15 @@ import AddHeader from "../../features/all/components/Add/add_header.jsx";
 import Info from "../../features/event_group_trip/components/Add/event/Info.jsx"
 import Description from "../../features/event_group_trip/components/Add/event/description.jsx"
 import Prices from "../../features/event_group_trip/components/Add/event/prices.jsx";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import SubmitButton from "../../features/all/components/Add/submit_button.jsx";
 import {useDispatch, useSelector} from "react-redux";
 import {add_emptyMedia, updateFields,Submit} from "../../features/event_group_trip/hook/addEventSlice.jsx";
 import {AddEventService} from "../../features/event_group_trip/api/addEventService.jsx";
 import {getIdsService} from "../../features/all/api/getIdsService.jsx";
+import {EventService} from "../../features/event_group_trip/api/getEventService.jsx";
 export default function AddEvent() {
+    const { id } = useParams();
     const navigate = useNavigate();
     const formData=useSelector(state=>state.AddEvent);
     const {categories,cities}=useSelector(state=>state.getIds);
@@ -18,6 +20,9 @@ export default function AddEvent() {
     const dispatch=useDispatch();
     useEffect(() => {
         dispatch(getIdsService())
+        if(id){
+            dispatch(EventService({id,type:'add'}));
+        }
     }, []);
 
     const handleInputChange = (field, value) => {

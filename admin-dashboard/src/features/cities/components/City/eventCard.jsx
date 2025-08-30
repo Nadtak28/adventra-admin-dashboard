@@ -5,7 +5,7 @@ const EventCard = ({ event, index }) => {
     const navigate = useNavigate();
 
     function onClick(event) {
-        navigate(`dashboard/events/${event.id}`);
+        navigate(`/dashboard/events/${event.id}`)
     }
 
     return (

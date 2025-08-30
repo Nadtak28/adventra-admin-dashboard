@@ -1,7 +1,7 @@
 import {BarChart3, ChevronDown, Star, TrendingUp, Users, Award, Calendar, Loader2} from "lucide-react";
 import React from "react";
 
-export default function RecentGroupTrips({recentGroupTrips,isLoading,viewRecentGroupTrips}){
+export default function RecentGroupTrips({navGT,recentGroupTrips,isLoading,viewRecentGroupTrips}){
     const formatDate = (dateString) => {
         return new Date(dateString).toLocaleDateString('en-US', {
             month: 'short',
@@ -66,7 +66,8 @@ export default function RecentGroupTrips({recentGroupTrips,isLoading,viewRecentG
                                 const hasActiveOffer = tour.has_offer && tour.offers && tour.offers.length > 0;
 
                                 return (
-                                    <tr key={tour.id} className="group border-t border-t-slate-700/30 hover:bg-gradient-to-r hover:from-slate-800/60 hover:to-slate-700/40 transition-all duration-300">
+                                    <tr key={tour.id}  onClick={()=>{navGT(tour.id)}}
+                                        className="group border-t border-t-slate-700/30 hover:bg-gradient-to-r hover:from-slate-800/60 hover:to-slate-700/40 transition-all duration-300">
                                         <td className="px-6 py-5">
                                             <div className="flex items-center gap-4">
                                                 <div className="relative">

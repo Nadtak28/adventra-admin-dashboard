@@ -3,8 +3,8 @@ import { useState, useEffect } from "react";
 import {useNavigate} from "react-router-dom";
 
 const EventInfoSection = ({
-                              eventCity,
-                              eventCategory,
+                              guide,
+                              extra_cost,
                               eventDescription,
                               eventDescriptionAr,
                               basicCost,
@@ -13,13 +13,12 @@ const EventInfoSection = ({
                               isEditing = false,
                               onDescriptionEnChange,
                               onDescriptionArChange,
-                              onCityChange,
-                              onCategoryChange,
+                              onGuideChange,
+                              onMaxTicketsChange,
                               onBasicCostChange,
                               onPriceChange,
                               onMainPriceChange,
-                              cities = [],
-                              categories = [],
+                              guides = [],
                               offers=[],
                               priceBfOffer,
                               setPriceBfOffer,
@@ -41,24 +40,24 @@ const EventInfoSection = ({
             placeholderAr: "Event description in Arabic..."
         },
         {
-            title: "City",
-            content: eventCity,
+            title: "Guide",
+            content: guide,
             icon: MapPin,
             delay: "animation-delay-400",
             type: "select",
-            onChangeEn: onCityChange,
-            options: cities,
-            placeholderEn: "Select a city"
+            onChangeEn: onGuideChange,
+            options: guides,
+            placeholderEn: "Select a guide"
         },
         {
-            title: "Category",
-            content: eventCategory,
+            title: "Extra Cost",
+            content: extra_cost,
             icon: BarChart3,
             delay: "animation-delay-600",
-            type: "select",
-            onChangeEn: onCategoryChange,
-            options: categories,
-            placeholderEn: "Select a category"
+            type: "textarea",
+            onChangeEn: ()=>{},
+            options: guides,
+            placeholderEn: extra_cost,
         },
         {
             title: "Pricing",
@@ -74,9 +73,8 @@ const EventInfoSection = ({
             placeholderMainPrice: "Main price..."
         },
         {
-            title: "Event Duration",
+            title: "Group trip Duration",
             content: {
-                is_limited: form?.is_limited,
                 starting_date: form?.starting_date,
                 ending_date: form?.ending_date
             },
@@ -144,13 +142,13 @@ const EventInfoSection = ({
                                         />
                                     ) : card.type === "duration" ? (
                                         <DurationInput
-                                            is_limited={card.content.is_limited}
                                             starting_date={card.content.starting_date}
                                             ending_date={card.content.ending_date}
                                             onToggleLimited={card.onToggleLimited}
                                             isEditing={isEditing}
                                             id={form.id}
                                             form={form}
+                                            onMaxTicketsChange={onMaxTicketsChange}
                                         />
                                     ) : (
                                         <EditableInput
@@ -426,13 +424,13 @@ const PricingInput = ({
 
 // مكوّن إدارة المدة الزمنية للحدث
 const DurationInput = ({
-                           is_limited,
                            starting_date,
                            ending_date,
                            onToggleLimited,
                            isEditing,
-                            id,
-                           form
+                           id,
+                           form,
+                           onMaxTicketsChange
                        }) => {
     const formatDate = (dateString) => {
         if (!dateString) return "Not set";
@@ -445,7 +443,7 @@ const DurationInput = ({
             minute: '2-digit'
         });
     };
-
+    const is_finished=form?.status==='finished'?true:false;
     const formatDateForInput = (dateString,form) => {
         if (!dateString) return "";
         const date = new Date(dateString);
@@ -456,31 +454,43 @@ const DurationInput = ({
         <div className="space-y-4">
             {/* Toggle Limited Event */}
             <div className="flex items-center justify-between bg-slate-800/50 rounded-lg p-4 border border-slate-600/30">
-                <div className="flex items-center gap-3">
-                    <Clock className="w-5 h-5 text-[#519489]" />
-                    <span className="text-gray-200 font-medium">Limited Time Event</span>
-                </div>
-                {   !is_limited&&
+                <div className="flex items-center justify-between bg-slate-800/50 rounded-lg p-4 border border-slate-600/30">
+                    {is_finished && (
+                        <button
+                            type="button"
+                            onClick={() => {
+                                navigate(`/dashboard/event_grouptrip/add_group_trip/${id}`);
+                            }}
+                            className="
+            flex items-center gap-2
+            px-4 py-2
+            bg-blue-600 hover:bg-blue-700
+            text-white font-medium
+            rounded-md
+            transition-all duration-200
+            border border-blue-500/50
+            hover:shadow-lg hover:shadow-blue-500/25
+            focus:outline-none focus:ring-2 focus:ring-blue-500/50
+            active:scale-95
+          "
+                        >
+                            <span className="inline-block h-4 w-4 rounded-full bg-white/20 mr-1"></span>
+                            Republish
+                        </button>
+                    )}
+
+                    {/* Toggle button for demo purposes */}
                     <button
-                    type="button"
-                    onClick={() => {
-                        navigate(`/dashboard/event_grouptrip/add_event/${id}`)
-                    }}
-                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#519489] focus:ring-offset-2 focus:ring-offset-slate-800 ${
-                        is_limited ? 'bg-[#519489]' : 'bg-gray-600'
-                    }`}
-                >
-                    <span
-                        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-200 ${
-                            is_limited ? 'translate-x-6' : 'translate-x-1'
-                        }`}
-                    />
-                </button>
-                }
+                        onClick={() => setIsFinished(!is_finished)}
+                        className="ml-auto px-3 py-1 bg-slate-600 hover:bg-slate-500 text-white text-sm rounded transition-colors"
+                    >
+                        Toggle: {is_finished ? 'Finished' : 'Not Finished'}
+                    </button>
+                </div>
             </div>
 
             {/* Date Inputs - Only shown when limited */}
-            {is_limited && (
+
                 <div className="space-y-4">
                     <div>
                         <label className="block text-gray-400 text-sm mb-2">Starting Date</label>
@@ -508,7 +518,7 @@ const DurationInput = ({
                         <input
                             type="text"
                             value={form?.tickets_count}
-                            readOnly
+                            onChange={(e)=>{onMaxTicketsChange(e.target.value)}}
                             className="w-full bg-slate-700/50 border-2 border-slate-600/30 text-gray-400 rounded-lg px-4 py-2 cursor-not-allowed opacity-75"
                         />
                     </div>
@@ -522,27 +532,12 @@ const DurationInput = ({
                         />
                     </div>
                 </div>
-            )}
+
         </div>
     ) : (
         <div className="space-y-4">
-            {/* Event Type Display */}
-            <div className="flex items-center justify-between bg-slate-800/30 rounded-lg p-3">
-                <div className="flex items-center gap-3">
-                    <Clock className="w-5 h-5 text-[#519489]" />
-                    <span className="text-gray-400 text-sm">Event Type:</span>
-                </div>
-                <span className={`text-sm font-medium px-3 py-1 rounded-full ${
-                    is_limited
-                        ? 'bg-orange-500/20 text-orange-400 border border-orange-500/30'
-                        : 'bg-green-500/20 text-green-400 border border-green-500/30'
-                }`}>
-                    {is_limited ? 'Limited Time' : 'Ongoing'}
-                </span>
-            </div>
 
             {/* Date Display - Only when limited */}
-            {is_limited && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="bg-slate-800/30 rounded-lg p-4 border border-slate-600/20">
                         <div className="flex items-center gap-2 mb-2">
@@ -581,7 +576,6 @@ const DurationInput = ({
                         </p>
                     </div>
                 </div>
-            )}
         </div>
     );
 };

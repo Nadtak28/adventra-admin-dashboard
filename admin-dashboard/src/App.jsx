@@ -10,6 +10,7 @@ import City from "./pages/Cities/city.jsx"
 import Guides from "./pages/Guides/guides.jsx"
 import Guide from "./pages/Guides/guide.jsx"
 import Event from "./pages/events_group_trip/event.jsx"
+import GroupTrip from "./pages/events_group_trip/group_trip.jsx"
 import Users from "./pages/users.jsx"
 import AddGuides from "./pages/Guides/add_guide.jsx"
 import ProtectedRoute from "./features/routes/protectedRoute.jsx"
@@ -20,6 +21,7 @@ import AddGroupTrip from "./pages/events_group_trip/add_group_trip.jsx";
 import { onMessage } from "firebase/messaging";
 import { messaging } from "./utils/firebase";
 import {useEffect} from "react";
+import MainContent from "./pages/events_group_trip/group_trip.jsx";
 function App() {
      // tokenStore.clearToken()
     useEffect(() => {
@@ -67,10 +69,12 @@ function App() {
                <Route path="guides" element={<Guides/>}/>
                <Route path="guides/:id" element={<Guide/>}/>
                <Route path="events/:id" element={<Event/>}/>
+               <Route path="group_trip/:id" element={<GroupTrip/>}/>
                <Route path="users" element={<Users/>}/>
                <Route path="guides/add" element={<AddGuides/>}/>
                <Route path="cities/add" element={<AddCity />} />
                <Route path="event_grouptrip/add_event" element={<AddEvent />} />
+               <Route path="event_grouptrip/add_event/:id" element={<AddEvent />} />
                <Route path="event_grouptrip/add_group_trip" element={<AddGroupTrip />} />
                <Route path="event_grouptrip/add_group_trip/:id" element={<AddGroupTrip />} />
         </Route>

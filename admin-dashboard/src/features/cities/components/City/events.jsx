@@ -1,6 +1,7 @@
 import EventCard from "./EventCard";
 import { Calendar } from "lucide-react";
 import SkeletonCard from "./skeletonCard.jsx";
+import {useNavigate} from "react-router-dom";
 
 const EventsSection = ({ events, loading }) => {
     return (

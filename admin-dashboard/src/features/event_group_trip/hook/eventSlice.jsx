@@ -37,28 +37,36 @@ const EventSlice =createSlice({
             state.form.main_price=null
         })
             .addCase(EventService.fulfilled, (state, action) => {
-                console.log("EventService.fulfilled", action.payload)
-                state.form.id=action.payload.id;
-                state.form.status=action.payload.status;
-                state.form.nameEn=action.payload.name;
-                state.form.nameAr=action.payload.name_ar;
-                state.form.category=action.payload.category;
-                state.form.city=action.payload.city;
-                state.form.rate=action.payload.rate;
-                state.form.basic_cost=action.payload.basic_cost;
-                state.form.price=action.payload.price;
-                state.form.has_offer=action.payload.has_offer;
-                state.form.offers=action.payload.offers;
-                state.form.feedbacks=action.payload.feedbacks;
-                state.form.is_limited=action.payload.is_limited;
-                state.form.descriptionEn=action.payload.description;
-                state.form.descriptionAr=action.payload.description_ar;
-                state.form.images=action.payload.images;
-                state.form.videos=action.payload.videos;
-                if(action.payload.has_offer){
-                    state.form.main_price = action.payload.main_price;
+                if(action.payload.type!=='add'){
+                    console.log("EventService.fulfilled", action.payload)
+                    state.form.id = action.payload.data.id;
+                    state.form.status = action.payload.data.status;
+                    state.form.nameEn = action.payload.data.name;
+                    state.form.nameAr = action.payload.data.name_ar;
+                    state.form.category = action.payload.data.category;
+                    state.form.city = action.payload.data.city;
+                    state.form.rate = action.payload.data.rate;
+                    state.form.basic_cost = action.payload.data.basic_cost;
+                    state.form.price = action.payload.data.price;
+                    state.form.has_offer = action.payload.data.has_offer;
+                    state.form.offers = action.payload.data.offers;
+                    state.form.feedbacks = action.payload.data.feedbacks;
+                    state.form.is_limited = action.payload.data.is_limited;
+                    state.form.descriptionEn = action.payload.data.description;
+                    state.form.descriptionAr = action.payload.data.description_ar;
+                    state.form.images = action.payload.data.images;
+                    state.form.videos = action.payload.data.videos;
+                    if (state.form.is_limited) {
+                        state.form.starting_date = action.payload.data.starting_date;
+                        state.form.ending_date = action.payload.data.ending_date;
+                        state.form.tickets_count = action.payload.data.tickets_count;
+                        state.form.remaining_tickets = action.payload.data.remaining_tickets;
+                    }
+                    if (action.payload.has_offer) {
+                        state.form.main_price = action.payload.data.main_price;
+                    }
+                    state.isLoading = false;
                 }
-                state.isLoading = false;
             })
             .addCase(EventService.rejected, (state, action) => {
                 console.log("EventService.rejected", action.payload)

@@ -5,6 +5,7 @@ import getIdsSlice from "../features/all/hook/getIdsSlice.js";
 import AddCitySlice from "../features/cities/hook/addCitySlice.jsx";
 import CitySlice from "../features/cities/hook/citySlice.jsx";
 import EventSlice from "../features/event_group_trip/hook/eventSlice.jsx";
+import GroupTripSlice from "../features/event_group_trip/hook/groupTripSlice.jsx";
 import AddEventSlice from "../features/event_group_trip/hook/addEventSlice.jsx";
 import AddGTSlice from "../features/event_group_trip/hook/addGTSlice.jsx";
 import addGuideSlice from "../features/guide/hook/addGuideSlice.jsx";
@@ -30,6 +31,7 @@ export const store = configureStore({
     Users:UsersSlice,
     City:CitySlice,
     Event:EventSlice,
+    GT:GroupTripSlice,
     Notifications:NotificationsSlice,
   },
 });

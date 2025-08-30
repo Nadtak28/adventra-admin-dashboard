@@ -2,12 +2,13 @@ import API from "../../../api/apiRoutes.jsx"
 import albolbolFiles from "../../../api/albolbolFiles.jsx"
 import {createAsyncThunk} from "@reduxjs/toolkit";
 
-export const EventService=createAsyncThunk(
-    "EventService",
-    async ({id,type}, {rejectWithValue,getState}) => {
+export const updateGroupTripService=createAsyncThunk(
+    "updateGroupTripService",
+    async ({data,id}, {rejectWithValue,getState}) => {
+        console.log(data)
         try{
-            const response=await albolbolFiles.get(`${API.Event}${id}`)
-            return {data:response.data.data,type:type};
+            const response=await albolbolFiles.post(`${API.UpdateGT}${id}`,data)
+            return response.data;
         }
         catch (error) {
             console.log(error);

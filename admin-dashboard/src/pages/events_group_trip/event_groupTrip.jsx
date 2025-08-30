@@ -56,7 +56,6 @@ export default function EventGroupTrip() {
         navigate(`/dashboard/group_trip/${id}`)
     }
     const navAddGT=(id)=>{
-        console
         navigate(`/dashboard/event_grouptrip/add_group_trip/${id}`)
     }
     return (
@@ -114,9 +113,9 @@ export default function EventGroupTrip() {
 
                         <TopRatedGroupTrip navAddGT={navAddGT} topRatedGroupTrips={topRatedGroupTrips} viewMoreTopRatedTours={viewMoreTopRatedTours} />
 
-                        <UpcomingGroupTrips upcomingGroupTrips={upcomingGroupTrips} isLoading={isLoadingPage} viewUpcomingGroupTrips={viewUpcomingGroupTrips}/>
+                        <UpcomingGroupTrips navGT={navGT} upcomingGroupTrips={upcomingGroupTrips} isLoading={isLoadingPage} viewUpcomingGroupTrips={viewUpcomingGroupTrips}/>
 
-                        <RecentGroupTrips recentGroupTrips={recentGroupTrips} isLoading={isLoadingPage} viewRecentGroupTrips={viewRecentGroupTrips}/>
+                        <RecentGroupTrips navGT={navGT}  recentGroupTrips={recentGroupTrips} isLoading={isLoadingPage} viewRecentGroupTrips={viewRecentGroupTrips}/>
 
                         {/* Enhanced Events - WITH IMAGES */}
                         <Events events={events} isLoading={isLoadingPage} changeStatus={changeStatus} viewEvents={viewEvents} navEvent={navEvent}/>

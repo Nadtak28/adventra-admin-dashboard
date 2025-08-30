@@ -5,6 +5,7 @@ import { Star, X, Trash2 } from "lucide-react";
 import {deleteFeedBackService} from "../../../auth/login/api/deleteFeedBackService.jsx";
 import {getGuideService} from "../../api/getGuideService.jsx";
 import {EventService} from "../../../event_group_trip/api/getEventService.jsx";
+import {GetGTService} from "../../../event_group_trip/api/getGTService.js";
 
 /**
  * Props:
@@ -35,7 +36,9 @@ export default function ReviewsSection({
         if(type==='guide') {
             dispatch(getGuideService({id}))
         }else if(type==='event') {
-            dispatch(EventService({ id }));
+            dispatch(EventService({ id,type:'no' }));
+        }else if(type==='group_trip') {
+            dispatch(GetGTService({ id }));
         }
     };
 
